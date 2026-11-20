@@ -1,0 +1,39 @@
+{
+  "formatVersion": 1,
+  "id": "final-draft-a4",
+  "name": "Scénario Final Draft (A4)",
+  "page": { "widthPt": 595, "heightPt": 842 },
+  "font": { "family": "Courier Prime", "sizePt": 12, "charWidthPt": 7.2, "lineHeightPt": 12 },
+  "text": { "leftPt": 108, "topPt": 72, "widthCh": 61, "linesPerPage": 58 },
+  "sceneNumber": { "rightPt": 98 },
+  "pageNumber": { "topPt": 38, "rightPt": 547 },
+  "elements": {
+    "scene_heading": { "indentMm": 0, "align": "left", "uppercase": true, "spaceBefore": 2 },
+    "action": { "indentMm": 0, "align": "left", "uppercase": false, "spaceBefore": 1 },
+    "character": { "indentMm": 51, "align": "left", "uppercase": true, "spaceBefore": 1 },
+    "parenthetical": {
+      "indentMm": 36,
+      "widthCh": 25,
+      "align": "left",
+      "uppercase": false,
+      "spaceBefore": 0
+    },
+    "dialogue": {
+      "indentMm": 26,
+      "widthCh": 35,
+      "align": "left",
+      "uppercase": false,
+      "spaceBefore": 0
+    },
+    "lyrics": {
+      "indentMm": 26,
+      "widthCh": 35,
+      "align": "left",
+      "uppercase": false,
+      "italic": true,
+      "spaceBefore": 1
+    },
+    "transition": { "indentMm": 0, "align": "right", "uppercase": true, "spaceBefore": 1 },
+    "centered": { "indentMm": 0, "align": "center", "uppercase": false, "spaceBefore": 1 }
+  }
+}

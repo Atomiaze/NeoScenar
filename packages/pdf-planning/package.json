@@ -1,0 +1,15 @@
+{
+  "name": "@neoscenar/pdf-planning",
+  "version": "0.1.0",
+  "description": "PDF du planning et du plan de tournage de NeoScenar, sans dépendance à Electron, au DOM ni à Node.",
+  "license": "GPL-3.0-or-later",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "dependencies": {
+    "@pdf-lib/fontkit": "1.1.1",
+    "pdf-lib": "1.17.1"
+  }
+}

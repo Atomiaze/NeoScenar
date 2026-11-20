@@ -1,0 +1,480 @@
+/* Module Scénario : la page au modèle « Scénario Final Draft (A4) ».
+   Mesures : Documentation/specs/mise-en-page-final-draft-a4.md. La police fait 12 pt ; 1 em = 1 ligne,
+   1 ch = 1 caractère (7,2 pt). Les retraits et largeurs de chaque élément viennent du profil de mise en
+   page, passés en variables CSS (--indent-dialogue, --width-dialogue…). */
+
+@font-face {
+  font-family: 'Courier Prime';
+  src: url('../../../resources/polices/courier-prime/CourierPrime-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Courier Prime';
+  src: url('../../../resources/polices/courier-prime/CourierPrime-Bold.ttf') format('truetype');
+  font-weight: bold;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Courier Prime';
+  src: url('../../../resources/polices/courier-prime/CourierPrime-Italic.ttf') format('truetype');
+  font-weight: normal;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Courier Prime';
+  src: url('../../../resources/polices/courier-prime/CourierPrime-BoldItalic.ttf')
+    format('truetype');
+  font-weight: bold;
+  font-style: italic;
+}
+
+.script-module {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.script-body {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+}
+
+.script-editor-host {
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+  background: var(--desk);
+}
+
+.script-editor-host .cm-editor {
+  height: 100%;
+  outline: none;
+}
+
+/* Une ligne qui remplit exactement la largeur doit tenir malgré les arrondis du navigateur : on donne un
+   quart de caractère de marge (trop peu pour laisser passer un caractère de plus). */
+.script-editor-host {
+  --fit: 0.25ch;
+}
+
+.script-editor-host .cm-scroller {
+  font-family: 'Courier Prime', 'Courier New', monospace;
+  /* Zoom du scénario : toutes les mesures de la page sont en em et en ch, elles suivent. */
+  font-size: calc(12pt * var(--script-zoom, 1));
+  line-height: 1;
+}
+
+/* La page : marge gauche 1,5 pouce (9 em), haut 1 pouce (6 em), droite 48 pt (4 em), 61 caractères. */
+.script-editor-host .cm-editor .cm-content {
+  /* CodeMirror étire normalement le texte sur toute la largeur : ici, c'est une page. Il pose aussi une
+     largeur de base mesurée sur la plus longue ligne vue (style en ligne) : la page a une largeur fixe. */
+  flex: none;
+  flex-basis: auto !important;
+  box-sizing: content-box;
+  width: calc(var(--text-width) * 1ch + var(--fit));
+  min-height: 58em;
+  margin: 2em auto;
+  padding: 6em 4em 6em 9em;
+  background: var(--page);
+  color: var(--page-text);
+  caret-color: var(--page-text);
+  box-shadow: 0 1px 6px var(--page-shadow);
+}
+
+.script-editor-host .cm-content.cm-lineWrapping {
+  /* CodeMirror utilise « break-spaces » : l'espace qui suit le dernier mot d'une ligne y prend de la
+     place, et une ligne pleine (35 caractères) se couperait un mot trop tôt. En « pre-wrap », cette espace
+     ne compte pas, comme à l'impression. */
+  white-space: pre-wrap;
+}
+
+.script-editor-host .cm-cursor {
+  border-left-color: var(--page-text);
+}
+
+.script-editor-host .cm-editor .cm-line {
+  position: relative;
+  /* Un mot plus long que la ligne est coupé net, comme par la pagination (wrapLine). */
+  overflow-wrap: anywhere;
+  box-sizing: content-box;
+  padding: 0;
+  width: calc(var(--text-width) * 1ch + var(--fit));
+}
+
+/* Éléments : retrait et largeur depuis la marge gauche du texte. */
+
+.script-editor-host .cm-line.fl-character {
+  padding-left: calc(var(--indent-character) * 1ch);
+  width: calc(var(--width-character) * 1ch + var(--fit));
+}
+
+.script-editor-host .cm-line.fl-parenthetical {
+  padding-left: calc(var(--indent-parenthetical) * 1ch);
+  width: calc(var(--width-parenthetical) * 1ch + var(--fit));
+}
+
+.script-editor-host .cm-line.fl-dialogue {
+  padding-left: calc(var(--indent-dialogue) * 1ch);
+  width: calc(var(--width-dialogue) * 1ch + var(--fit));
+}
+
+.script-editor-host .cm-line.fl-lyrics {
+  padding-left: calc(var(--indent-lyrics) * 1ch);
+  width: calc(var(--width-lyrics) * 1ch + var(--fit));
+  font-style: italic;
+}
+
+.script-editor-host .cm-line.fl-transition {
+  text-align: right;
+}
+
+/* Imprimés en majuscules : l'affichage fait de même, même si le texte est écrit en minuscules. */
+.script-editor-host .cm-line.fl-scene_heading,
+.script-editor-host .cm-line.fl-character,
+.script-editor-host .cm-line.fl-transition {
+  text-transform: uppercase;
+}
+
+.script-editor-host .cm-line.fl-page_break {
+  color: var(--page-muted);
+}
+
+/* Repères invisibles de CodeMirror autour d'un marqueur masqué : sans cela, la ligne grandit. */
+.script-editor-host .cm-widgetBuffer {
+  vertical-align: top;
+}
+
+.script-editor-host .cm-line.fl-centered {
+  text-align: center;
+}
+
+/* Deux lignes vides avant un en-tête : le texte Fountain n'en a qu'une, l'affichage ajoute l'autre. */
+.script-editor-host .cm-line.fl-scene_heading:not(.fl-first) {
+  padding-top: 1em;
+}
+
+/* (SUITE) ajouté à l'affichage seulement (étape 13D). */
+.script-editor-host .fl-continued {
+  color: var(--page-muted);
+}
+
+/* Dialogues simultanés : l'un sous l'autre à l'écran, avec une barre dans la marge. */
+.script-editor-host .cm-line.fl-dual::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: -1.2ch;
+  width: 2px;
+  background: var(--page-muted);
+}
+
+.fl-dual-label {
+  position: absolute;
+  top: 0;
+  right: 100%;
+  margin-right: 2ch;
+  white-space: nowrap;
+  font-size: 0.75em;
+  font-style: italic;
+  color: var(--page-muted);
+}
+
+.fl-scene-number {
+  position: absolute;
+  bottom: 0;
+  right: 100%;
+  /* Bord droit du numéro 10 pt avant la marge du texte. */
+  margin-right: 0.833em;
+  white-space: nowrap;
+  font-style: normal;
+  color: var(--script-scene-number, inherit);
+}
+
+/* Couleurs réglables des éléments (Réglages, étape 14B) : à l'écran seulement. */
+.script-editor-host .cm-line.fl-scene_heading {
+  color: var(--script-scene-heading, inherit);
+}
+
+.script-editor-host .cm-line.fl-character {
+  color: var(--script-character, inherit);
+}
+
+.script-editor-host .cm-line.fl-dialogue {
+  color: var(--script-dialogue, inherit);
+}
+
+.script-editor-host .cm-line.fl-parenthetical {
+  color: var(--script-parenthetical, inherit);
+}
+
+.script-editor-host .cm-line.fl-transition {
+  color: var(--script-transition, inherit);
+}
+
+.script-editor-host .cm-content ::selection,
+.script-editor-host .cm-content::selection {
+  background: var(--script-selection, Highlight);
+}
+
+/* Sections (actes, séquences) : bandeau coloré, non imprimé. */
+.script-editor-host .cm-line.fl-section,
+.fl-section-end {
+  padding: 0.25em 0.5ch;
+  width: calc((var(--text-width) - 1) * 1ch);
+  background: var(--script-act-background, var(--section-color));
+  color: var(--script-act-text, var(--section-text));
+  font-weight: bold;
+  border-radius: 3px;
+}
+
+.fl-section-end {
+  box-sizing: content-box;
+  margin: 0.5em 0;
+  font-family: 'Courier Prime', 'Courier New', monospace;
+  opacity: 0.85;
+}
+
+.script-editor-host .cm-line.fl-synopsis {
+  font-style: italic;
+  color: var(--page-muted);
+}
+
+.script-editor-host .fl-note,
+.script-editor-host .cm-line.fl-note {
+  color: var(--script-note, var(--note));
+}
+
+.script-editor-host .fl-boneyard,
+.script-editor-host .cm-line.fl-boneyard {
+  color: var(--page-muted);
+  opacity: 0.7;
+}
+
+.fl-bold {
+  font-weight: bold;
+}
+
+.fl-italic {
+  font-style: italic;
+}
+
+.fl-underline {
+  text-decoration: underline;
+}
+
+/* Marqueurs Fountain (**, _, !, @…) : discrets, ils restent dans le texte. */
+.script-editor-host .fl-marker {
+  color: var(--page-muted);
+  opacity: 0.55;
+  font-weight: normal;
+  font-style: normal;
+}
+
+/* Menu de propositions (en-tête de scène, personnages), près du curseur. */
+.script-editor-host .cm-editor .cm-tooltip.cm-tooltip-autocomplete {
+  background: var(--surface);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+  overflow: hidden;
+}
+
+.script-editor-host .cm-editor .cm-tooltip.cm-tooltip-autocomplete > ul {
+  font-family: 'Courier Prime', 'Courier New', monospace;
+  font-size: calc(12pt * var(--script-zoom, 1));
+  max-height: 14em;
+}
+
+.script-editor-host .cm-editor .cm-tooltip.cm-tooltip-autocomplete > ul > li {
+  padding: 0.2em 0.8em;
+  line-height: 1.3;
+}
+
+.script-editor-host .cm-editor .cm-tooltip.cm-tooltip-autocomplete > ul > li[aria-selected] {
+  background: var(--accent);
+  color: var(--accent-text);
+}
+
+.script-editor-host
+  .cm-editor
+  .cm-tooltip.cm-tooltip-autocomplete
+  > ul
+  > li.script-completion-keep {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 0.8rem;
+  font-style: italic;
+  color: var(--muted);
+  border-top: 1px solid var(--border);
+}
+
+/* Panneau de recherche, aux couleurs de l'application (clair ou sombre). */
+.script-editor-host .cm-editor .cm-panels {
+  background: var(--surface);
+  color: var(--text);
+  border-color: var(--border);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 0.85rem;
+}
+
+.script-editor-host .cm-editor .cm-panel.cm-search input,
+.script-editor-host .cm-editor .cm-panel.cm-search button {
+  font: inherit;
+  color: var(--text);
+}
+
+.script-editor-host .cm-editor .cm-panel.cm-search .cm-textfield {
+  background: var(--background);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 0.2rem 0.4rem;
+}
+
+.script-editor-host .cm-editor .cm-panel.cm-search .cm-button {
+  background-image: none;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 0.15rem 0.5rem;
+}
+
+.script-editor-host .cm-editor .cm-searchMatch {
+  background: var(--search-match);
+  outline: 1px solid var(--search-match-outline);
+}
+
+.script-editor-host .cm-editor .cm-searchMatch.cm-searchMatch-selected {
+  background: var(--search-match-selected);
+}
+
+/* Barre des éléments : colonne d'icônes entre le navigateur et la page. */
+.element-bar {
+  flex: none;
+  width: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 6px 0;
+  background: var(--surface);
+  border-right: 1px solid var(--border);
+  overflow-y: auto;
+}
+
+.element-bar-button {
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--muted);
+}
+
+.element-bar-button:hover {
+  background: var(--hover);
+  color: var(--text);
+}
+
+.element-bar-button.active {
+  background: color-mix(in srgb, var(--accent) 22%, var(--surface));
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.element-bar-separator {
+  width: 22px;
+  margin: 5px 0;
+  border: none;
+  border-top: 1px solid var(--border);
+}
+
+.element-selector select {
+  min-width: 14rem;
+  font: inherit;
+  font-size: 0.9rem;
+  padding: 0.3rem 0.4rem;
+}
+
+/* Ligne du curseur : fond très léger, seulement si le réglage est actif. */
+/* Pas sur un bandeau d'acte : la couleur de la ligne (opaque) le cacherait. */
+.script-editor-host.highlight-line .cm-editor .cm-activeLine:not(.fl-section) {
+  background: var(--script-active-line, color-mix(in srgb, var(--page-text) 6%, transparent));
+}
+
+/* Limites de pages : trait pointillé sur toute la largeur de la page, numéro dans la marge droite. */
+.script-editor-host .fl-page-break {
+  position: absolute;
+  height: 0;
+  border-top: 1px dashed var(--script-page-break, var(--page-muted));
+  pointer-events: none;
+}
+
+.script-editor-host .fl-page-number {
+  position: absolute;
+  right: 0.75em;
+  top: -0.5em;
+  line-height: 1;
+  padding: 0 0.25em;
+  background: var(--page);
+  color: var(--script-page-number, var(--page-muted));
+}
+
+.page-indicator {
+  color: var(--muted);
+  font-size: 0.85rem;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.title-page-dialog {
+  width: min(520px, 92vw);
+}
+
+.title-page-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.title-page-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.title-page-field > span {
+  font-weight: 600;
+}
+
+.title-page-field input,
+.title-page-field textarea {
+  font: inherit;
+  padding: 0.4rem 0.5rem;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--background);
+  color: var(--text);
+  resize: vertical;
+}
+
+.script-notice {
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+.conflict-choices {
+  margin: 0.75rem 0 0;
+  padding-left: 1.2rem;
+  line-height: 1.5;
+}

@@ -1,0 +1,41 @@
+{
+  "format": "neoscenar-blender",
+  "formatVersion": 1,
+  "exportedAt": "2026-11-18T10:00:00Z",
+  "neoscenarVersion": "0.5.0",
+  "project": { "id": "uuid", "title": "Mon Film d'été", "folderName": "Mon_Film_d_ete" },
+  "settings": { "width": 1920, "height": 1080, "fps": 25 },
+  "numbersLocked": true,
+  "targetBlend": "../../../06_Blender/Storyboard/Mon_Film_d_ete_storyboard.blend",
+  "scenes": [
+    {
+      "id": "uuid",
+      "label": "S_0010",
+      "number": 10,
+      "letter": "",
+      "name": "Le réveil",
+      "heading": "INT. CHAMBRE - JOUR",
+      "color": "#AECBFA",
+      "shots": [
+        {
+          "id": "uuid",
+          "label": "P_0010",
+          "fullLabel": "S_0010_P_0010",
+          "number": 10,
+          "letter": "",
+          "name": "Le réveil sonne",
+          "durationSeconds": 3.5,
+          "durationFrames": 88,
+          "scale": "Gros plan",
+          "movement": "Plan fixe",
+          "angle": "Plongée",
+          "sounds": "Sonnerie du réveil",
+          "music": "",
+          "description": "Le réveil sur la table de nuit…",
+          "color": null,
+          "thumbnail": "vignettes/S_0010_P_0010.png"
+        }
+      ]
+    }
+  ]
+}

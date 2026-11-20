@@ -1,0 +1,15 @@
+// Logique du découpage technique : fonctions pures, sans interface ni accès au disque.
+// Chaque opération prend un Decoupage et renvoie un nouveau Decoupage sans modifier l'original.
+export * from './allocate'
+export * from './duplicate'
+export * from './factories'
+export * from './fields'
+export * from './history'
+export * from './invariants'
+export * from './numbers'
+export * from './order'
+export * from './placement'
+export * from './result'
+export * from './stats'
+export * from './thumbnailFiles'
+export * from './structure'

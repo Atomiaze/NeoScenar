@@ -1,0 +1,104 @@
+{
+  "formatVersion": 1,
+  "id": "saint-luc",
+  "name": "Vocabulaire du cours d'audio-visuel (IES Saint-Luc Liège)",
+  "shotSizes": [
+    {
+      "label": "Plan d'ensemble",
+      "definition": "Le décor entier, les personnages y sont petits."
+    },
+    {
+      "label": "Plan demi-ensemble",
+      "definition": "Une partie du décor, les personnages sont reconnaissables."
+    },
+    {
+      "label": "Plan moyen",
+      "definition": "Le personnage en entier, de la tête aux pieds."
+    },
+    {
+      "label": "Plan américain",
+      "definition": "Le personnage coupé à mi-cuisses."
+    },
+    {
+      "label": "Plan rapproché taille",
+      "definition": "Le personnage coupé à la taille."
+    },
+    {
+      "label": "Plan rapproché poitrine",
+      "definition": "Le personnage coupé à la poitrine."
+    },
+    {
+      "label": "Gros plan",
+      "definition": "Le visage."
+    },
+    {
+      "label": "Très gros plan",
+      "definition": "Un détail du visage (les yeux, la bouche)."
+    }
+  ],
+  "cameraMovements": [
+    {
+      "label": "Plan fixe",
+      "definition": "La caméra ne bouge pas."
+    },
+    {
+      "label": "Panoramique",
+      "definition": "La caméra tourne sur son axe."
+    },
+    {
+      "label": "Zoom",
+      "definition": "On opère un zoom avec l'objectif."
+    },
+    {
+      "label": "Traveling",
+      "definition": "La caméra se déplace."
+    },
+    {
+      "label": "Traveling compensé",
+      "definition": "Zoom (ou dézoom) compensé par un mouvement de caméra inverse."
+    }
+  ],
+  "cameraAngles": [
+    {
+      "label": "Frontal",
+      "definition": "De face, sans inclinaison ; angle classique."
+    },
+    {
+      "label": "Plongée",
+      "definition": "Caméra en hauteur pointant vers le bas ; réduit l'importance du sujet, vulnérabilité."
+    },
+    {
+      "label": "Contre-plongée",
+      "definition": "Caméra en bas pointant vers le haut ; agrandit l'importance du sujet, puissance."
+    },
+    {
+      "label": "Ras du sol",
+      "definition": "Effet artistique, vue d'un petit animal."
+    },
+    {
+      "label": "Vue plafond",
+      "definition": "Vue du dessus ; perspective d'ensemble, effet artistique."
+    },
+    {
+      "label": "Vue à la première personne",
+      "definition": "La caméra voit par les yeux d'un personnage ; immersion du spectateur."
+    },
+    {
+      "label": "Plan débullé",
+      "definition": "En oblique ; tension, confusion, malaise."
+    }
+  ],
+  "sceneTimes": [
+    "JOUR",
+    "NUIT",
+    "MATIN",
+    "MIDI",
+    "APRÈS-MIDI",
+    "SOIR",
+    "AUBE",
+    "CRÉPUSCULE",
+    "PLUS TARD",
+    "CONTINU",
+    "MOMENT INDÉTERMINÉ"
+  ]
+}

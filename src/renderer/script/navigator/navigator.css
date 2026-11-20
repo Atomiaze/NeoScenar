@@ -1,0 +1,173 @@
+/* Navigateur de scènes : police et thème de l'interface (pas Courier). */
+
+.scene-navigator {
+  flex: none;
+  width: 260px;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  background: var(--surface);
+  border-right: 1px solid var(--border);
+  font-size: 0.85rem;
+}
+
+.navigator-summary {
+  flex: none;
+  padding: 0.55rem 0.75rem;
+  font-weight: 600;
+  border-bottom: 1px solid var(--border);
+  font-variant-numeric: tabular-nums;
+}
+
+.navigator-empty {
+  flex: 1;
+  padding: 0.75rem;
+  line-height: 1.4;
+}
+
+.navigator-list {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 0.25rem 0;
+  outline: none;
+}
+
+.navigator-row {
+  display: grid;
+  align-items: center;
+  column-gap: 0.35rem;
+  padding: 0.3rem 0.6rem 0.3rem calc(0.6rem + var(--depth) * 0.9rem);
+  cursor: pointer;
+  border-left: 3px solid transparent;
+}
+
+.navigator-row:hover {
+  background: var(--hover);
+}
+
+.navigator-row.current {
+  background: color-mix(in srgb, var(--accent) 22%, var(--surface));
+  border-left-color: var(--accent);
+}
+
+.navigator-list:focus-visible .navigator-row.focused {
+  outline: 2px solid var(--accent);
+  outline-offset: -2px;
+}
+
+.navigator-row.section {
+  grid-template-columns: auto minmax(0, 1fr) auto;
+}
+
+.navigator-row.scene {
+  grid-template-columns: auto auto minmax(0, 1fr) auto;
+}
+
+.navigator-toggle {
+  display: flex;
+  padding: 0.1rem;
+  border: none;
+  background: transparent;
+  color: var(--muted);
+}
+
+.navigator-band {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  min-width: 0;
+  padding: 0.15rem 0.45rem;
+  border-radius: 4px;
+  font-weight: 600;
+}
+
+.navigator-title,
+.navigator-heading,
+.navigator-first-line {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.navigator-heading {
+  text-transform: uppercase;
+}
+
+.navigator-heading-cell {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  min-width: 0;
+}
+
+.navigator-number {
+  font-variant-numeric: tabular-nums;
+  color: var(--muted);
+}
+
+.navigator-icon {
+  display: flex;
+  color: var(--muted);
+}
+
+.navigator-icon.has-note {
+  color: var(--note-mark);
+}
+
+.navigator-note-mark {
+  flex: none;
+  width: 0.55rem;
+  height: 0.55rem;
+  border-radius: 50%;
+  background: var(--note-mark);
+}
+
+.navigator-revision-count {
+  flex: none;
+  min-width: 1.1rem;
+  padding: 0 0.3rem;
+  border-radius: 0.6rem;
+  font-size: 0.72rem;
+  line-height: 1.1rem;
+  text-align: center;
+  color: var(--rev-badge-text);
+  background: var(--rev-solid-jaune);
+  font-variant-numeric: tabular-nums;
+}
+
+.navigator-duration {
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.navigator-first-line {
+  grid-column: 2 / -1;
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+
+.navigator-description {
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  padding: 0.6rem 0.75rem 0.75rem;
+  border-top: 1px solid var(--border);
+  font-weight: 600;
+}
+
+.navigator-description textarea {
+  font: inherit;
+  font-weight: normal;
+  resize: vertical;
+  padding: 0.4rem 0.5rem;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--background);
+  color: var(--text);
+}
+
+.navigator-description textarea:disabled::placeholder {
+  font-style: italic;
+}

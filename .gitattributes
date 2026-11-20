@@ -1,0 +1,7 @@
+# Fins de ligne LF partout, y compris sur les machines Windows de GitHub Actions
+# (les tests comparent des fichiers octet par octet ; les fichiers binaires sont reconnus seuls).
+* text=auto eol=lf
+
+# Fichiers d'exemple du module Fountain : à conserver octet pour octet
+# (fins de ligne Windows, marque BOM, espaces en fin de ligne).
+packages/fountain/tests/exemples/** -text

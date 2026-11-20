@@ -1,0 +1,11 @@
+{
+  "name": "@neoscenar/fountain",
+  "version": "0.1.0",
+  "description": "Analyseur Fountain de NeoScenar, sans dépendance à Electron, React ou Node.",
+  "license": "GPL-3.0-or-later",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  }
+}

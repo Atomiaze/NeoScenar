@@ -1,0 +1,9 @@
+node_modules/
+out/
+dist/
+package-lock.json
+LICENSE
+CLAUDE.md
+Documentation/
+# Extension Blender (Python) : elle a ses propres conventions
+blender-addon/

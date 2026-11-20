@@ -1,0 +1,24 @@
+schema_version = "1.0.0"
+
+id = "storyboard_plans"
+version = "1.8.0"
+name = "Storyboard – Gestion des plans"
+tagline = "Storyboard puis production d'un film d'animation par plans"
+maintainer = "David Delepinne"
+type = "add-on"
+
+tags = ["Sequencer", "Animation", "Camera"]
+
+blender_version_min = "4.5.0"
+blender_version_max = "5.0.0"
+
+license = ["SPDX:GPL-3.0-or-later"]
+
+[build]
+paths_exclude_pattern = [
+  "__pycache__/",
+  "/tests/",
+  "/.git/",
+  "*.zip",
+  ".DS_Store",
+]

@@ -1,0 +1,118 @@
+/* Mode révision (étape 13E) : couleurs de surlignage, palette, bulles. */
+
+.rev-jaune {
+  --rev-color: var(--rev-jaune);
+  --rev-solid: var(--rev-solid-jaune);
+}
+.rev-vert {
+  --rev-color: var(--rev-vert);
+  --rev-solid: var(--rev-solid-vert);
+}
+.rev-rose {
+  --rev-color: var(--rev-rose);
+  --rev-solid: var(--rev-solid-rose);
+}
+.rev-bleu {
+  --rev-color: var(--rev-bleu);
+  --rev-solid: var(--rev-solid-bleu);
+}
+
+/* Texte surligné dans l'éditeur. */
+.script-editor-host .fl-rev {
+  border-radius: 2px;
+}
+.script-editor-host .fl-rev-jaune {
+  background: var(--rev-jaune);
+}
+.script-editor-host .fl-rev-vert {
+  background: var(--rev-vert);
+}
+.script-editor-host .fl-rev-rose {
+  background: var(--rev-rose);
+}
+.script-editor-host .fl-rev-bleu {
+  background: var(--rev-bleu);
+}
+/* Une marque commentée est soulignée en pointillé : le survol montre le commentaire. */
+.script-editor-host .fl-rev-commented {
+  text-decoration: underline dotted;
+  text-decoration-color: var(--muted);
+  text-underline-offset: 3px;
+}
+
+.revision-palette {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.35rem 0.75rem;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+}
+
+.revision-label {
+  color: var(--muted);
+  margin-right: 0.2rem;
+}
+
+.revision-spacer {
+  flex: 1;
+}
+
+.revision-swatch {
+  width: 1.6rem;
+  height: 1.6rem;
+  padding: 0;
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  background: var(--rev-solid);
+  cursor: pointer;
+}
+
+.revision-swatch:hover {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+
+.rev-tooltip {
+  max-width: 22rem;
+  padding: 0.35rem 0.6rem;
+  font-family: system-ui, sans-serif;
+  font-size: 0.85rem;
+  color: var(--text);
+  background: linear-gradient(var(--rev-color), var(--rev-color)), var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.revision-bubble {
+  position: fixed;
+  z-index: 50;
+  width: 20rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  padding: 0.6rem 0.75rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.18);
+}
+
+.revision-bubble label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.revision-bubble p {
+  margin: 0;
+  font-size: 0.8rem;
+}
+
+.revision-bubble-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.4rem;
+}

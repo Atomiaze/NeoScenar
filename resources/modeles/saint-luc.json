@@ -1,0 +1,86 @@
+{
+  "formatVersion": 1,
+  "id": "saint-luc",
+  "name": "Modèle Saint-Luc",
+  "folders": [
+    {
+      "name": "01_Production",
+      "description": "Note d'intention, planning, autorisations, droits",
+      "subfolders": [],
+      "defaultFor": ["film", "animation"]
+    },
+    {
+      "name": "02_References",
+      "description": "Références, moodboard, vidéos de référence volumineuses",
+      "subfolders": [],
+      "defaultFor": ["film", "animation"]
+    },
+    {
+      "name": "03_Rushes",
+      "description": "Vidéos tournées",
+      "subfolders": [],
+      "defaultFor": ["film"]
+    },
+    {
+      "name": "04_Son",
+      "description": "Tous les fichiers son du film",
+      "subfolders": ["Prise_de_son", "Voix_off", "Bruitages", "Musique"],
+      "defaultFor": ["film", "animation"]
+    },
+    {
+      "name": "05_Images",
+      "description": "Photos, illustrations, éléments importés",
+      "subfolders": [],
+      "defaultFor": ["film", "animation"]
+    },
+    {
+      "name": "06_Blender",
+      "description": "Fichiers Blender du film",
+      "subfolders": [
+        "Storyboard",
+        "Assets/Personnages",
+        "Assets/Decors",
+        "Assets/Accessoires",
+        "Textures",
+        "Plans"
+      ],
+      "defaultFor": ["animation"]
+    },
+    {
+      "name": "07_Rendus",
+      "description": "Séquences d'images et rendus Blender",
+      "subfolders": [],
+      "defaultFor": ["animation"]
+    },
+    {
+      "name": "08_Graphisme",
+      "description": "Titrage, génériques, logos",
+      "subfolders": [],
+      "defaultFor": ["film", "animation"]
+    },
+    {
+      "name": "09_VFX",
+      "description": "Compositing, After Effects",
+      "subfolders": [],
+      "defaultFor": []
+    },
+    {
+      "name": "10_Montage",
+      "description": "Projet Premiere ou DaVinci",
+      "subfolders": [],
+      "defaultFor": ["film", "animation"]
+    },
+    {
+      "name": "11_Exports",
+      "description": "Versions de travail et version finale",
+      "subfolders": [],
+      "defaultFor": ["film", "animation"]
+    },
+    {
+      "name": "12_Archives",
+      "description": "Éléments abandonnés qu'on ne veut pas jeter",
+      "subfolders": [],
+      "defaultFor": []
+    }
+  ]
+}

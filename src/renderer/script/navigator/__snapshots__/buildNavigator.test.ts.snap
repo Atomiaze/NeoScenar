@@ -1,0 +1,69 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`scénario d’exemple de l’étape 6 > donne un arbre stable 1`] = `
+{
+  "items": [
+    {
+      "children": [
+        {
+          "children": [
+            {
+              "duration": "0:22",
+              "firstLine": "La lumière du matin traverse les rideaux. CHLOÉ (15 ans) fouille un tiroir en désordre.",
+              "note": false,
+              "scene": "S_0001 INT. MAISON - CUISINE - JOUR",
+            },
+            {
+              "duration": "0:14",
+              "firstLine": "Chloé court sur le trottoir, la clé serrée dans la main.",
+              "note": true,
+              "scene": "S_0002 EXT. RUE SAINT-LUC - JOUR",
+            },
+            {
+              "duration": "0:12",
+              "firstLine": "LA POUSSIÈRE DANSE DANS UN RAYON DE SOLEIL.",
+              "note": false,
+              "scene": "LE GRENIER - SOUVENIR",
+            },
+            {
+              "duration": "0:17",
+              "firstLine": "FRANÇOIS (SUITE)",
+              "note": true,
+              "scene": "int./ext. voiture de françois - nuit",
+            },
+          ],
+          "duration": "1:05",
+          "level": 2,
+          "note": true,
+          "section": "Le matin",
+          "synopsis": [],
+        },
+      ],
+      "duration": "1:05",
+      "level": 1,
+      "note": true,
+      "section": "ACTE UN",
+      "synopsis": [
+        "Chloé découvre une clé qui n'ouvre aucune porte connue.",
+      ],
+    },
+    {
+      "children": [
+        {
+          "duration": "0:05",
+          "firstLine": "La ville se réveille.",
+          "note": false,
+          "scene": "S_0003A EST. LIÈGE - VUE GÉNÉRALE - AUBE",
+        },
+      ],
+      "duration": "0:05",
+      "level": 1,
+      "note": false,
+      "section": "ACTE DEUX",
+      "synopsis": [],
+    },
+  ],
+  "scenes": 5,
+  "total": "1:10",
+}
+`;

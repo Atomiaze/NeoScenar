@@ -1,0 +1,222 @@
+/* Fenêtre « Versions… » (étape 13C). */
+.dialog.versions-dialog {
+  width: min(900px, 100%);
+}
+
+.versions-dialog .dialog-actions {
+  flex-wrap: wrap;
+}
+
+.versions-spacer {
+  flex: 1;
+}
+
+.versions-table-wrap {
+  max-height: 50vh;
+  overflow-y: auto;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+}
+
+.versions-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.92rem;
+}
+
+.versions-table th {
+  position: sticky;
+  top: 0;
+  background: var(--surface);
+  text-align: left;
+  font-weight: 600;
+  padding: 0.45rem 0.6rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.versions-table td {
+  padding: 0.4rem 0.6rem;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+}
+
+.versions-table tbody tr {
+  cursor: pointer;
+}
+
+.versions-table tbody tr:hover {
+  background: color-mix(in srgb, var(--accent) 8%, var(--surface));
+}
+
+.versions-table tbody tr.selected {
+  background: color-mix(in srgb, var(--accent) 22%, var(--surface));
+}
+
+.versions-table .number {
+  text-align: right;
+  white-space: nowrap;
+}
+
+.versions-table .note {
+  white-space: pre-wrap;
+  max-width: 22rem;
+}
+
+.versions-table .broken {
+  color: var(--danger);
+  font-weight: 600;
+}
+
+.versions-note {
+  width: 100%;
+  font: inherit;
+  padding: 0.4rem 0.5rem;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--surface);
+  color: inherit;
+  resize: vertical;
+}
+
+/* Pendant une restauration, la vue du projet est retirée un instant. */
+.versions-reloading {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Consulter et Comparer : grande fenêtre. */
+.dialog.versions-large {
+  width: min(1200px, 100%);
+  height: 100%;
+}
+
+.versions-large .dialog-body {
+  flex: 1;
+  min-height: 0;
+}
+
+.versions-consult-info {
+  white-space: normal;
+}
+
+/* Page du scénario en lecture seule : elle remplit la fenêtre et défile seule. */
+.version-viewer {
+  flex: 1;
+  min-height: 0;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.version-viewer .script-editor-host .cm-editor {
+  width: 100%;
+}
+
+.versions-compare-choices {
+  display: flex;
+  gap: 1rem;
+}
+
+.versions-compare-choice {
+  flex: 1;
+}
+
+.versions-compare {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  gap: 1rem;
+}
+
+.versions-compare-list {
+  flex: 0 0 22rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  overflow-y: auto;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+}
+
+.versions-compare-list li {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding: 0.45rem 0.6rem;
+  border-bottom: 1px solid var(--border);
+  cursor: pointer;
+  font-size: 0.92rem;
+}
+
+.versions-compare-list li:hover {
+  background: color-mix(in srgb, var(--accent) 8%, var(--surface));
+}
+
+.versions-compare-list li.selected {
+  background: color-mix(in srgb, var(--accent) 22%, var(--surface));
+}
+
+.versions-compare-name {
+  white-space: pre;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.versions-compare-badges {
+  display: flex;
+  gap: 0.3rem;
+}
+
+.versions-badge {
+  font-size: 0.75rem;
+  padding: 0.05rem 0.45rem;
+  border-radius: 999px;
+  border: 1px solid currentColor;
+}
+
+.versions-badge.added {
+  color: var(--diff-added);
+}
+
+.versions-badge.removed {
+  color: var(--diff-removed);
+}
+
+.versions-badge.moved {
+  color: var(--accent);
+}
+
+.versions-badge.modified {
+  color: var(--muted);
+}
+
+.versions-compare-detail {
+  flex: 1;
+  min-width: 0;
+  overflow-y: auto;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 0.75rem 1rem;
+}
+
+.versions-diff {
+  margin: 0;
+  font-family: 'Courier Prime', 'Courier New', monospace;
+  font-size: 0.95rem;
+  line-height: 1.35;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.versions-diff ins {
+  text-decoration: none;
+  color: var(--diff-added);
+  background: color-mix(in srgb, var(--diff-added) 14%, transparent);
+}
+
+.versions-diff del {
+  color: var(--diff-removed);
+  background: color-mix(in srgb, var(--diff-removed) 12%, transparent);
+}

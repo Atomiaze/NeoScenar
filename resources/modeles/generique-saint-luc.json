@@ -1,0 +1,174 @@
+{
+  "formatVersion": 1,
+  "id": "saint-luc",
+  "name": "Générique Saint-Luc",
+  "textes": {
+    "fiction": "Les personnages et les situations de ce récit étant purement fictifs, toute ressemblance avec des personnes ou des situations existantes ou ayant existé ne saurait être que fortuite.",
+    "animaux": "Aucun animal n’a été blessé pendant le tournage.",
+    "tourneA": "Tourné à {lieu}",
+    "copyright": "© {annee} {titulaire}",
+    "ligneEcole": "Réalisé à l’IES Saint Luc Liège — année scolaire {anneeScolaire}",
+    "musiqueInterprete": "Interprété par",
+    "musiqueAuteurs": "Écrit et composé par",
+    "musiqueAutorisation": "Avec l’aimable autorisation de",
+    "presente": "{noms} présente",
+    "presentent": "{noms} présentent",
+    "unFilmDe": "Un film de {noms}",
+    "realisePar": "Réalisé par {noms}",
+    "et": "et"
+  },
+  "logoEcole": null,
+  "cartons": {
+    "production": "production.production",
+    "realisation": "realisation.realisation"
+  },
+  "blocs": [
+    {
+      "id": "distribution",
+      "titre": "Distribution",
+      "rubriques": [
+        { "id": "distribution.acteurs", "intitule": "Distribution", "source": "acteurs" },
+        { "id": "distribution.doublures", "intitule": "Doublures et cascades" },
+        { "id": "distribution.voix", "intitule": "Voix / Narration" },
+        { "id": "distribution.figuration", "intitule": "Figuration", "source": "figurants" }
+      ]
+    },
+    {
+      "id": "realisation",
+      "titre": "Réalisation",
+      "rubriques": [
+        { "id": "realisation.realisation", "intitule": "Réalisation" },
+        { "id": "realisation.assistant-1", "intitule": "1er assistant réalisateur" },
+        { "id": "realisation.assistants-2-3", "intitule": "2e et 3e assistants" },
+        { "id": "realisation.scripte", "intitule": "Scripte" },
+        { "id": "realisation.coach", "intitule": "Coach d’acteurs" },
+        { "id": "realisation.chaperon", "intitule": "Chaperon" }
+      ]
+    },
+    {
+      "id": "production",
+      "titre": "Production",
+      "rubriques": [
+        { "id": "production.production", "intitule": "Production" },
+        { "id": "production.direction", "intitule": "Direction de production" },
+        { "id": "production.administration", "intitule": "Administration" },
+        { "id": "production.regie-generale", "intitule": "Régie générale" },
+        { "id": "production.regisseurs", "intitule": "Régisseurs" },
+        { "id": "production.assistants", "intitule": "Assistants de production" },
+        { "id": "production.cantine", "intitule": "Cantine" },
+        { "id": "production.chauffeurs", "intitule": "Chauffeurs" }
+      ]
+    },
+    {
+      "id": "image",
+      "titre": "Image",
+      "rubriques": [
+        { "id": "image.chef-op", "intitule": "Directeur de la photographie" },
+        { "id": "image.cadre", "intitule": "Cadre" },
+        { "id": "image.assistant-1", "intitule": "1er assistant opérateur" },
+        { "id": "image.assistant-2", "intitule": "2e assistant opérateur" },
+        { "id": "image.steadicam", "intitule": "Steadicam / Grue / Drone" },
+        { "id": "image.data-manager", "intitule": "Data manager" },
+        { "id": "image.photographe", "intitule": "Photographe de plateau" },
+        { "id": "image.chef-electricien", "intitule": "Chef électricien" },
+        { "id": "image.electriciens", "intitule": "Électriciens" },
+        { "id": "image.chef-machiniste", "intitule": "Chef machiniste" },
+        { "id": "image.machinistes", "intitule": "Machinistes" }
+      ]
+    },
+    {
+      "id": "son",
+      "titre": "Son",
+      "rubriques": [
+        { "id": "son.ingenieur", "intitule": "Ingénieur du son" },
+        { "id": "son.perchman", "intitule": "Perchman" },
+        { "id": "son.renfort", "intitule": "Renfort son" }
+      ]
+    },
+    {
+      "id": "decors",
+      "titre": "Décors et costumes",
+      "rubriques": [
+        { "id": "decors.chef-decorateur", "intitule": "Chef décorateur" },
+        { "id": "decors.ensemblier", "intitule": "Ensemblier" },
+        { "id": "decors.accessoiristes", "intitule": "Accessoiristes" },
+        { "id": "decors.construction", "intitule": "Construction" },
+        { "id": "decors.costumes", "intitule": "Costumes" },
+        { "id": "decors.habilleuses", "intitule": "Habilleuses" },
+        { "id": "decors.maquillage", "intitule": "Maquillage et coiffure" },
+        { "id": "decors.maquillage-sfx", "intitule": "Maquillage effets spéciaux" }
+      ]
+    },
+    {
+      "id": "animation",
+      "titre": "Animation",
+      "facultatif": true,
+      "afficheSiType": ["animation", "mixte"],
+      "rubriques": [
+        { "id": "animation.direction", "intitule": "Direction de l’animation" },
+        { "id": "animation.storyboard", "intitule": "Storyboard" },
+        { "id": "animation.layout", "intitule": "Layout" },
+        { "id": "animation.modelisation", "intitule": "Modélisation" },
+        { "id": "animation.rigging", "intitule": "Rigging" },
+        { "id": "animation.textures", "intitule": "Textures" },
+        { "id": "animation.animation", "intitule": "Animation" },
+        { "id": "animation.rendu", "intitule": "Lighting et rendu" },
+        { "id": "animation.compositing", "intitule": "Compositing" }
+      ]
+    },
+    {
+      "id": "postproduction",
+      "titre": "Post-production",
+      "rubriques": [
+        { "id": "postproduction.montage", "intitule": "Montage" },
+        { "id": "postproduction.assistants-monteurs", "intitule": "Assistants monteurs" },
+        { "id": "postproduction.etalonnage", "intitule": "Étalonnage" },
+        { "id": "postproduction.vfx", "intitule": "Effets visuels" },
+        { "id": "postproduction.generiques", "intitule": "Génériques et titrages" },
+        { "id": "postproduction.montage-son", "intitule": "Montage son" },
+        { "id": "postproduction.design-sonore", "intitule": "Design sonore" },
+        { "id": "postproduction.bruitage", "intitule": "Bruitage" },
+        { "id": "postproduction.mixage", "intitule": "Mixage" },
+        { "id": "postproduction.studio", "intitule": "Studio de post-production" }
+      ]
+    },
+    {
+      "id": "musique",
+      "titre": "Musique",
+      "special": "musiques",
+      "rubriques": [
+        { "id": "musique.originale", "intitule": "Musique originale" },
+        { "id": "musique.musiciens", "intitule": "Musiciens" },
+        { "id": "musique.supervision", "intitule": "Supervision musicale" }
+      ]
+    },
+    {
+      "id": "documentaire",
+      "titre": "Documentaire et archives",
+      "facultatif": true,
+      "afficheSiType": [],
+      "rubriques": [
+        { "id": "documentaire.recherches", "intitule": "Recherches et documentation" },
+        { "id": "documentaire.intervenants", "intitule": "Intervenants" },
+        { "id": "documentaire.archives", "intitule": "Images d’archives" },
+        { "id": "documentaire.photographies", "intitule": "Photographies" },
+        { "id": "documentaire.traduction", "intitule": "Traduction et sous-titres" }
+      ]
+    },
+    {
+      "id": "remerciements",
+      "titre": "Remerciements",
+      "rubriques": [
+        { "id": "remerciements.particuliers", "intitule": "Remerciements" },
+        { "id": "remerciements.institutions", "intitule": "Institutions et lieux" },
+        { "id": "remerciements.partenaires", "intitule": "Partenaires et prêts de matériel" }
+      ]
+    },
+    {
+      "id": "mentions",
+      "titre": "Mentions et logos",
+      "special": "mentions",
+      "rubriques": [{ "id": "mentions.soutien", "intitule": "Avec le soutien de" }]
+    }
+  ]
+}

@@ -1,0 +1,876 @@
+/* Module Planification (étape 15B) : couleurs des thèmes uniquement (retard = --danger). */
+
+.planning-module {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+}
+
+.planning-main {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.planning-header {
+  padding: 1.1rem 1.75rem 0.5rem;
+}
+
+.planning-header h1 {
+  margin: 0 0 0.6rem;
+  font-size: 1.4rem;
+}
+
+.planning-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.9rem;
+}
+
+.planning-toolbar button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.planning-filter,
+.planning-hide-done,
+.planning-check {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.planning-scroll {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 0.5rem 1.75rem 2.5rem;
+  max-width: 1000px;
+}
+
+.planning-empty {
+  margin: 0.5rem 0 1rem;
+  padding: 1rem 1.25rem;
+  background: var(--surface);
+  border: 1px dashed var(--border);
+  border-radius: 8px;
+}
+
+.planning-empty h2 {
+  margin: 0 0 0.25rem;
+  font-size: 1.05rem;
+}
+
+.planning-phase {
+  margin: 0.9rem 0;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+}
+
+.planning-phase.drop-target {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+
+.planning-phase-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.7rem;
+}
+
+.planning-phase-name {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.planning-phase-dot {
+  width: 0.8rem;
+  height: 0.8rem;
+  border-radius: 50%;
+  flex: none;
+}
+
+.planning-phase-input {
+  font-size: 1rem;
+  padding: 0.2rem 0.4rem;
+}
+
+.planning-progress {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-left: auto;
+}
+
+.planning-bar {
+  width: 120px;
+  height: 8px;
+  border-radius: 4px;
+  background: var(--border);
+  overflow: hidden;
+}
+
+.planning-bar > span {
+  display: block;
+  height: 100%;
+}
+
+.planning-late-count {
+  color: var(--danger);
+  font-weight: 600;
+}
+
+.planning-phase-actions {
+  display: inline-flex;
+  gap: 0.1rem;
+}
+
+.planning-tasks {
+  list-style: none;
+  margin: 0;
+  padding: 0 0.4rem 0.5rem;
+}
+
+.planning-task {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.35rem 0.5rem;
+  border-radius: 6px;
+}
+
+.planning-task:hover {
+  background: var(--hover);
+}
+
+.planning-task.state-faite .planning-task-title {
+  text-decoration: line-through;
+  color: var(--muted);
+}
+
+.planning-task-title {
+  background: none;
+  border: none;
+  padding: 0;
+  text-align: left;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+}
+
+.planning-task.state-en-retard .planning-due,
+.planning-task.state-en-retard .planning-task-title {
+  color: var(--danger);
+  font-weight: 600;
+}
+
+.planning-validated {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.planning-people {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+  margin-left: auto;
+}
+
+.planning-pill {
+  font-size: 0.78rem;
+  padding: 0.05rem 0.5rem;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+}
+
+.planning-pill.gone {
+  color: var(--muted);
+  border-style: dashed;
+}
+
+.planning-due {
+  min-width: 6.5rem;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.planning-phase-empty {
+  padding: 0.3rem 0.5rem;
+}
+
+.planning-add-phase {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin-top: 0.4rem;
+}
+
+.planning-panel {
+  width: 340px;
+  flex: none;
+  overflow-y: auto;
+  padding: 1rem 1.1rem 2rem;
+  background: var(--surface);
+  border-left: 1px solid var(--border);
+}
+
+.planning-panel h2 {
+  margin: 0 0 0.75rem;
+  font-size: 1.1rem;
+}
+
+.planning-panel .field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  margin-bottom: 0.7rem;
+}
+
+.planning-dates {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.6rem;
+}
+
+.planning-people-field {
+  border: none;
+  margin: 0.6rem 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.planning-panel-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.8rem;
+}
+
+.planning-panel-actions .spacer {
+  flex: 1;
+}
+
+.icon-button {
+  background: none;
+  border: none;
+  padding: 0.25rem;
+  line-height: 0;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.planning-panel-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+}
+
+.planning-panel-head h2 {
+  margin: 0;
+}
+
+.planning-panel textarea,
+.planning-panel input[type='text'],
+.planning-panel input[type='date'],
+.planning-panel select {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Ligne du temps (étape 15C) : variables du thème ; seules les couleurs des phases viennent des données. */
+
+.planning-switch {
+  display: inline-flex;
+}
+
+.planning-switch button {
+  border-radius: 0;
+}
+
+.planning-switch button:first-child {
+  border-radius: 6px 0 0 6px;
+}
+
+.planning-switch button:last-child {
+  border-radius: 0 6px 6px 0;
+  margin-left: -1px;
+}
+
+.planning-switch button.active {
+  background: var(--accent);
+  color: var(--accent-text);
+  border-color: var(--accent);
+}
+
+.timeline-wrap {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 0 1.75rem 1rem;
+}
+
+.timeline-hint {
+  margin: 0.3rem 0;
+  font-size: 0.85rem;
+}
+
+.timeline {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--background);
+}
+
+.timeline-inner {
+  min-width: 100%;
+}
+
+.timeline-header {
+  display: flex;
+  position: sticky;
+  top: 0;
+  z-index: 3;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+}
+
+.timeline-row {
+  display: flex;
+  border-bottom: 1px solid var(--border);
+}
+
+.timeline-label {
+  position: sticky;
+  left: 0;
+  z-index: 2;
+  flex: none;
+  box-sizing: border-box;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.45rem;
+  padding: 0.6rem 0.6rem;
+  background: var(--surface);
+  border-right: 1px solid var(--border);
+  font-weight: 600;
+}
+
+.timeline-head-columns {
+  flex: none;
+}
+
+.timeline-segments {
+  position: relative;
+  border-bottom: 1px solid var(--border);
+}
+
+.timeline-segment {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  box-sizing: border-box;
+  border-left: 1px solid var(--border);
+  /* « clip » (et non « hidden ») : le nom du segment reste collé au bord visible. */
+  overflow: clip;
+  white-space: nowrap;
+  font-size: 11px;
+  line-height: 17px;
+  color: var(--muted);
+}
+
+.timeline-years .timeline-segment {
+  font-weight: 700;
+  color: var(--text);
+}
+
+.timeline-segment-label {
+  position: sticky;
+  padding: 0 4px;
+}
+
+.timeline-corner {
+  z-index: 4;
+}
+
+.timeline svg {
+  display: block;
+  flex: none;
+  user-select: none;
+  touch-action: none;
+}
+
+.timeline.panning,
+.timeline.panning * {
+  cursor: grabbing;
+}
+
+.timeline-bg {
+  fill: transparent;
+  cursor: crosshair;
+}
+
+.timeline-major {
+  stroke: var(--border);
+  stroke-width: 1;
+}
+
+.timeline-minor {
+  stroke: var(--border);
+  stroke-width: 1;
+  opacity: 0.4;
+}
+
+.timeline-tick {
+  fill: var(--muted);
+  font-size: 11px;
+}
+
+.timeline-tick.small {
+  font-size: 10px;
+}
+
+.timeline-today,
+.timeline-today-badge line {
+  stroke: var(--accent);
+  stroke-width: 2;
+}
+
+/* Fond opaque (et liseret de la couleur de l'en-tête) : aucun chiffre ne transparaît dessous. */
+.timeline-today-badge rect {
+  fill: var(--accent);
+  stroke: var(--surface);
+  stroke-width: 3;
+}
+
+.timeline-today-badge text {
+  fill: var(--accent-text);
+  font-size: 10px;
+  font-weight: 600;
+}
+
+.timeline-create {
+  opacity: 0.45;
+  pointer-events: none;
+}
+
+.timeline-mark {
+  cursor: grab;
+  stroke: var(--background);
+  stroke-width: 1;
+}
+
+.timeline svg.dragging .timeline-mark {
+  cursor: grabbing;
+}
+
+.timeline-handle {
+  fill: transparent;
+  cursor: ew-resize;
+}
+
+.timeline-task:hover .timeline-handle,
+.timeline-task:hover .timeline-handle.diamond-handle {
+  fill: var(--text);
+  opacity: 0.35;
+}
+
+.timeline-title {
+  fill: var(--text);
+  font-size: 12px;
+  pointer-events: none;
+}
+
+.timeline-task.state-faite {
+  opacity: 0.5;
+}
+
+/* Validée : liseret et coche de la couleur --validee (cyan vif en thème sombre, turquoise foncé en thème clair). */
+.timeline-task.state-faite.validated {
+  opacity: 1;
+}
+
+.timeline-task.validated .timeline-mark {
+  stroke: var(--validee);
+  stroke-width: 3;
+}
+
+.timeline-check {
+  fill: var(--validee);
+  font-weight: 700;
+}
+
+.timeline-tip {
+  position: fixed;
+  z-index: 50;
+  padding: 0.2rem 0.55rem;
+  border-radius: 6px;
+  background: var(--text);
+  color: var(--background);
+  font-size: 0.8rem;
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+.planning-toolbar [hidden] {
+  display: none;
+}
+
+/* Plan de tournage (étape 15D-2). */
+
+.shooting-view {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+}
+
+.shooting-main {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 0.3rem 1.75rem 1rem;
+  gap: 0.5rem;
+}
+
+.shooting-loading {
+  padding: 1rem 1.75rem;
+}
+
+.shooting-warnings {
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--danger);
+  border-radius: 6px;
+  padding: 0.35rem 0.7rem;
+  background: var(--surface);
+  font-size: 0.9rem;
+}
+
+.shooting-warnings summary {
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.shooting-warnings ul {
+  margin: 0.4rem 0 0.2rem;
+  padding-left: 1.2rem;
+  max-height: 9rem;
+  overflow-y: auto;
+}
+
+.shooting-board {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  gap: 0.9rem;
+}
+
+.shooting-unplanned {
+  width: 290px;
+  flex: none;
+  overflow-y: auto;
+  padding: 0.6rem 0.7rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+}
+
+.shooting-unplanned h2 {
+  margin: 0;
+  font-size: 1.05rem;
+}
+
+.shooting-unplanned.drop-target,
+.shooting-day.drop-target {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+
+.shooting-count {
+  margin: 0.15rem 0 0.5rem;
+  font-size: 0.85rem;
+}
+
+.shooting-filters {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.4rem 0.5rem;
+  margin-bottom: 0.6rem;
+  font-size: 0.85rem;
+}
+
+.shooting-filters label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  min-width: 0;
+}
+
+.shooting-filters select {
+  width: 100%;
+}
+
+.shooting-filter-actions {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.shooting-filter-actions label {
+  flex-direction: row;
+}
+
+.shooting-group h3 {
+  margin: 0.6rem 0 0.25rem;
+  font-size: 0.85rem;
+  color: var(--muted);
+  text-transform: none;
+}
+
+.shooting-list,
+.shooting-day-scenes {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.shooting-drop-hint {
+  font-size: 0.8rem;
+  margin-top: 0.8rem;
+}
+
+.shooting-scene {
+  padding: 0.35rem 0.5rem;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--background);
+  cursor: grab;
+  font-size: 0.85rem;
+}
+
+.shooting-scene:hover {
+  background: var(--hover);
+}
+
+.shooting-scene.selected {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 1px var(--accent);
+}
+
+.shooting-scene.missing {
+  border-style: dashed;
+  color: var(--muted);
+}
+
+.shooting-scene.to-write .shooting-scene-length {
+  font-style: italic;
+  color: var(--muted);
+}
+
+.shooting-scene-top {
+  display: flex;
+  align-items: baseline;
+  gap: 0.45rem;
+}
+
+.shooting-scene-tags {
+  font-size: 0.78rem;
+}
+
+.shooting-scene-length {
+  margin-left: auto;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.shooting-scene-heading {
+  margin-top: 0.1rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.shooting-scene-characters {
+  font-size: 0.78rem;
+  margin-top: 0.1rem;
+}
+
+.shooting-scene-flags {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem;
+  margin-top: 0.25rem;
+}
+
+.shooting-flag {
+  font-size: 0.75rem;
+  padding: 0 0.45rem;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  color: var(--text);
+}
+
+.shooting-flag.danger {
+  border-color: var(--danger);
+  color: var(--danger);
+}
+
+.shooting-remove {
+  font-size: 0.75rem;
+  padding: 0.05rem 0.5rem;
+}
+
+.shooting-remove-x {
+  background: none;
+  border: none;
+  padding: 0 0.15rem;
+  line-height: 1;
+  color: var(--muted);
+  visibility: hidden;
+}
+
+.shooting-scene:hover .shooting-remove-x,
+.shooting-remove-x:focus-visible {
+  visibility: visible;
+}
+
+.shooting-days {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.8rem;
+  overflow: auto;
+  padding-bottom: 0.4rem;
+}
+
+.shooting-no-days {
+  margin: 0.6rem 0;
+}
+
+.shooting-day {
+  width: 270px;
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  padding: 0.55rem 0.6rem 0.7rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+  transition: box-shadow 0.3s;
+}
+
+.shooting-day.focused {
+  box-shadow: 0 0 0 3px var(--accent);
+}
+
+.shooting-day-head {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  font-size: 0.85rem;
+}
+
+.shooting-day-head input[type='text'],
+.shooting-day textarea {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.shooting-day-line {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.shooting-day-total {
+  font-weight: 600;
+}
+
+.shooting-day-info.warning,
+.shooting-warning-text {
+  color: var(--danger);
+}
+
+.shooting-day textarea {
+  font: inherit;
+  font-size: 0.85rem;
+}
+
+.shooting-day-scenes li.drop-before {
+  box-shadow: 0 -3px 0 var(--accent);
+}
+
+.shooting-day-end {
+  min-height: 1.6rem;
+  font-size: 0.85rem;
+}
+
+.shooting-panel-heading {
+  margin: 0 0 0.6rem;
+  font-weight: 600;
+}
+
+.shooting-panel h3 {
+  margin: 0.8rem 0 0.3rem;
+  font-size: 0.85rem;
+}
+
+.shooting-panel-characters,
+.shooting-panel-days {
+  list-style: none;
+  margin: 0 0 0.6rem;
+  padding: 0;
+}
+
+.shooting-panel-characters li {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.15rem 0;
+}
+
+.shooting-panel-characters li > span:nth-child(2) {
+  margin-left: auto;
+}
+
+.shooting-panel-hint {
+  font-size: 0.8rem;
+}
+
+/* Rangée « Jours de tournage » du Gantt. */
+
+.timeline-shooting-bg {
+  fill: transparent;
+}
+
+.timeline-shooting-mark {
+  fill: var(--accent);
+}
+
+.shooting-dot {
+  background: var(--accent);
+  border-radius: 2px;
+}

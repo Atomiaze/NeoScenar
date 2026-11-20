@@ -1,0 +1,132 @@
+/* Fenêtre « Exporter le générique » (étape 10bC) et police du générique. */
+
+@font-face {
+  font-family: 'NeoScenar Inter';
+  src: url('../../../resources/polices/inter/Inter-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'NeoScenar Inter';
+  src: url('../../../resources/polices/inter/Inter-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+}
+
+.dialog.credits-export-dialog {
+  width: min(980px, 100%);
+}
+
+.credits-export {
+  display: flex;
+  gap: 1.25rem;
+  align-items: flex-start;
+}
+
+.credits-export-preview {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.credits-export-options {
+  width: 280px;
+  flex-shrink: 0;
+}
+
+.credits-export-group {
+  border: 0;
+  margin: 0 0 0.75rem;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.credits-export-group.inline {
+  flex-direction: row;
+  flex-wrap: wrap;
+  column-gap: 1rem;
+}
+
+.credits-export-options .muted,
+.credits-export-options p {
+  margin: 0 0 0.5rem;
+}
+
+.credits-export-group legend {
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+}
+
+/* Le texte du générique est blanc : l'aperçu est posé sur un damier sombre (transparence). */
+.credits-screen,
+.credits-card-thumb canvas {
+  background-color: #1d1d1f;
+  background-image:
+    linear-gradient(45deg, #2a2a2d 25%, transparent 25%),
+    linear-gradient(-45deg, #2a2a2d 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, #2a2a2d 75%),
+    linear-gradient(-45deg, transparent 75%, #2a2a2d 75%);
+  background-size: 16px 16px;
+  background-position:
+    0 0,
+    0 8px,
+    8px -8px,
+    -8px 0;
+}
+
+.credits-screen {
+  overflow-x: hidden;
+  overflow-y: auto;
+  border-radius: 4px;
+  scrollbar-width: thin;
+}
+
+.credits-screen canvas {
+  display: block;
+}
+
+.credits-preview {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.credits-cards-preview {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  justify-content: center;
+}
+
+.credits-card-thumb {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.2rem;
+  font-size: 0.75rem;
+}
+
+.credits-card-thumb canvas {
+  border-radius: 3px;
+}
+
+.credits-text-preview {
+  width: 100%;
+  height: min(58vh, 560px);
+  font-family: ui-monospace, Menlo, monospace;
+  font-size: 0.8rem;
+  tab-size: 24;
+  resize: none;
+}
+
+.credits-duration {
+  font-weight: 600;
+}

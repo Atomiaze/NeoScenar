@@ -1,0 +1,30 @@
+{
+  "compilerOptions": {
+    "composite": true,
+    "target": "ES2022",
+    "lib": ["ES2023"],
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "types": ["node"],
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+    "isolatedModules": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "resolveJsonModule": true,
+    "outDir": "node_modules/.cache/tsc/node",
+    "rewriteRelativeImportExtensions": true
+  },
+  "include": [
+    "electron.vite.config.mts",
+    "vitest.config.mts",
+    "src/main/**/*",
+    "src/preload/**/*",
+    "src/shared/**/*",
+    "src/shared/**/*.json",
+    "src/renderer/i18n/**/*",
+    "packages/pdf-storyboard/src/qrcode-core.d.ts"
+  ]
+}

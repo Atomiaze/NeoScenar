@@ -1,0 +1,16 @@
+import type { FormatCatalog } from './imageFormat'
+
+/** Contenu attendu de resources/formats/formats.json (vérifié par src/main/formats.test.ts). */
+export const SHIPPED_FORMATS: FormatCatalog = {
+  formatVersion: 1,
+  presets: [
+    { id: 'paysage-full-hd', name: 'Paysage Full HD', width: 1920, height: 1080 },
+    { id: 'vertical-full-hd', name: 'Vertical Full HD', width: 1080, height: 1920 },
+    { id: 'carre', name: 'Carré', width: 1080, height: 1080 },
+    { id: 'paysage-4k-uhd', name: 'Paysage 4K UHD', width: 3840, height: 2160 },
+    { id: 'cinemascope', name: 'Cinémascope', width: 1920, height: 804 }
+  ],
+  defaultPresetId: 'paysage-full-hd',
+  frameRates: [24, 25, 30, 50, 60],
+  defaultFrameRate: 25
+}

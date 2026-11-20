@@ -1,0 +1,38 @@
+TOUT EST CALME DANS LA MAISON.
+
+Cette ligne en majuscules au-dessus est suivie d'une ligne vide : c'est une action.
+
+int. salon - soir
+
+Marie range la vaisselle.
+CUT TO:
+
+Une transition collée à l'action reste de l'action.
+
+EXT. JARDIN	- NUIT   
+
+	Une ligne qui commence par une tabulation.
+Une ligne avec des espaces en fin de ligne.    
+
+MARIE [[ce personnage pourrait s'appeler Léa]]
+Tu entends ce bruit ?
+
+[[Une note
+sur plusieurs
+lignes.]]
+
+PIERRE
+Non. [[réplique à couper ?]] Rien du tout.
+
+Une note pas refermée [[ commence ici
+
+et continue après une ligne vide.
+
+INT. CAVE - NUIT
+
+...et le silence revint.
+
+/* Un texte mis de côté jamais refermé.
+
+PIERRE
+Toujours là.

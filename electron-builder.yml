@@ -1,0 +1,99 @@
+appId: be.saintluc.neoscenar
+productName: NeoScenar
+copyright: Licence GPL-3.0-or-later
+directories:
+  buildResources: build
+  output: dist
+# Seulement le code construit : out/ contient aussi les exemples des scripts de développement (PDF, PNG).
+files:
+  - out/main/**/*
+  - out/preload/**/*
+  - out/renderer/**/*
+  - package.json
+# Modèle de dossiers du film, vocabulaire du cours et formats d'image, lus au lancement
+# (Contents/Resources/modeles, vocabulaire et formats sur Mac)
+extraResources:
+  - from: resources/modeles
+    to: modeles
+  - from: resources/vocabulaire
+    to: vocabulaire
+  - from: resources/formats
+    to: formats
+  - from: resources/polices
+    to: polices
+  - from: resources/mise-en-page
+    to: mise-en-page
+  - from: resources/accueil
+    to: accueil
+  - from: resources/dictionnaires
+    to: dictionnaires
+# Double-clic sur un fichier .neoscenar : ouvre le projet dans NeoScenar (Mac, installeur Windows, .deb)
+fileAssociations:
+  - ext: neoscenar
+    name: Projet NeoScenar
+    description: Projet NeoScenar
+    mimeType: application/x-neoscenar
+    role: Editor
+    rank: Owner
+mac:
+  target:
+    - target: dmg
+      arch: universal
+  icon: build/icon.png
+  category: public.app-category.productivity
+  # Pas de certificat Apple ni de notarisation (choix assumé). Signature « ad hoc » locale
+  # uniquement : sans elle, macOS refuse de lancer l'application sur les Mac Apple Silicon.
+  identity: '-'
+  hardenedRuntime: false
+  notarize: false
+dmg:
+  artifactName: ${productName}-${version}-mac.${ext}
+
+# Windows : installeur dans le compte de l'élève (aucun droit administrateur) et version portable.
+win:
+  target:
+    - target: nsis
+      arch: x64
+    - target: portable
+      arch: x64
+  icon: build/icon.png
+nsis:
+  artifactName: ${productName}-${version}-windows-installation.${ext}
+  oneClick: false
+  perMachine: false
+  # Installation toujours « pour moi seulement » : voir build/installer.nsh
+  allowElevation: false
+  allowToChangeInstallationDirectory: true
+  createDesktopShortcut: true
+  createStartMenuShortcut: true
+  shortcutName: NeoScenar
+  installerLanguages:
+    - fr_FR
+  language: '1036'
+  # Les réglages de l'élève restent après une désinstallation (mise à jour par réinstallation).
+  deleteAppDataOnUninstall: false
+portable:
+  artifactName: ${productName}-${version}-windows-portable.${ext}
+
+# Linux : .deb (version principale, Ubuntu) et AppImage (sans installation, en secours).
+linux:
+  target:
+    - target: deb
+      arch: x64
+    - target: AppImage
+      arch: x64
+  icon: build/icon.png
+  executableName: neoscenar
+  # Ubuntu relie la fenêtre à son icône par ce nom (desktopName de package.json).
+  syncDesktopName: true
+  category: AudioVideo
+  synopsis: Écriture de scénarios, découpage technique et storyboard
+  desktop:
+    entry:
+      Name: NeoScenar
+      Comment: Écriture de scénarios, découpage technique et storyboard
+  maintainer: David Delepinne <359248557+Atomiaze@users.noreply.github.com>
+deb:
+  artifactName: ${productName}-${version}-linux.${ext}
+appImage:
+  artifactName: ${productName}-${version}-linux.${ext}

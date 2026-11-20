@@ -1,0 +1,23 @@
+# Dépendances
+node_modules/
+
+# Résultats de construction
+out/
+dist/
+
+# Journaux et caches
+*.log
+npm-debug.log*
+.eslintcache
+*.tsbuildinfo
+
+# Python (extension Blender)
+__pycache__/
+*.pyc
+
+# macOS
+.DS_Store
+
+# Variables locales
+.env
+.env.*
