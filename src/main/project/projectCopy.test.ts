@@ -1,5 +1,5 @@
 import { cp, readFile, rm } from 'node:fs/promises'
-import { join } from 'node:path'
+import { join, resolve } from 'node:path'
 import { afterEach, beforeEach, describe, expect, it } from 'vitest'
 import { PROJECT_FILES } from '../../shared/projectTypes'
 import { createProject } from './createProject'
@@ -51,7 +51,8 @@ describe('otherLocations', () => {
       { id: 'y', filePath: '/c/F.neoscenar' },
       { filePath: '/d/F.neoscenar' }
     ]
-    expect(otherLocations('x', '/a/F.neoscenar', known)).toEqual(['/b/F.neoscenar'])
+    // Les chemins sont résolus : sous Windows, « /b/… » devient « D:\b\… » (lettre du lecteur).
+    expect(otherLocations('x', '/a/F.neoscenar', known)).toEqual([resolve('/b/F.neoscenar')])
   })
 })
 
