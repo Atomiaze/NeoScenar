@@ -1,6 +1,7 @@
 import { parse } from '@neoscenar/fountain'
 import { describe, expect, it } from 'vitest'
 import { counterIds } from '../decoupage/testFixtures'
+import { timeLimit } from '../timeLimit'
 import { reconcile } from './reconcile'
 import { cards, script } from './testHelpers'
 
@@ -35,6 +36,6 @@ describe('performance du rapprochement', () => {
     }
     console.log(`150 scènes : rapprochement en ${best.toFixed(1)} ms`)
     expect(run().decoupage.scenes).toHaveLength(150)
-    expect(best).toBeLessThan(15)
+    expect(best).toBeLessThan(timeLimit(15))
   })
 })

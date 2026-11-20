@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { parse, serialize } from '../src/index.ts'
-import { readExample } from './helpers.ts'
+import { readExample, timeLimit } from './helpers.ts'
 
 // Test indicatif : un scénario de 120 pages (environ 55 lignes par page) en moins de 50 ms.
 describe('performance', () => {
@@ -17,7 +17,7 @@ describe('performance', () => {
       best = Math.min(best, performance.now() - started)
     }
     console.log(`120 pages (${text.length} caractères) analysées en ${best.toFixed(1)} ms`)
-    expect(best).toBeLessThan(50)
+    expect(best).toBeLessThan(timeLimit(50))
     expect(serialize(parse(text))).toBe(text)
   })
 })

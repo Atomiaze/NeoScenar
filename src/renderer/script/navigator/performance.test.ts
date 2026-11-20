@@ -2,10 +2,12 @@ import { readFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { describe, expect, it } from 'vitest'
 import { paginate, parse } from '@neoscenar/fountain'
+import { timeLimit } from '../../../shared/timeLimit'
 import { scriptLayout } from '../layoutProfile'
 import { buildNavigator } from './buildNavigator'
 
 // Test indicatif : le navigateur est recalculé au plus toutes les 250 ms pendant la frappe.
+// Sur les serveurs d'intégration continue (CI), le seuil est triplé (voir timeLimit).
 describe('performance du navigateur', () => {
   it('reconstruit l’arbre d’un scénario de 120 pages (environ 150 scènes) en moins de 60 ms', () => {
     const file = join(
@@ -27,6 +29,6 @@ describe('performance du navigateur', () => {
     const tree = build()
     console.log(`${tree.sceneCount} scènes : arbre en ${best.toFixed(1)} ms`)
     expect(tree.sceneCount).toBeGreaterThan(150)
-    expect(best).toBeLessThan(60)
+    expect(best).toBeLessThan(timeLimit(60))
   })
 })

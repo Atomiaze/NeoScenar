@@ -12,6 +12,14 @@ export function readExample(name: string): string {
   return readFileSync(join(EXAMPLES_DIR, name), 'utf8')
 }
 
+/**
+ * Seuil, en millisecondes, des tests chronométrés : inchangé en local, triplé sur les serveurs
+ * d'intégration continue (variable CI), plus lents et partagés.
+ */
+export function timeLimit(localMs: number): number {
+  return process.env.CI ? localMs * 3 : localMs
+}
+
 /** Types des éléments d'un texte, pour des tests de classification lisibles. */
 export function types(text: string): ElementType[] {
   return parse(text).elements.map((element) => element.type)

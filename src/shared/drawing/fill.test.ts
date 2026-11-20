@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest'
+import { timeLimit } from '../timeLimit'
 import { stamp, strokeSegment } from './brush'
 import { floodFill } from './fill'
 import { createRaster, getPixel, isBlank, PAPER, type Raster, type Rgb } from './raster'
@@ -88,6 +89,6 @@ describe('pot de peinture', () => {
     floodFill(raster, 3, 1070, RED)
     floodFill(raster, 960, 540, { r: 0, g: 0, b: 255 })
     const elapsed = performance.now() - start
-    expect(elapsed).toBeLessThan(1000)
+    expect(elapsed).toBeLessThan(timeLimit(1000))
   })
 })

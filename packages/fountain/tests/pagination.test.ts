@@ -10,7 +10,7 @@ import {
   resolveLayout,
   type Pagination
 } from '../src/index.ts'
-import { readExample, readProfile } from './helpers.ts'
+import { readExample, readProfile, timeLimit } from './helpers.ts'
 
 const layout = resolveLayout(readProfile())
 
@@ -225,7 +225,7 @@ describe('pagination du scénario d’exemple', () => {
     }
     const pages = paginate(big, layout).pages.length
     console.log(`${pages} pages paginées en ${best.toFixed(1)} ms`)
-    expect(best).toBeLessThan(100)
+    expect(best).toBeLessThan(timeLimit(100))
   })
 })
 
