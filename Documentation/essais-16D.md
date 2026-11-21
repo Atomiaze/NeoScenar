@@ -130,7 +130,7 @@ Remarque : …
 
 **K. Vocabulaire des plans** (retours d'usage, lot 1, 17E)
 
-- [ ] **Menu NeoScenar ▸ Réglages**, section « Vocabulaire des plans » : ajoutez « Plan drone » (avec une définition) dans « Mouvement de caméra ». Dans « Cartes », la fiche d'un plan le propose après les entrées du cours, avec sa définition en infobulle.
+- [ ] **Édition ▸ Réglages…**, section « Vocabulaire des plans » : ajoutez « Plan drone » (avec une définition) dans « Mouvement de caméra ». Dans « Cartes », la fiche d'un plan le propose après les entrées du cours, avec sa définition en infobulle.
 - [ ] **Supprimez l'entrée** : les plans qui l'utilisaient l'affichent toujours. Un doublon (« plan DRONE ») est refusé avec un message. Les entrées du cours n'ont ni Renommer ni Supprimer.
 - [ ] **Fermez puis rouvrez NeoScenar** : les entrées personnelles sont toujours là.
 
