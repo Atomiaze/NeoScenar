@@ -348,7 +348,7 @@ export default async function ({ app, check, log, newProject }) {
   const onResearch = await app.evaluate(
     `document.querySelector('.module-bar .active')?.getAttribute('aria-label')`
   )
-  check(onResearch === 'Recherches', `le lien ouvre le générique (module : ${onResearch})`)
+  check(onResearch === 'Données du projet', `le lien ouvre le générique (module : ${onResearch})`)
   await app.module('Planification')
   await sleep(800)
   await app.click('[data-task="Écrire le scénario final"] .planning-task-title')

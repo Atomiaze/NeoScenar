@@ -42,7 +42,7 @@ export default async function ({ app, check, log, newProject }) {
     app.evaluate(`document.querySelectorAll('.research-branch-title')[${index}].click()`)
 
   await app.openProject(projectFile)
-  await app.module('Recherches')
+  await app.module('Données du projet')
   await sleep(500)
 
   // La branche Lieux est active ; « Nouveau » y crée un lieu.
@@ -131,7 +131,7 @@ export default async function ({ app, check, log, newProject }) {
   await app.menu('Fichier', 'Fermer le projet')
   await sleep(800)
   await app.openProject(projectFile)
-  await app.module('Recherches')
+  await app.module('Données du projet')
   await sleep(800)
   const rows = await app.evaluate(
     `[...document.querySelectorAll('.sheet-row')].map((r) => r.textContent)`

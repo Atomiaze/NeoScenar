@@ -39,7 +39,10 @@ export default async function ({ app, check, log, newProject }) {
   const valueOf = (label, tag) => app.evaluate(`${labelled(label, tag)}?.value ?? null`)
 
   await app.openProject(projectFile)
-  check((await app.module('Recherches')) === 'ok', 'l’icône Recherches ouvre le module')
+  check(
+    (await app.module('Données du projet')) === 'ok',
+    'l’icône Données du projet ouvre le module'
+  )
   await sleep(500)
   check(
     (await app.evaluate(`document.querySelector('.research-tree')?.textContent ?? ''`)).includes(
@@ -138,7 +141,7 @@ export default async function ({ app, check, log, newProject }) {
   await app.menu('Fichier', 'Fermer le projet')
   await sleep(800)
   await app.openProject(projectFile)
-  await app.module('Recherches')
+  await app.module('Données du projet')
   await sleep(800)
   await app.click('.sheet-row')
   await sleep(300)

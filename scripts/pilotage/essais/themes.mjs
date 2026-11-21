@@ -116,7 +116,7 @@ export default async function ({ app, check, log, newProject }) {
       ['Cartes', 'cartes'],
       ['Scénario', 'scenario'],
       ['Statistiques', 'stats'],
-      ['Recherches', 'recherches']
+      ['Données du projet', 'recherches']
     ]) {
       await app.module(module)
       await sleep(700)

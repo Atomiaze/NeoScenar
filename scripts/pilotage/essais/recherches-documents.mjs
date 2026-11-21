@@ -47,7 +47,7 @@ export default async function ({ app, check, newProject }) {
   }
 
   await app.openProject(projectFile)
-  await app.module('Recherches')
+  await app.module('Données du projet')
   await sleep(500)
   await app.evaluate(`document.querySelectorAll('.research-branch-title')[2].click()`)
   await sleep(300)

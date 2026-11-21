@@ -126,7 +126,7 @@ export default async function ({ app, check, log, newProject }) {
     `document.querySelector('.module-bar .active')?.getAttribute('aria-label')`
   )
   const sheetText = await app.evaluate(`document.body.innerText`)
-  check(heading === 'Recherches', 'le clic sur un personnage ouvre Recherches')
+  check(heading === 'Données du projet', 'le clic sur un personnage ouvre Données du projet')
   check(sheetText.toUpperCase().includes(name.toUpperCase()), `la fiche de ${name} est affichée`)
   await app.screenshot('stats-vers-fiche.png')
 

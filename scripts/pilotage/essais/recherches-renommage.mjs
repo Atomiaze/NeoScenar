@@ -63,7 +63,7 @@ export default async function ({ app, check, log, newProject }) {
   await closeBanner()
 
   // Nom déjà pris : refus.
-  await app.module('Recherches')
+  await app.module('Données du projet')
   await sleep(800)
   await openSheet('MARIE')
   await typeName('Paul')
@@ -143,7 +143,7 @@ export default async function ({ app, check, log, newProject }) {
   check(scenario().includes('\nMARION\n'), 'Cmd + Z dans l’éditeur ne défait pas le renommage')
 
   // Lieu : JARDIN → Parc ; l'en-tête et la carte suivent.
-  await app.module('Recherches')
+  await app.module('Données du projet')
   await sleep(500)
   await closeBanner()
   await openSheet('JARDIN')
@@ -170,7 +170,7 @@ export default async function ({ app, check, log, newProject }) {
   // Sans occurrence : renommage direct, sans fenêtre.
   writeFileSync(sheet('personnages', 'ZOE'), '---\ntype: personnage\nnom: ZOE\nauto: false\n---\n')
   await focusBack()
-  await app.module('Recherches')
+  await app.module('Données du projet')
   await sleep(1500)
   await closeBanner()
   await app.click('.research-branch-title')

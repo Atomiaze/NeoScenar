@@ -42,7 +42,7 @@ export default async function ({ app, check, log, newProject }) {
       return 'ok'
     })()`)
   const openCredits = async () => {
-    await app.module('Recherches')
+    await app.module('Données du projet')
     await sleep(500)
     await app.evaluate(
       `[...document.querySelectorAll('.research-branch-title')].find((b) => b.textContent.trim() === 'Générique')?.click()`

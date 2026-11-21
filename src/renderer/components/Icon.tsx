@@ -2,7 +2,7 @@
 
 const PATHS = {
   menu: 'M4 6h16M4 12h16M4 18h16',
-  research: 'M10.5 4a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13zM15.5 15.5 20 20',
+  research: 'M3 6h6l2 2h10v11H3z',
   cards: 'M3 5h7v6H3zM14 5h7v6h-7zM3 14h7v6H3zM14 14h7v6h-7z',
   script: 'M6 3h9l4 4v14H6zM15 3v4h4M9 11h7M9 15h7',
   stats: 'M5 20V11M10 20V5M15 20v-7M20 20V8',

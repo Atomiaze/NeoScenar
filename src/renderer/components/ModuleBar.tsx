@@ -16,10 +16,10 @@ interface ModuleEntry {
 // Les modules sans identifiant ne sont pas encore disponibles : visibles mais grisés.
 const MODULES: ModuleEntry[] = [
   { icon: 'research', name: fr.modules.research, id: 'research' },
+  { icon: 'planning', name: fr.modules.planning, id: 'planning' },
   { icon: 'cards', name: fr.modules.cards, id: 'cards' },
   { icon: 'script', name: fr.modules.script, id: 'script' },
-  { icon: 'stats', name: fr.modules.stats, id: 'stats' },
-  { icon: 'planning', name: fr.modules.planning, id: 'planning' }
+  { icon: 'stats', name: fr.modules.stats, id: 'stats' }
 ]
 
 /** Barre verticale des modules, avec en haut le menu du projet (☰). */

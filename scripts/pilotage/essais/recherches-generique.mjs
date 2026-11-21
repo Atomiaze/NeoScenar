@@ -29,7 +29,7 @@ export default async function ({ app, check, newProject }) {
     `[...document.querySelectorAll('.credits-rubric')].find((r) => r.querySelector('input')?.placeholder === ${JSON.stringify(original)})`
   const click = (expression) => app.evaluate(`${expression}?.click()`)
   const openCredits = async () => {
-    await app.module('Recherches')
+    await app.module('Données du projet')
     await sleep(500)
     await app.evaluate(
       `[...document.querySelectorAll('.research-branch-title')].find((b) => b.textContent.trim() === 'Générique')?.click()`

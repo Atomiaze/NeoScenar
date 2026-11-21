@@ -172,7 +172,7 @@ export default async function ({ app, check, log, newProject }) {
   }
 
   await app.openProject(projectFile)
-  await app.module('Recherches')
+  await app.module('Données du projet')
   await sleep(500)
 
   const labels = await app.menuLabels('Fichier')

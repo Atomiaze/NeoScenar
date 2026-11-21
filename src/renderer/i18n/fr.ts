@@ -214,7 +214,7 @@ const macTexts = {
   },
   modules: {
     project: 'Projet',
-    research: 'Recherches',
+    research: 'Données du projet',
     cards: 'Cartes',
     script: 'Scénario',
     stats: 'Statistiques',
@@ -222,7 +222,7 @@ const macTexts = {
     comingSoon: (name: string): string => `${name} — Bientôt disponible`
   },
   research: {
-    tree: 'Recherches',
+    tree: 'Données du projet',
     characters: 'Personnages',
     places: 'Lieux',
     documents: 'Documents',
