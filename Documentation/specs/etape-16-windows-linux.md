@@ -62,20 +62,44 @@ Audit puis corrections, sans autre machine. Livrer d'abord la liste des points t
 
 *Validé quand* : une étiquette d'essai produit le `.dmg`, l'installeur et le portable Windows, le `.deb` et l'AppImage dans un brouillon de Release.
 
-## 16D — Essais sur Windows et Ubuntu
+## Décision du 21 novembre : un système après l'autre
 
-Sur chaque Lenovo : cloner le dépôt, `npm ci`, `npm test`, puis faire tourner l'outil de pilotage (`scripts/pilotage/`), adapté si besoin, sur une sélection d'essais : création de projet, scénario, cartes, export PDF, storyboard, générique, planning, versions, export Blender. Puis installer les vrais installeurs et faire la liste d'essais à la main de David (courte) :
+La suite de l'étape 16 attend que la **version Mac soit publiée** (étape 18, `specs/etape-18-version-mac.md`). Ensuite : Windows (16D, 16E), et seulement quand Windows est validé, Linux (16F, 16G). Les essais Windows et Ubuntu faits le 21 novembre (`essais-16D.md`, résultats gardés) servent de point de départ.
 
-- installer **sans droit administrateur** (compte Windows standard) ; lancer la version portable ;
-- créer un projet, écrire, fermer, rouvrir ; double-clic sur le `.neoscenar` ;
-- **projet créé sur Mac, copié sur clé, ouvert sur Windows et Ubuntu, modifié, rendu au Mac** ;
-- exports PDF, `.ics`, générique PNG ;
-- **correcteur (16B), réseau coupé** (Wi-Fi coupé, câble débranché) : dans le Scénario, un mot faux (« maisonn ») est souligné, le clic droit propose la correction française (« maison »), et « Ajouter au dictionnaire » retient un mot (il n'est plus souligné après relance). Sous Windows, noter si le français est installé dans Windows (Paramètres > Heure et langue) ;
-- **police (16B)** : essai `correcteur-police.mjs` ; les traits de page (fichier `traits-de-page.json`) tombent aux mêmes lignes que sur Mac. L'essai passe sur « Le Dernier Bus » (16C), avec une référence relevée d'abord sur Mac (7 pages : traits au début des pages 2 à 7) ;
-- export vers Blender 4.5 (si Blender est installé sur la machine).
+Au moment de commencer 16D : réactiver la construction Windows dans `installeurs.yml` (désactivée en 18A) ; pour 16F, la construction Linux.
 
-*Validé quand* : David a fait la liste sur les deux PC.
+## 16D — Windows : essais et corrections
 
-## 16E — Guide d'installation pour les élèves
+Reprendre la section 1 de `essais-16D.md` avec la version Mac publiée comme base. **Déjà validé le 21 nov.** : installation sans mot de passe, menus, raccourcis, double-clic sur `.neoscenar`, projet aller-retour Mac, exports, police et traits de page, Blender, désinstallation, lot 1.
 
-Une page par système, en français simple : où télécharger, quel fichier choisir, la manipulation pour l'avertissement (Mac : ouvrir malgré tout ; Windows SmartScreen : « Informations complémentaires » puis « Exécuter quand même » ; Ubuntu : `.deb` par double-clic ou `sudo apt install ./fichier.deb`, AppImage en secours). Dans `README.md` et `Documentation/installation.md` ; mise en page PDF faite plus tard dans le projet Claude.
+**Restant ou en défaut** :
+
+- **SmartScreen** bloque le téléchargement dans Edge (« rarement téléchargé ») et le premier lancement. Contournement : Conserver ▸ Afficher plus ▸ Conserver quand même, puis « Informations complémentaires » ▸ « Exécuter quand même ». À documenter en 16E. Piste pour plus tard : signature gratuite pour logiciels libres (SignPath Foundation).
+- **Correcteur réseau coupé** : le mot faux n'est **pas souligné** (le français est installé dans Windows). À corriger.
+- **Compte standard** (sans droit administrateur) : pas encore essayé (seul un compte administrateur était disponible).
+- **Version portable** : pas encore essayée.
+- Défauts de 18B jugés propres à Windows, s'il y en a.
+- Pilotage et `npm test` sur le PC (section 3) : facultatif.
+
+*Validé quand* : toutes les cases de la section 1 sont cochées.
+
+## 16E — Windows : guide d'installation et publication
+
+Page en français simple (`Documentation/installation-windows.md` et `README.md`) : où télécharger, quel fichier (installeur ou portable), passage de SmartScreen dans le navigateur et au lancement, avec captures. Puis publication par David.
+
+## 16F — Linux (Ubuntu) : essais et corrections
+
+Reprendre la section 2 de `essais-16D.md`. **Déjà validé le 21 nov.** : `.deb`, menus, double-clic, projet aller-retour Mac, exports, correcteur réseau coupé, police, Blender, lot 1.
+
+**Restant ou en défaut** :
+
+- **Icône générique dans le dock** (carré gris avec roue dentée) au lieu du logo : à corriger (nom de classe de fenêtre / fichier `.desktop`).
+- **AppImage** : double-clic sans effet et **sans aucun message**, même avec l'exécution autorisée. Le lancer dans un terminal pour lire l'erreur (`libfuse2`, AppArmor…) ; ne pas contourner avec `--no-sandbox` sans en parler à David.
+- **Désinstallation** : pas encore essayée.
+- Défauts de 18B jugés propres à Linux, s'il y en a.
+
+*Validé quand* : toutes les cases de la section 2 sont cochées.
+
+## 16G — Linux : guide d'installation et publication
+
+Page en français simple (`Documentation/installation-linux.md` et `README.md`) : `.deb` par double-clic ou `sudo apt install ./fichier.deb`, AppImage en secours. Puis publication par David.

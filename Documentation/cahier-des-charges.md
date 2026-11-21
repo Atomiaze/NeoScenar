@@ -17,7 +17,7 @@ Objectifs principaux :
 
 ## 2. Plateformes et technologie
 
-- Application de bureau installable sur macOS, Windows et Linux.
+- Application de bureau installable sur macOS, Windows et Linux, **un système après l'autre** (décidé le 21 novembre 2026) : la version Mac est terminée, essayée (David, une collègue, les Mac de l'école) et publiée d'abord ; puis Windows ; puis Linux. Chaque système n'est commencé que lorsque le précédent est validé.
 - Technologie retenue : **Electron + TypeScript** (décision du 17 novembre 2026).
   - Un seul langage pour toute l'application.
   - Affichage et comportement identiques sur les trois systèmes, grâce au navigateur Chromium embarqué.
@@ -341,7 +341,7 @@ Prérequis : Blender installé sur la machine. Version cible : Blender 4.5 LTS (
 - Interface en français.
 - Aucune collecte de données, aucune connexion requise.
 - Licence : GPL-3.0 (décidée le 17 novembre 2026), pour que toute version modifiée reste libre.
-- Distribution simple : installeurs pour les trois systèmes.
+- Distribution simple : un installeur par système, publié dans l'ordre Mac, Windows, Linux.
 - Prise en main rapide, documentation pour les étudiants.
 - **Auteur et version** (décidé le 20 novembre 2026) : le nom « David Delepinne » apparaît dans une fenêtre « À propos de NeoScenar » (nom, version, licence GPL-3.0, lien vers le dépôt GitHub) et discrètement en bas de l'écran d'accueil (« Créé par David Delepinne · version x.y.z »). Le numéro vient de `package.json`, jamais écrit en dur. Numérotation sur trois chiffres : 0.x.y tant que l'application n'est pas jugée solide pour les élèves (publiée en « pre-release » sur GitHub), 1.0.0 ensuite.
 - **Distribution** (décidé le 20 novembre 2026) : dépôt GitHub public ; installeurs construits par GitHub Actions et publiés dans les « Releases » ; README en français (présentation, installation, ouverture d'une appli Mac non signée, capture d'écran). Manuel d'utilisation complet rédigé à la fin du développement, quand l'interface ne bougera plus.
@@ -363,7 +363,7 @@ Prérequis : Blender installé sur la machine. Version cible : Blender 4.5 LTS (
 
 ## 12. Étapes de développement
 
-**Plateformes** : développement et tests sur macOS d'abord (machine de développement : iMac Intel) ; Windows et Linux à la fin. Le code reste portable dès le départ (chemins construits avec les fonctions de Node, aucun chemin propre au Mac écrit en dur, détection de Blender prévue par système), pour que le portage soit simple. L'application Mac est construite pour Intel et pour Apple Silicon. Elle n'est pas signée par Apple (pas de distribution publique, pas de budget) : la manipulation d'ouverture sera expliquée aux étudiants.
+**Plateformes** : développement et tests sur macOS d'abord (machine de développement : iMac Intel). **Ordre de sortie (21 novembre 2026)** : Mac complet et publié (étape 18), puis Windows (16D-16E), puis Linux (16F-16G) ; on ne passe au système suivant que lorsque le précédent est validé. Pendant la phase Mac, plus d'essais manuels sur PC ; seuls les tests automatiques continuent sur les trois systèmes. Le code reste portable dès le départ (chemins construits avec les fonctions de Node, aucun chemin propre au Mac écrit en dur, détection de Blender prévue par système), pour que le portage soit simple. L'application Mac est construite pour Intel et pour Apple Silicon. Elle n'est pas signée par Apple (pas de budget) : la manipulation d'ouverture sera expliquée aux étudiants. Si les Mac de l'école bloquent les applications non signées, la signature Apple (payante) sera à décider par David.
 
 Chaque étape fait l'objet d'une spécification courte, avec ses critères de validation, rédigée dans le projet Claude puis donnée à Claude Code.
 
@@ -394,7 +394,9 @@ Chaque étape fait l'objet d'une spécification courte, avec ses critères de va
 13. Statistiques, versions, mode révision, automatismes avancés ((SUITE), dialogues simultanés…), finitions de l'éditeur.
 14. Thèmes de couleur de l'interface (Par défaut, Cobalt, Or, Matrix, PinkLady, Forest, Aqua), couleurs des éléments du scénario à l'écran (réglables dans les préférences), visuel de la page d'accueil (fourni par David). *Limite* : à l'écran, la page du scénario suit le thème, mais reste en Courier et au format Final Draft A4 ; les exports (PDF) sont toujours en page blanche, texte noir, Courier, Final Draft A4, quel que soit le thème.
 15. Module de planification (spécification `specs/etape-15-planification.md`) : phases de production, tâches et échéances, ligne du temps, plan de tournage (dépouillement des scènes, jours de tournage), exports PDF et calendrier `.ics`. Pas de planning type.
-16. Versions Windows et Linux.
+16. Versions Windows et Linux : 16A à 16C faites (portabilité, correcteur, dépôt et installeurs). La suite attend la version Mac : 16D-16E Windows, puis 16F-16G Linux (spécification `specs/etape-16-windows-linux.md`).
+17. Retours d'usage : lot 1 fait (`specs/etape-17-lot-1-retours.md`), lot 2 dans l'étape 18.
+18. **Version Mac complète et publiée** (spécification `specs/etape-18-version-mac.md`) : installeurs Mac seuls, défauts relevés sur PC vérifiés sur Mac, lot 2 des retours, essais sur l'iMac, chez une collègue et sur les Mac de l'école, guide d'installation Mac, publication. **Se fait avant la suite de l'étape 16.**
 
 10b. Générique final (section 4.1), après les fiches personnages.
 
