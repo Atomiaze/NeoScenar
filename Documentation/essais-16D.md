@@ -200,6 +200,15 @@ Remarque : …
 
 ---
 
+## 2 bis. Nouveautés du lot 1 (sur Windows et sur Ubuntu)
+
+- [ ] **Icône** (17F) : l'installeur, le raccourci, la barre des tâches et la fenêtre montrent le logo « NS » (rond, orange et vert).
+- [ ] **Visuel d'accueil** (17F) : visuel entier, logo « NS » non coupé, en petite et en grande fenêtre.
+- [ ] **En-tête dans une carte** (17D) : taper « INT. » dans « En-tête » propose les lieux ; valider écrit l'en-tête dans le scénario.
+- [ ] **Entrées personnelles** (17E) : Réglages > « Vocabulaire des plans » : ajouter une entrée, la voir dans le menu d'un plan, redémarrer : elle est toujours là.
+
+---
+
 ## 3. Facultatif : les tests de développement (deuxième séance)
 
 Sur chaque PC, il faut d'abord installer **Node.js 24** (nodejs.org, version LTS) et **Git**. Puis, dans un terminal :

@@ -27,7 +27,6 @@
     "lint": "eslint . && npm run typecheck && prettier --check .",
     "format": "prettier --write .",
     "typecheck": "tsc --noEmit -p tsconfig.node.json && tsc --noEmit -p tsconfig.web.json && tsc --noEmit -p packages/fountain/tsconfig.json && tsc -p packages/fountain/tests/tsconfig.json && tsc --noEmit -p packages/pdf-scenario/tsconfig.json && tsc -p packages/pdf-scenario/tests/tsconfig.json && tsc --noEmit -p packages/pdf-storyboard/tsconfig.json && tsc -p packages/pdf-storyboard/tests/tsconfig.json && tsc --noEmit -p packages/pdf-planning/tsconfig.json && tsc -p packages/pdf-planning/tests/tsconfig.json",
-    "icon": "node scripts/make-icon.mjs",
     "fountain:demo": "node scripts/fountain-demo.mjs",
     "fountain:pages": "node scripts/pagination-demo.mjs",
     "couleurs": "node scripts/couleurs.mjs",

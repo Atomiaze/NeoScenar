@@ -61,7 +61,7 @@ export default async function ({ app, check, log, newProject }) {
   )
   const ratio = l.visual.w / l.width
   check(ratio > 0.47 && ratio < 0.49, `colonne image ≈ 48 % (${(ratio * 100).toFixed(1)} %)`)
-  check(l.img?.loaded && l.img.fit === 'cover', 'visuel chargé, recadré sans déformation')
+  check(l.img?.loaded && l.img.fit === 'contain', 'visuel chargé, entier et sans déformation')
   check(l.img.src.includes('/defaut'), 'image d’origine par défaut')
   check(l.recents >= 1 && !l.scrollX, 'projet récent listé, pas de défilement horizontal')
   await app.screenshot('accueil-defaut.png')
@@ -83,7 +83,7 @@ export default async function ({ app, check, log, newProject }) {
         src: document.querySelector('.home-visual img').src
       }
     })()`)
-    check(s.src === before && s.visualBg === 'rgb(29, 32, 38)', `${id} : visuel inchangé`)
+    check(s.src === before && s.visualBg === 'rgb(37, 37, 45)', `${id} : visuel inchangé`)
     check(s.h1 !== '' && s.h1 === s.promise, `${id} : titre et liste en couleur d'accent`)
     await app.screenshot(`accueil-${id}.png`)
   }

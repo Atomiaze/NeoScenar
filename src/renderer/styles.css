@@ -101,14 +101,14 @@ button:disabled {
 .home-visual {
   min-width: 0;
   min-height: 0;
-  background: #1d2026;
+  background: #25252d;
 }
 
 .home-visual img {
   display: block;
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
   object-position: center;
 }
 
