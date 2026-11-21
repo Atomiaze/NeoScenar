@@ -1771,6 +1771,40 @@ button:disabled {
   color: var(--danger);
 }
 
+/* Vocabulaire des plans (Réglages, étape 17E) */
+.vocab-list summary {
+  cursor: pointer;
+}
+
+.vocab-terms {
+  list-style: none;
+  margin: 0.4rem 0;
+  padding: 0;
+  max-height: 11rem;
+  overflow-y: auto;
+}
+
+.vocab-terms li {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.1rem 0;
+}
+
+.vocab-terms li > span {
+  flex: 1;
+}
+
+.vocab-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.vocab-form input {
+  flex: 1 1 10rem;
+}
+
 /* Fenêtre de première liaison du scénario et des cartes (étape 8) */
 .first-link-dialog h3 {
   margin: 1rem 0 0.4rem;

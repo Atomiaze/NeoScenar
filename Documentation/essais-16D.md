@@ -128,6 +128,12 @@ Remarque : …
 - [ ] **Dans « Cartes »**, sélectionnez une scène et tapez « in » dans « En-tête de scène » : INT. et INT./EXT. sont proposés. Entrée accepte, puis les lieux du projet s'ouvrent. Après « - », les moments (JOUR, NUIT…) sont proposés, jamais un lieu terminé par un tiret.
 - [ ] **Échap** ferme la liste sans rien effacer. **Rien n'est écrit dans le scénario avant la validation** (perte du focus, ou Entrée liste fermée) : aucune fiche Lieux parasite (« IN »…) n'apparaît pendant la frappe.
 
+**K. Vocabulaire des plans** (retours d'usage, lot 1, 17E)
+
+- [ ] **Menu NeoScenar ▸ Réglages**, section « Vocabulaire des plans » : ajoutez « Plan drone » (avec une définition) dans « Mouvement de caméra ». Dans « Cartes », la fiche d'un plan le propose après les entrées du cours, avec sa définition en infobulle.
+- [ ] **Supprimez l'entrée** : les plans qui l'utilisaient l'affichent toujours. Un doublon (« plan DRONE ») est refusé avec un message. Les entrées du cours n'ont ni Renommer ni Supprimer.
+- [ ] **Fermez puis rouvrez NeoScenar** : les entrées personnelles sont toujours là.
+
 Remarque : …
 
 ---
@@ -188,6 +194,7 @@ Faites les mêmes essais A à I que sous Windows (voir 1.4), avec ces différenc
 - [ ] **H. Retour au Mac** : même vérification qu'au 1.4 (H) avec le dossier modifié sous Ubuntu.
 - [ ] **I. Désinstallation** : `sudo apt remove neoscenar` (ou « Logiciels » ▸ Désinstaller). Vos projets restent intacts.
 - [ ] **J. Autocomplétion de l'en-tête de scène** : comme sous Windows (voir 1.4, J).
+- [ ] **K. Vocabulaire des plans** : comme sous Windows (voir 1.4, K).
 
 Remarque : …
 

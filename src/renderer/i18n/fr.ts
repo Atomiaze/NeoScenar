@@ -1533,6 +1533,33 @@ const macTexts = {
       reset: 'Image d’origine',
       note: 'JPG, PNG ou WebP, 10 Mo au maximum. L’image est copiée dans les données de NeoScenar.'
     },
+    vocabulary: {
+      title: 'Vocabulaire des plans',
+      note: 'Les entrées du cours ne se modifient pas. Vos entrées personnelles s’ajoutent dans les menus de la fiche d’un plan, pour tous vos projets.',
+      lists: {
+        shotSizes: 'Échelle de plan',
+        cameraMovements: 'Mouvement de caméra',
+        cameraAngles: 'Angle de prise de vue'
+      },
+      customCount: (n: number) =>
+        n === 0
+          ? 'aucune entrée personnelle'
+          : n === 1
+            ? '1 entrée personnelle'
+            : `${n} entrées personnelles`,
+      courseTag: 'cours',
+      labelField: 'Libellé',
+      definitionField: 'Définition (facultative)',
+      add: 'Ajouter',
+      save: 'Enregistrer',
+      cancel: 'Annuler',
+      rename: 'Renommer',
+      remove: 'Supprimer',
+      errorEmpty: 'Écrivez un libellé.',
+      errorDuplicate: 'Ce libellé existe déjà dans cette liste.',
+      renameNote:
+        'Les plans qui utilisaient l’ancien libellé le gardent tel quel ; il n’est plus proposé dans le menu.'
+    },
     scriptColors: {
       title: 'Couleurs du scénario',
       forTheme: (name: string) => `Réglage du thème affiché : ${name}`,

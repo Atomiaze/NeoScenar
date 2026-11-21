@@ -26,6 +26,7 @@ import type { DocumentFolder, DocumentImage } from './research/documents'
 import type { Sheet, SheetImage, SheetKind, SheetPatch, SheetRename } from './research/types'
 import type { ScriptColors } from './themes/scriptColors'
 import type { ThemeChoice } from './themes/themes'
+import type { CustomVocabulary } from './customVocabulary'
 import type { Vocabulary } from './vocabulary'
 import type { VersionEntry } from './versions/versions'
 
@@ -86,6 +87,8 @@ export const IPC_CHANNELS = {
   setShowThumbnails: 'prefs:set-show-thumbnails',
   getCreditsOpenBlocks: 'prefs:get-credits-open-blocks',
   setCreditsOpenBlocks: 'prefs:set-credits-open-blocks',
+  getCustomVocabulary: 'prefs:get-custom-vocabulary',
+  setCustomVocabulary: 'prefs:set-custom-vocabulary',
   getBlenderExportInfo: 'blender:get-export-info',
   chooseBlendTarget: 'blender:choose-target',
   chooseBlender: 'blender:choose-app',
@@ -466,6 +469,9 @@ export interface NeoScenarApi {
   /** Blocs ouverts du formulaire du générique pour le projet ouvert (vide = tout replié). */
   getCreditsOpenBlocks(): Promise<string[]>
   setCreditsOpenBlocks(open: string[]): Promise<void>
+  /** Entrées personnelles des menus de plan (préférences de l'application). */
+  getCustomVocabulary(): Promise<CustomVocabulary>
+  setCustomVocabulary(value: CustomVocabulary): Promise<void>
   /** Fenêtre d'export vers Blender : proposition de .blend et Blender retenu. */
   getBlenderExportInfo(): Promise<Result<BlenderExportInfo>>
   /** Sélecteur d'enregistrement d'un .blend ; null si l'élève annule. */

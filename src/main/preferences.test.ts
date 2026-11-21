@@ -57,7 +57,12 @@ describe('fichier des préférences', () => {
       theme: 'matrix' as const,
       scriptColors: { matrix: { note: '#ff00ff' } },
       welcomeImage: 'image-accueil-1700000000000.png',
-      creditsOpen: { p1: ['equipe'] }
+      creditsOpen: { p1: ['equipe'] },
+      customVocabulary: {
+        shotSizes: [],
+        cameraMovements: [{ label: 'Plan drone', definition: 'Vue du ciel' }],
+        cameraAngles: []
+      }
     }
     await savePreferences(folder, prefs)
     expect(await loadPreferences(folder)).toEqual(prefs)

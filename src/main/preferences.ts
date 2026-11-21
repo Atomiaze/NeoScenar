@@ -3,6 +3,11 @@ import { join } from 'node:path'
 import { writeJsonSafely } from './fs/safeWrite'
 import { CARD_ZOOM, clampCardZoom } from '../shared/cardZoom'
 import { parseCreditsOpen, type CreditsOpenByProject } from '../shared/credits/openState'
+import {
+  emptyCustomVocabulary,
+  parseCustomVocabulary,
+  type CustomVocabulary
+} from '../shared/customVocabulary'
 import { clampScriptZoom, DEFAULT_SCRIPT_ZOOM } from '../shared/scriptZoom'
 import { parseScriptColors, type ScriptColors } from '../shared/themes/scriptColors'
 import { isWelcomeImageCopyName } from '../shared/welcomeImage'
@@ -52,6 +57,8 @@ export interface Preferences {
   welcomeImage: string | null
   /** Blocs ouverts du formulaire du générique, par projet (17C). */
   creditsOpen: CreditsOpenByProject
+  /** Entrées personnelles des menus de plan (échelle, mouvement, angle), pour tous les projets. */
+  customVocabulary: CustomVocabulary
 }
 
 export function emptyPreferences(): Preferences {
@@ -70,7 +77,8 @@ export function emptyPreferences(): Preferences {
     theme: DEFAULT_THEME,
     scriptColors: {},
     welcomeImage: null,
-    creditsOpen: {}
+    creditsOpen: {},
+    customVocabulary: emptyCustomVocabulary()
   }
 }
 
@@ -120,7 +128,8 @@ export async function loadPreferences(userDataDir: string): Promise<Preferences>
       theme: parseTheme(raw.theme),
       scriptColors: parseScriptColors(raw.scriptColors),
       welcomeImage: isWelcomeImageCopyName(raw.welcomeImage) ? raw.welcomeImage : null,
-      creditsOpen: parseCreditsOpen(raw.creditsOpen)
+      creditsOpen: parseCreditsOpen(raw.creditsOpen),
+      customVocabulary: parseCustomVocabulary(raw.customVocabulary)
     }
   } catch {
     return emptyPreferences()

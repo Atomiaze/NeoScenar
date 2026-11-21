@@ -81,6 +81,8 @@ const api: NeoScenarApi = {
   setShowThumbnails: (show) => ipcRenderer.invoke(IPC_CHANNELS.setShowThumbnails, show),
   getCreditsOpenBlocks: () => ipcRenderer.invoke(IPC_CHANNELS.getCreditsOpenBlocks),
   setCreditsOpenBlocks: (open) => ipcRenderer.invoke(IPC_CHANNELS.setCreditsOpenBlocks, open),
+  getCustomVocabulary: () => ipcRenderer.invoke(IPC_CHANNELS.getCustomVocabulary),
+  setCustomVocabulary: (value) => ipcRenderer.invoke(IPC_CHANNELS.setCustomVocabulary, value),
   getBlenderExportInfo: () => ipcRenderer.invoke(IPC_CHANNELS.getBlenderExportInfo),
   chooseBlendTarget: (currentPath) =>
     ipcRenderer.invoke(IPC_CHANNELS.chooseBlendTarget, currentPath),

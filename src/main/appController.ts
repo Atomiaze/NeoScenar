@@ -1,5 +1,6 @@
 import { access } from 'node:fs/promises'
 import { dirname, join } from 'node:path'
+import { parseCustomVocabulary, type CustomVocabulary } from '../shared/customVocabulary'
 import { creditsOpenKey, openBlocksOf, withProjectOpen } from '../shared/credits/openState'
 import type {
   CompleteStructureRequest,
@@ -860,6 +861,16 @@ export class AppController {
       ...prefs,
       creditsOpen: withProjectOpen(prefs.creditsOpen, key, blocks)
     })).catch(() => undefined)
+  }
+
+  async getCustomVocabulary(): Promise<CustomVocabulary> {
+    return (await this.getPreferences()).customVocabulary
+  }
+
+  async setCustomVocabulary(value: unknown): Promise<void> {
+    // Même lecture prudente qu'au chargement : un message mal formé ne casse rien.
+    const customVocabulary = parseCustomVocabulary(value)
+    await this.updatePreferences((prefs) => ({ ...prefs, customVocabulary })).catch(() => undefined)
   }
 
   storeOriginalFile(shotId: unknown, sourcePath: unknown): Promise<Result<StoredOriginal>> {

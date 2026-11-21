@@ -1,5 +1,6 @@
 import type { SaveStatus, UndoAction } from '../../shared/api'
 import { CARD_ZOOM, clampCardZoom } from '../../shared/cardZoom'
+import { emptyCustomVocabulary, type CustomVocabulary } from '../../shared/customVocabulary'
 import type { Vocabulary } from '../../shared/vocabulary'
 import {
   breakMerge,
@@ -91,6 +92,8 @@ export interface CardsState {
   /** Vocabulaire du cours (null tant qu'il n'est pas chargé ou s'il est illisible). */
   vocabulary: Vocabulary | null
   vocabularyError: string | null
+  /** Entrées personnelles des menus de plan (préférences de l'application). */
+  customVocabulary: CustomVocabulary
   /** Augmente à chaque demande de placer le curseur dans le champ « Nom » de la fiche. */
   nameFocusRequest: number
   /** Format de l'image et cadence du projet ouvert. */
@@ -118,6 +121,7 @@ export const cardsStore = createStore<CardsState>({
   contextMenu: null,
   vocabulary: null,
   vocabularyError: null,
+  customVocabulary: emptyCustomVocabulary(),
   nameFocusRequest: 0,
   settings: { fps: 25, resolution: { width: 1920, height: 1080 } },
   busyShotId: null,
@@ -294,7 +298,15 @@ export function toggleThumbnails(): void {
   void window.neoscenar.setShowThumbnails(showThumbnails)
 }
 
+/** Change les entrées personnelles : les menus des plans suivent tout de suite. */
+export function saveCustomVocabulary(value: CustomVocabulary): void {
+  cardsStore.set({ customVocabulary: value })
+  void window.neoscenar.setCustomVocabulary(value)
+}
+
 export async function loadVocabulary(): Promise<void> {
+  // Les entrées personnelles sont relues à chaque fois : elles peuvent avoir changé dans les Réglages.
+  cardsStore.set({ customVocabulary: await window.neoscenar.getCustomVocabulary() })
   if (cardsStore.get().vocabulary) return
   const result = await window.neoscenar.getVocabulary()
   if (result.ok) cardsStore.set({ vocabulary: result.value, vocabularyError: null })

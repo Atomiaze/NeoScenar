@@ -1,4 +1,5 @@
 import { vi } from 'vitest'
+import { emptyCustomVocabulary } from '../../shared/customVocabulary'
 import type { Decoupage } from '../../shared/projectTypes'
 
 // Outil des tests : faux processus principal qui retient ce que l'interface lui envoie.
@@ -39,6 +40,8 @@ export function installFakeMain(
         return Promise.resolve(text)
       },
       getVocabulary: () => Promise.resolve({ ok: false, error: 'absent' }),
+      getCustomVocabulary: () => Promise.resolve(emptyCustomVocabulary()),
+      setCustomVocabulary: () => Promise.resolve(),
       getContinuedMarks: () => Promise.resolve(false),
       getPdfOptions: () => Promise.resolve({ ok: false, error: 'absent' }),
       setUndoState: () => Promise.resolve(),

@@ -22,6 +22,7 @@ import { HeadingCombobox } from './HeadingCombobox'
 import { ColorChoices } from './ColorChoices'
 import { formatDurationInput, parseDurationInput } from './durationInput'
 import type { Selection } from './selection'
+import { mergedTerms } from '../../shared/customVocabulary'
 import { TermCombobox } from './TermCombobox'
 import { ThumbnailZone } from './thumbnails/ThumbnailZone'
 
@@ -169,6 +170,7 @@ function TextField({
 function ShotSheet({ shot }: { shot: Shot }) {
   const vocabulary = useStore(cardsStore, (state) => state.vocabulary)
   const vocabularyError = useStore(cardsStore, (state) => state.vocabularyError)
+  const custom = useStore(cardsStore, (state) => state.customVocabulary)
   const nameRef = useNameFocus()
   const set =
     <K extends keyof ShotPatch>(field: K) =>
@@ -192,21 +194,21 @@ function ShotSheet({ shot }: { shot: Shot }) {
       <TermCombobox
         label={fr.panel.shotSize}
         value={shot.shotSize ?? ''}
-        terms={vocabulary?.shotSizes ?? []}
+        terms={mergedTerms(vocabulary?.shotSizes ?? [], custom.shotSizes)}
         onChange={setTerm('shotSize')}
         onBlur={endTyping}
       />
       <TermCombobox
         label={fr.panel.cameraMovement}
         value={shot.cameraMovement ?? ''}
-        terms={vocabulary?.cameraMovements ?? []}
+        terms={mergedTerms(vocabulary?.cameraMovements ?? [], custom.cameraMovements)}
         onChange={setTerm('cameraMovement')}
         onBlur={endTyping}
       />
       <TermCombobox
         label={fr.panel.cameraAngle}
         value={shot.cameraAngle ?? ''}
-        terms={vocabulary?.cameraAngles ?? []}
+        terms={mergedTerms(vocabulary?.cameraAngles ?? [], custom.cameraAngles)}
         onChange={setTerm('cameraAngle')}
         onBlur={endTyping}
       />

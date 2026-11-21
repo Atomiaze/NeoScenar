@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { THEMES, paletteId, type ThemeChoice } from '../../shared/themes/themes'
+import { VocabularySettings } from './VocabularySettings'
 import { ScriptColorsSettings } from './ScriptColorsSettings'
 import { loadHighlightActiveLine, scriptStore, setHighlightActiveLine } from '../script/scriptStore'
 import { useStore } from '../state/createStore'
@@ -110,6 +111,7 @@ export function SettingsDialog({ onClose }: { onClose(): void }) {
         )}
         <small className="muted">{t.welcomeImage.note}</small>
       </fieldset>
+      <VocabularySettings />
       {theme !== null && (
         <ScriptColorsSettings
           key={paletteId(theme, window.matchMedia('(prefers-color-scheme: dark)').matches)}
