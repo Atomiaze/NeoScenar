@@ -18,6 +18,7 @@ import {
   recreateHeading
 } from './actions'
 import { cardsStore, endTyping, togglePanel } from './cardsStore'
+import { HeadingCombobox } from './HeadingCombobox'
 import { ColorChoices } from './ColorChoices'
 import { formatDurationInput, parseDurationInput } from './durationInput'
 import type { Selection } from './selection'
@@ -83,7 +84,7 @@ export function DetailPanel({ decoupage, selection, open }: DetailPanelProps) {
         {selection.ids.length > 1 && <MultipleSheet decoupage={decoupage} ids={selection.ids} />}
         {/* La clé recrée la fiche à chaque changement d'élément (champs remis à zéro). */}
         {selected?.kind === 'scene' && (
-          <SceneSheet key={selected.scene.id} scene={selected.scene} />
+          <SceneSheet key={selected.scene.id} scene={selected.scene} decoupage={decoupage} />
         )}
         {selected?.kind === 'shot' && <ShotSheet key={selected.shot.id} shot={selected.shot} />}
       </div>
@@ -268,7 +269,7 @@ function DurationField({ shot }: { shot: Shot }) {
   )
 }
 
-function SceneSheet({ scene }: { scene: Scene }) {
+function SceneSheet({ scene, decoupage }: { scene: Scene; decoupage: Decoupage }) {
   const nameRef = useNameFocus()
   return (
     <form className="sheet" onSubmit={(event) => event.preventDefault()}>
@@ -279,7 +280,7 @@ function SceneSheet({ scene }: { scene: Scene }) {
         onChange={(name) => editScene(scene.id, { name }, 'name')}
         inputRef={nameRef}
       />
-      <HeadingField scene={scene} />
+      <HeadingCombobox scene={scene} decoupage={decoupage} />
       <DescriptionField scene={scene} />
       <div className="field">
         <span className="field-label">{fr.panel.color}</span>
@@ -319,45 +320,6 @@ function OrphanBox({ scene }: { scene: Scene }) {
           {fr.scriptLink.deleteOrphan}
         </button>
       </div>
-    </div>
-  )
-}
-
-/**
- * En-tête de scène, mis en majuscules pendant la frappe sans déplacer le curseur. Il est réécrit
- * dans le scénario (étape 8), qui le relit sans espaces superflus : pendant la saisie, le champ
- * garde ce qui est tapé (espace final compris).
- */
-function HeadingField({ scene }: { scene: Scene }) {
-  const id = useId()
-  const [draft, setDraft] = useState<string | null>(null)
-  return (
-    <div className="field">
-      <label className="field-label" htmlFor={id}>
-        {fr.panel.heading}
-      </label>
-      <input
-        id={id}
-        type="text"
-        value={draft ?? scene.heading}
-        placeholder={fr.panel.headingPlaceholder}
-        onFocus={() => setDraft(scene.heading)}
-        onChange={(event) => {
-          const input = event.target
-          const upper = input.value.toLocaleUpperCase('fr')
-          if (upper !== input.value && upper.length === input.value.length) {
-            const { selectionStart, selectionEnd } = input
-            input.value = upper
-            input.setSelectionRange(selectionStart, selectionEnd)
-          }
-          setDraft(upper)
-          editScene(scene.id, { heading: upper }, 'heading')
-        }}
-        onBlur={() => {
-          setDraft(null)
-          endTyping()
-        }}
-      />
     </div>
   )
 }

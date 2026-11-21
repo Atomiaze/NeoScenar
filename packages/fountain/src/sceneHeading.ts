@@ -3,7 +3,8 @@ import type { SceneHeadingInfo } from './types.ts'
 
 const PREFIX = /^(?:int\.?\/ext|int|ext|est|i\/e)(?:\.|(?=\s)|$)/i
 const SCENE_NUMBER = /\s*#([\p{L}\p{N}.-]+)#$/u
-const SEPARATOR = /(?:^|\s+)[-–—]\s+/g
+const SEPARATOR = /(?:^|\s+)[-–—](?:\s+|$)/g
+const TRAILING_DASH = /[\s\-–—]+$/u
 
 export interface SceneHeadingAnalysis {
   /** Texte utile : sans le point de forçage ni le numéro de scène. */
@@ -40,13 +41,15 @@ export function analyzeSceneHeading(line: string): SceneHeadingAnalysis {
 /**
  * Règle de NeoScenar : le moment est le dernier segment après « - » (tiret entouré d'espaces),
  * le lieu est tout ce qui précède. « RUE SAINT-LUC - NUIT » → lieu « RUE SAINT-LUC », moment « NUIT ».
+ * Un tiret final sans moment (« MAISON - », en cours de frappe) est un séparateur : le lieu ne garde
+ * jamais de tiret ni d'espace en fin de nom.
  */
 export function splitLocationAndTime(text: string): { location: string; time: string } {
   let last: RegExpExecArray | null = null
   for (const match of text.matchAll(SEPARATOR)) last = match as RegExpExecArray
-  if (!last) return { location: text, time: '' }
+  if (!last) return { location: text.replace(TRAILING_DASH, ''), time: '' }
   return {
-    location: text.slice(0, last.index).trim(),
+    location: text.slice(0, last.index).replace(TRAILING_DASH, ''),
     time: text.slice(last.index + last[0].length).trim()
   }
 }

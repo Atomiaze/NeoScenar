@@ -49,6 +49,13 @@ describe('assistant d’en-tête de scène', () => {
     })
   })
 
+  it('3 bis. jamais un lieu terminé par un tiret (fiche ou en-tête inachevé)', () => {
+    const lists = { ...LISTS, locations: [...LISTS.locations, 'MAISON -', 'MAISON - '] }
+    const shown = labels(headingProposals('INT. MAISON - ', lists))
+    expect(shown).toEqual([...LISTS.times, 'MAISON - CUISINE', 'MAISON - GRENIER'])
+    expect(labels(headingProposals('INT. MAIS', lists))).not.toContain('MAISON -')
+  })
+
   it('3. après « - » : les moments, puis les lieux composés qui commencent pareil', () => {
     expect(labels(headingProposals('EXT. RUE SAINT-LUC - ', LISTS))).toEqual(LISTS.times)
     expect(labels(headingProposals('EXT. RUE SAINT-LUC - n', LISTS))).toEqual([
@@ -186,6 +193,11 @@ describe('noms déjà présents dans le scénario', () => {
       locations: ['MAISON - CUISINE', 'RUE', 'MAI'],
       characters: ['CHLOÉ', 'FRANÇOIS']
     })
+  })
+
+  it('un en-tête inachevé « INT. MAISON - » donne le lieu MAISON, sans tiret', () => {
+    const unfinished = parse('INT. MAISON - \n\nAction.\n', { titlePage: false })
+    expect(namesInScript(unfinished, 99).locations).toEqual(['MAISON'])
   })
 
   it('ne propose pas la ligne en cours d’écriture', () => {

@@ -114,11 +114,17 @@ const sheetNames: NameSource = () => {
   }
 }
 
-async function loadSceneTimes(): Promise<void> {
-  if (sceneTimes.length > 0) return
+/** Moments du cours, déjà lus (vide tant que la lecture n'est pas finie). */
+export function getSceneTimes(): readonly string[] {
+  return sceneTimes
+}
+
+export async function loadSceneTimes(): Promise<readonly string[]> {
+  if (sceneTimes.length > 0) return sceneTimes
   const result = await window.neoscenar.getVocabulary()
   // Sans vocabulaire, l'assistant propose quand même les préfixes, les lieux et les personnages.
   if (result.ok) sceneTimes = result.value.sceneTimes
+  return sceneTimes
 }
 
 export async function loadScenario(projectId: string): Promise<void> {

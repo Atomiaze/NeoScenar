@@ -22,6 +22,17 @@ describe('parseSceneHeading', () => {
     })
   })
 
+  it('un tiret final sans moment (en cours de frappe) ne reste pas dans le lieu', () => {
+    for (const heading of ['INT. MAISON -', 'INT. MAISON - ', 'INT. MAISON –', 'INT. MAISON --']) {
+      expect(parseSceneHeading(heading)).toMatchObject({ location: 'MAISON', time: '' })
+    }
+    expect(parseSceneHeading('INT. MAISON - CUISINE -')).toMatchObject({
+      location: 'MAISON - CUISINE',
+      time: ''
+    })
+    expect(parseSceneHeading('INT. RUE SAINT-')).toMatchObject({ location: 'RUE SAINT' })
+  })
+
   it('accepte le tiret long', () => {
     expect(parseSceneHeading('INT. GARE – SOIR')).toMatchObject({ location: 'GARE', time: 'SOIR' })
   })

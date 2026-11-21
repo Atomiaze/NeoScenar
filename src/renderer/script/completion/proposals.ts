@@ -76,9 +76,13 @@ function keepTyped(typed: string, from: number): Proposal {
   return { label: typed.trim(), kind: 'keep', from, insert: typed }
 }
 
+/** Un lieu terminé par un tiret (« MAISON - ») n'est jamais proposé : c'est un en-tête inachevé. */
+const DANGLING_DASH = /[\s\-–—]$/u
+
 function unique(names: readonly string[]): string[] {
   const seen = new Set<string>()
   return names.filter((name) => {
+    if (DANGLING_DASH.test(name)) return false
     const key = fold(name)
     if (seen.has(key)) return false
     seen.add(key)
@@ -88,7 +92,7 @@ function unique(names: readonly string[]): string[] {
 
 /**
  * En-tête de scène, en trois temps : le préfixe (INT., EXT., INT./EXT.) dès la première lettre,
- * puis les lieux déjà utilisés, puis après « - » les moments (et les lieux composés « MAISON - … »).
+ * puis les lieux déjà utilisés, puis après « - » les moments, puis les lieux composés (« MAISON - CUISINE »).
  */
 export function headingProposals(before: string, lists: NameLists): Proposal[] {
   const indent = before.length - before.trimStart().length

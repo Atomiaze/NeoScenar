@@ -13,6 +13,7 @@ import { keymap, type EditorView } from '@codemirror/view'
 import { fr } from '../../i18n/fr'
 import { analysisField } from '../editor/analysis'
 import { effectiveType } from '../editing/pendingTypes'
+import { mergeNameLists } from './nameLists'
 import {
   characterProposals,
   headingProposals,
@@ -33,30 +34,8 @@ export const nameSources = Facet.define<NameSource>()
 export const scriptNames: NameSource = (state, lineNumber) =>
   namesInScript(state.field(analysisField).doc, lineNumber)
 
-/** Ajoute les noms qui n'y sont pas encore (MARIE du scénario et MARIE de sa fiche : une fois). */
-function addNames(
-  list: readonly string[],
-  names: readonly string[] | undefined
-): readonly string[] {
-  const seen = new Set(list.map((name) => name.toUpperCase()))
-  const added = (names ?? []).filter((name) => {
-    const key = name.toUpperCase()
-    if (seen.has(key)) return false
-    seen.add(key)
-    return true
-  })
-  return added.length > 0 ? [...list, ...added] : list
-}
-
 function collectNames(state: EditorState, lineNumber: number): NameLists {
-  const lists: NameLists = { locations: [], characters: [], times: [] }
-  for (const source of state.facet(nameSources)) {
-    const names = source(state, lineNumber)
-    lists.locations = addNames(lists.locations, names.locations)
-    lists.characters = addNames(lists.characters, names.characters)
-    lists.times = addNames(lists.times, names.times)
-  }
-  return lists
+  return mergeNameLists(state.facet(nameSources).map((source) => source(state, lineNumber)))
 }
 
 /** Propositions pour la position du curseur : en-tête de scène ou personnage, sinon aucune. */
