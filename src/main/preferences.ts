@@ -2,6 +2,7 @@ import { readFile } from 'node:fs/promises'
 import { join } from 'node:path'
 import { writeJsonSafely } from './fs/safeWrite'
 import { CARD_ZOOM, clampCardZoom } from '../shared/cardZoom'
+import { parseCreditsOpen, type CreditsOpenByProject } from '../shared/credits/openState'
 import { clampScriptZoom, DEFAULT_SCRIPT_ZOOM } from '../shared/scriptZoom'
 import { parseScriptColors, type ScriptColors } from '../shared/themes/scriptColors'
 import { isWelcomeImageCopyName } from '../shared/welcomeImage'
@@ -49,6 +50,8 @@ export interface Preferences {
   scriptColors: ScriptColors
   /** Nom de la copie de l'image d'accueil (dossier `accueil/` de userData), ou null : image livrée. */
   welcomeImage: string | null
+  /** Blocs ouverts du formulaire du générique, par projet (17C). */
+  creditsOpen: CreditsOpenByProject
 }
 
 export function emptyPreferences(): Preferences {
@@ -66,7 +69,8 @@ export function emptyPreferences(): Preferences {
     continuedMarks: false,
     theme: DEFAULT_THEME,
     scriptColors: {},
-    welcomeImage: null
+    welcomeImage: null,
+    creditsOpen: {}
   }
 }
 
@@ -115,7 +119,8 @@ export async function loadPreferences(userDataDir: string): Promise<Preferences>
       continuedMarks: raw.continuedMarks === true,
       theme: parseTheme(raw.theme),
       scriptColors: parseScriptColors(raw.scriptColors),
-      welcomeImage: isWelcomeImageCopyName(raw.welcomeImage) ? raw.welcomeImage : null
+      welcomeImage: isWelcomeImageCopyName(raw.welcomeImage) ? raw.welcomeImage : null,
+      creditsOpen: parseCreditsOpen(raw.creditsOpen)
     }
   } catch {
     return emptyPreferences()

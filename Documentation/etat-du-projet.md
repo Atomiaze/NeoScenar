@@ -4,7 +4,7 @@ Détail des décisions passées : decisions-archive.md (ne lire qu'en cas de bes
 
 Page courte, à lire **en premier** au début de toute nouvelle conversation (projet Claude) ou session (Claude Code). Elle est tenue à jour par Claude Code à chaque commit d'étape ou de sous-étape. Le détail se trouve dans `cahier-des-charges.md` (référence complète) et `specs/` (une spécification par étape) : ne les lire qu'en cas de besoin.
 
-Dernière mise à jour : 21 novembre 2026 (étapes 0 à 15, 16A à 16C, 17A et 17B terminées ; « À propos » réalisée, en attente de validation ; prochaine : 17C, puis 16D).
+Dernière mise à jour : 21 novembre 2026 (étapes 0 à 15, 16A à 16C, 17A à 17C terminées ; « À propos » réalisée, en attente de validation ; prochaine : 17D, puis 16D).
 
 ## Où on en est
 
@@ -37,7 +37,7 @@ Les numéros de commit antérieurs au 20 novembre 2026 (par exemple `710449c`) r
 - **Principes non négociables** : gratuit, 100 % local, sans compte, fichiers ouverts, interface en français, macOS d'abord, puis Windows et Linux (étape 16). Licence GPL-3.0. Blender 4.5 LTS.
 - **Écarté** : envoi par e-mail depuis NeoScenar.
 - **Retours d'usage (21 nov.)** :
-  - *Lot 1 avant 16D, spec `specs/etape-17-lot-1-retours.md`* : **17A et 17B terminées** (17B : panneau indenté d'environ 30 px, rubrique active en couleur d'accent, contraste ≥ 4,5 sur les 7 thèmes ; barre : Données du projet, Planification, Cartes, Scénario, Statistiques ; icône dossier ; nouveau visuel d'accueil en place sous le nom `visuel-accueil.jpg`). *Reste à faire* : 17C Générique replié par défaut, état gardé, boutons Tout réduire / Tout déployer ; 17D carte : autocomplétion de l'en-tête de scène ; 17E préférences : entrées des menus échelle, mouvement et angle (une valeur hors liste reste affichée) ; 17F nouvelle icône de l'appli (`logo.png`) et vérification de l'accueil.
+  - *Lot 1 avant 16D, spec `specs/etape-17-lot-1-retours.md`* : **17A, 17B et 17C terminées** (17B : panneau indenté d'environ 30 px, rubrique active en couleur d'accent, contraste ≥ 4,5 sur les 7 thèmes ; barre : Données du projet, Planification, Cartes, Scénario, Statistiques ; icône dossier ; nouveau visuel d'accueil en place sous le nom `visuel-accueil.jpg` ; 17C : blocs du Générique repliés par défaut, état gardé dans les préférences de l'appli par projet (`creditsOpen`, 50 projets au plus), boutons Tout réduire / Tout déployer). *Reste à faire* : 17D carte : autocomplétion de l'en-tête de scène ; 17E préférences : entrées des menus échelle, mouvement et angle (une valeur hors liste reste affichée) ; 17F nouvelle icône de l'appli (`logo.png`) et vérification de l'accueil.
   - *Après 16D* : nouveaux documents (log line, tag line, synopsis, pitch, note d'intention) en Markdown dans `neoscenar/`, et fenêtre d'export avec cases à cocher (page de titre, scénario, synopsis, pitch, note d'intention) ; log line et tag line dans le PDF seulement, jamais dans le Fountain ; plan de tournage : personnages cités sans dialogue proposés comme suggestions, et interprètes ajoutés à la main par jour.
   - *Écarté* : réglage des raccourcis.
 - **Thèmes (19 nov.)** : Par défaut (l'actuel), Cobalt, Or, Matrix, PinkLady, Forest, Aqua. À l'écran, la page du scénario suit le thème (couleur du fond et du texte), toujours en Courier et au format Final Draft A4. Les couleurs des éléments du scénario (notes en vert, bandeaux d'actes…) sont réglables dans les préférences, pour l'écran seulement. Les exports (PDF) restent toujours en page blanche, texte noir, Courier, Final Draft A4 : les thèmes n'y touchent jamais.

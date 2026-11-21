@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { creditsCharacter, isBlockShown } from '../../shared/credits/assembleCredits'
 import {
   addedRubrics,
@@ -15,6 +15,7 @@ import type {
   TemplateBlock,
   TemplateRubric
 } from '../../shared/credits/types'
+import { toggleBlock } from '../../shared/credits/openState'
 import { fr } from '../i18n/fr'
 import { useStore } from '../state/createStore'
 import { CreditsCast } from './CreditsCast'
@@ -102,11 +103,15 @@ function Rubric({ rubric, id, stored, revision, added, children }: RubricProps) 
 function Block({
   block,
   content,
-  revision
+  revision,
+  open,
+  onToggle
 }: {
   block: TemplateBlock
   content: CreditsContent
   revision: number
+  open: boolean
+  onToggle: (open: boolean) => void
 }) {
   const { data, projectType, template } = content
   const sheets = useStore(researchStore, (state) => state.sheets.personnages)
@@ -126,8 +131,14 @@ function Block({
   )
 
   return (
-    <details className="credits-block" open={!block.facultatif || shown}>
-      <summary>
+    <details className="credits-block" open={open}>
+      <summary
+        onClick={(event) => {
+          // L'état est tenu par React (et gardé dans les préférences), pas par le navigateur.
+          event.preventDefault()
+          onToggle(!open)
+        }}
+      >
         <span className="credits-block-head">{block.titre}</span>
       </summary>
       {block.facultatif && (
@@ -185,11 +196,29 @@ function Block({
 export function CreditsView() {
   const content = useStore(creditsStore, (state) => state.content)
   const revision = useStore(creditsStore, (state) => state.revision)
+  // null tant que l'état gardé n'est pas lu : on n'écrit rien avant.
+  const [open, setOpen] = useState<string[] | null>(null)
+  useEffect(() => {
+    void window.neoscenar.getCreditsOpenBlocks().then(setOpen)
+  }, [])
+  const blockIds = content?.template.blocs.map((block) => block.id) ?? []
+
+  function changeOpen(next: string[]): void {
+    setOpen(next)
+    void window.neoscenar.setCreditsOpenBlocks(next)
+  }
+
   if (!content) return <p className="panel-empty">{t.loading}</p>
   return (
     <article className="sheet research-form" aria-label={t.title}>
       <header className="research-sheet-header">
         <h2>{t.title}</h2>
+        <button type="button" className="tool-button" onClick={() => changeOpen([])}>
+          {t.collapseAll}
+        </button>
+        <button type="button" className="tool-button" onClick={() => changeOpen(blockIds)}>
+          {t.expandAll}
+        </button>
         <button
           type="button"
           className="tool-button"
@@ -201,7 +230,14 @@ export function CreditsView() {
       </header>
       <p className="field-help">{t.intro}</p>
       {content.template.blocs.map((block) => (
-        <Block key={block.id} block={block} content={content} revision={revision} />
+        <Block
+          key={block.id}
+          block={block}
+          content={content}
+          revision={revision}
+          open={(open ?? []).includes(block.id)}
+          onToggle={(isOpen) => changeOpen(toggleBlock(open ?? [], block.id, isOpen))}
+        />
       ))}
     </article>
   )

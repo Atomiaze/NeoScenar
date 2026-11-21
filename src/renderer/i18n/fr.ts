@@ -328,6 +328,8 @@ const macTexts = {
       intro:
         'Remplissez les rubriques : une ligne par nom. Les rubriques vides n’apparaissent pas au générique. Tout est enregistré automatiquement.',
       loading: 'Chargement du générique…',
+      collapseAll: 'Tout réduire',
+      expandAll: 'Tout déployer',
       show: 'Afficher ce bloc',
       optionalHidden: 'Bloc facultatif, masqué.',
       titleLabel: 'Intitulé',

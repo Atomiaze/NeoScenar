@@ -84,6 +84,8 @@ export const IPC_CHANNELS = {
   setScriptZoom: 'prefs:set-script-zoom',
   setShowSceneNavigator: 'prefs:set-show-scene-navigator',
   setShowThumbnails: 'prefs:set-show-thumbnails',
+  getCreditsOpenBlocks: 'prefs:get-credits-open-blocks',
+  setCreditsOpenBlocks: 'prefs:set-credits-open-blocks',
   getBlenderExportInfo: 'blender:get-export-info',
   chooseBlendTarget: 'blender:choose-target',
   chooseBlender: 'blender:choose-app',
@@ -461,6 +463,9 @@ export interface NeoScenarApi {
   /** Mode « avec vignettes » des cartes, mémorisé dans les préférences. */
   getShowThumbnails(): Promise<boolean>
   setShowThumbnails(show: boolean): Promise<void>
+  /** Blocs ouverts du formulaire du générique pour le projet ouvert (vide = tout replié). */
+  getCreditsOpenBlocks(): Promise<string[]>
+  setCreditsOpenBlocks(open: string[]): Promise<void>
   /** Fenêtre d'export vers Blender : proposition de .blend et Blender retenu. */
   getBlenderExportInfo(): Promise<Result<BlenderExportInfo>>
   /** Sélecteur d'enregistrement d'un .blend ; null si l'élève annule. */

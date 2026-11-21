@@ -314,6 +314,10 @@ export function registerIpcHandlers(
   ipcMain.handle(IPC_CHANNELS.setShowThumbnails, (_event, show: unknown) =>
     controller.setShowThumbnails(show)
   )
+  ipcMain.handle(IPC_CHANNELS.getCreditsOpenBlocks, () => controller.getCreditsOpenBlocks())
+  ipcMain.handle(IPC_CHANNELS.setCreditsOpenBlocks, (_event, open: unknown) =>
+    controller.setCreditsOpenBlocks(open)
+  )
   ipcMain.handle(IPC_CHANNELS.getBlenderExportInfo, () => controller.getBlenderExportInfo())
   ipcMain.handle(IPC_CHANNELS.chooseBlendTarget, async (event, currentPath: unknown) => {
     const defaultPath = controller.blendDialogDefaultPath(currentPath)

@@ -1,5 +1,6 @@
 import { access } from 'node:fs/promises'
 import { dirname, join } from 'node:path'
+import { creditsOpenKey, openBlocksOf, withProjectOpen } from '../shared/credits/openState'
 import type {
   CompleteStructureRequest,
   CreateProjectRequest,
@@ -837,6 +838,28 @@ export class AppController {
   async setShowThumbnails(show: unknown): Promise<void> {
     const showThumbnails = show === true
     await this.updatePreferences((prefs) => ({ ...prefs, showThumbnails })).catch(() => undefined)
+  }
+
+  private creditsOpenKey(): string | null {
+    return this.current
+      ? creditsOpenKey(this.current.project.id, this.current.projectFilePath)
+      : null
+  }
+
+  async getCreditsOpenBlocks(): Promise<string[]> {
+    const key = this.creditsOpenKey()
+    if (key === null) return []
+    return openBlocksOf((await this.getPreferences()).creditsOpen, key)
+  }
+
+  async setCreditsOpenBlocks(open: unknown): Promise<void> {
+    const key = this.creditsOpenKey()
+    if (key === null || !Array.isArray(open)) return
+    const blocks = open.filter((id): id is string => typeof id === 'string')
+    await this.updatePreferences((prefs) => ({
+      ...prefs,
+      creditsOpen: withProjectOpen(prefs.creditsOpen, key, blocks)
+    })).catch(() => undefined)
   }
 
   storeOriginalFile(shotId: unknown, sourcePath: unknown): Promise<Result<StoredOriginal>> {

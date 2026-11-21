@@ -79,6 +79,8 @@ const api: NeoScenarApi = {
   setScriptZoom: (zoom) => ipcRenderer.invoke(IPC_CHANNELS.setScriptZoom, zoom),
   setShowSceneNavigator: (show) => ipcRenderer.invoke(IPC_CHANNELS.setShowSceneNavigator, show),
   setShowThumbnails: (show) => ipcRenderer.invoke(IPC_CHANNELS.setShowThumbnails, show),
+  getCreditsOpenBlocks: () => ipcRenderer.invoke(IPC_CHANNELS.getCreditsOpenBlocks),
+  setCreditsOpenBlocks: (open) => ipcRenderer.invoke(IPC_CHANNELS.setCreditsOpenBlocks, open),
   getBlenderExportInfo: () => ipcRenderer.invoke(IPC_CHANNELS.getBlenderExportInfo),
   chooseBlendTarget: (currentPath) =>
     ipcRenderer.invoke(IPC_CHANNELS.chooseBlendTarget, currentPath),

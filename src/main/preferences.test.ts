@@ -56,7 +56,8 @@ describe('fichier des préférences', () => {
       continuedMarks: true,
       theme: 'matrix' as const,
       scriptColors: { matrix: { note: '#ff00ff' } },
-      welcomeImage: 'image-accueil-1700000000000.png'
+      welcomeImage: 'image-accueil-1700000000000.png',
+      creditsOpen: { p1: ['equipe'] }
     }
     await savePreferences(folder, prefs)
     expect(await loadPreferences(folder)).toEqual(prefs)
