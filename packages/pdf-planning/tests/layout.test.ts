@@ -141,6 +141,7 @@ describe('PDF « Plan de tournage »', () => {
     expect(text).toContain('Total : 3/8 page · 2 scènes')
     expect(text).toContain('Lieux : CUISINE, SALON')
     expect(text).toContain('Convoqués : Léa Dupont (MARIE), Tom Leroy (PAUL)')
+    expect(text).toContain('Présents en plus : Marc — figurant')
     expect(text).toContain('Sans interprète : MARIE')
     expect(text).toContain('Note : Rendez-vous à 8 h devant l’école.')
     expect(text).toContain('3 jours de tournage · 4 scènes à planifier')

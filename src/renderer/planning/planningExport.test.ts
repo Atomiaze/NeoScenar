@@ -23,7 +23,12 @@ import {
   shootingPdfData
 } from '../../shared/planning/planningExport'
 import { readShooting } from '../../shared/planning/shootingData'
-import { addMuteCharacter, addSceneToDay, addShootingDay } from '../../shared/planning/shootingEdit'
+import {
+  addDayPresent,
+  addMuteCharacter,
+  addSceneToDay,
+  addShootingDay
+} from '../../shared/planning/shootingEdit'
 import type { Planning } from '../../shared/planning/types'
 
 const ROOT = join(__dirname, '..', '..', '..')
@@ -116,6 +121,7 @@ function sample(): {
   planning = planningOf(addSceneToDay(planning, firstDay, cards[0].id))
   planning = planningOf(addSceneToDay(planning, firstDay, cards[1].id))
   planning = planningOf(addSceneToDay(planning, firstDay, 'carte-supprimee'))
+  planning = planningOf(addDayPresent(planning, firstDay, { nom: 'Marc', role: 'figurant' }, ids))
   planning = planningOf(addMuteCharacter(planning, cards[1].id, 'PAUL'))
   // Comme l'application : dépouillement avec les muets du planning.
   const doc = parse(text, { titlePage: false })
@@ -221,6 +227,8 @@ describe('PDF « Plan de tournage »', () => {
     expect(garden.people).toEqual(['PAUL (muet, sans interprète)'])
     expect(data.days[0].called).toEqual(['Léa Dupont (MARIE)'])
     expect(data.days[0].withoutInterpreter).toEqual(['PAUL'])
+    expect(data.days[0].presents).toEqual(['Marc — figurant'])
+    expect(data.days[1].presents).toEqual([])
     expect(data.unplanned).toBe(1)
   })
 })
@@ -260,6 +268,7 @@ describe('calendrier .ics', () => {
     expect(day.description).toContain('Scènes :\nS_0010 CUISINE (INT., JOUR, ')
     expect(day.description).toContain('S_0020 JARDIN (EXT., NUIT, ')
     expect(day.description).toContain('Convoqués : Léa Dupont (MARIE)')
+    expect(day.description).toContain('Présents en plus : Marc — figurant')
     // Même planning exporté deux fois : mêmes UID.
     const again = planningCalendar(planning, days, {
       title: 'Le Dernier Bus',

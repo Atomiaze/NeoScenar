@@ -10,6 +10,7 @@ import {
   saveShootingDay,
   unplanScene
 } from '../shootingStore'
+import { ShootingDayPresents } from './ShootingDayPresents'
 import { SCENE_DRAG_TYPE, ShootingSceneCard, readSceneDrag } from './ShootingSceneCard'
 
 const t = fr.shooting
@@ -140,6 +141,8 @@ export function ShootingDayColumn({
           {view.entries.length === 0 && <span className="muted">{t.dayEmpty}</span>}
         </li>
       </ol>
+
+      <ShootingDayPresents dayId={day.id} presents={day.presents} />
 
       <CommitField
         key={`${day.id}-note`}

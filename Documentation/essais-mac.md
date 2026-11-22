@@ -197,11 +197,11 @@ Remarque : …
 
 ---
 
-## 11. À faire après 18C-6 (nouveau `.dmg`)
+## 11. Lot 2 : présents en plus (18C-6)
 
-- [ ] **« Présents en plus »** : j'ajoute « Marc — figurant » au jour 2 : visible dans la colonne, dans le PDF du plan de tournage et dans l'`.ics`.
+- [ ] **« Présents en plus »** : j'ajoute « Marc — figurant » au jour 2 : visible dans la colonne (nom + rôle), dans le PDF du plan de tournage (ligne « Présents en plus : ») et dans l'`.ics` (description du jour : « Présents en plus : Marc — figurant »).
 - [ ] Après redémarrage, la ligne est toujours là ; un ancien projet s'ouvre sans changement.
-- [ ] Ajout, modification et suppression sont annulables.
+- [ ] Je modifie le nom ou le rôle (en quittant le champ), puis je supprime la ligne : chaque action s'annule avec Cmd + Z.
 
 Remarque : …
 

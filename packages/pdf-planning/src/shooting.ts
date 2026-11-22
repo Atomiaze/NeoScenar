@@ -88,6 +88,7 @@ function detailRow(day: PdfShootingDay, measure: Measure): Cell[] | null {
   if (day.called.length > 0) parts.push([LABELS.called, day.called.join(', '), INK.text])
   if (day.withoutInterpreter.length > 0)
     parts.push([LABELS.withoutInterpreter, day.withoutInterpreter.join(', '), INK.late])
+  if (day.presents.length > 0) parts.push([LABELS.presents, day.presents.join(', '), INK.text])
   if (day.note.trim()) parts.push([LABELS.note, day.note.trim(), INK.text])
   if (parts.length === 0) return null
   const lines = parts.flatMap(([label, value, color]) =>

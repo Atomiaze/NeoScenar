@@ -838,6 +838,12 @@ const macTexts = {
     dayLocations: 'Lieux',
     dayCalled: 'Interprètes convoqués',
     dayNoInterpreter: 'Sans interprète',
+    dayPresents: 'Présents en plus',
+    dayPresentsHint: 'Figurants, doublures, interprètes sans fiche…',
+    presentName: 'Nom',
+    presentRole: 'Rôle (facultatif)',
+    presentAdd: 'Ajouter un présent',
+    presentDelete: (name: string): string => `Supprimer ${name}`,
     dayEmpty: 'Glissez des scènes ici.',
     deleteDay: 'Supprimer le jour',
     deleteDayTitle: 'Supprimer ce jour de tournage ?',
@@ -933,6 +939,8 @@ const macTexts = {
       `${interpreter} (${character}${mute ? ', muet' : ''})`,
     personWithoutInterpreter: (character: string, mute: boolean, noSheet: boolean): string =>
       `${character} (${[mute ? 'muet' : '', noSheet ? 'plus de fiche' : 'sans interprète'].filter(Boolean).join(', ')})`,
+    /** Une ligne : « Marc — figurant ». */
+    present: (name: string, role: string): string => (role === '' ? name : `${name} — ${role}`),
     called: (interpreter: string, characters: readonly string[]): string =>
       `${interpreter} (${characters.join(', ')})`,
     ics: {
@@ -954,7 +962,8 @@ const macTexts = {
       locations: (names: readonly string[]): string => `Lieux : ${names.join(', ')}`,
       called: (names: readonly string[]): string => `Convoqués : ${names.join(', ')}`,
       withoutInterpreter: (names: readonly string[]): string =>
-        `Sans interprète : ${names.join(', ')}`
+        `Sans interprète : ${names.join(', ')}`,
+      presents: (names: readonly string[]): string => `Présents en plus : ${names.join(', ')}`
     }
   },
   stats: {

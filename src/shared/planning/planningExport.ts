@@ -142,7 +142,8 @@ function shootingDay(view: DayView): PdfShootingDay {
     eighths: view.eighths,
     locations: view.locations,
     called: view.called.map((c) => t.called(c.interprete, c.personnages)),
-    withoutInterpreter: view.withoutInterpreter
+    withoutInterpreter: view.withoutInterpreter,
+    presents: view.day.presents.map((p) => t.present(p.nom, p.role))
   }
 }
 
@@ -232,7 +233,10 @@ function dayEvent(view: DayView, rank: number): IcsEvent | null {
     view.called.length > 0
       ? t.ics.called(view.called.map((c) => t.called(c.interprete, c.personnages)))
       : '',
-    view.withoutInterpreter.length > 0 ? t.ics.withoutInterpreter(view.withoutInterpreter) : ''
+    view.withoutInterpreter.length > 0 ? t.ics.withoutInterpreter(view.withoutInterpreter) : '',
+    view.day.presents.length > 0
+      ? t.ics.presents(view.day.presents.map((p) => t.present(p.nom, p.role)))
+      : ''
   ].filter(Boolean)
   if (facts.length > 0) parts.push(facts.join('\n'))
   if (view.locations.length > 0) parts.push(t.ics.locations(view.locations))

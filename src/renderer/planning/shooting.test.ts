@@ -15,15 +15,18 @@ import {
 } from '../../shared/planning/planningData'
 import { readShooting } from '../../shared/planning/shootingData'
 import {
+  addDayPresent,
   addMuteCharacter,
   addSceneToDay,
   addShootingDay,
   moveSceneToDay,
+  removeDayPresent,
   removeMuteCharacter,
   removeSceneFromDay,
   removeShootingDay,
   rememberSceneMarks,
   removeVanishedScenes,
+  updateDayPresent,
   updateShootingDay
 } from '../../shared/planning/shootingEdit'
 import { sceneLabel } from '../../shared/scriptLink/sceneNumber'
@@ -402,6 +405,26 @@ describe('jours de tournage', () => {
     expect(removeMuteCharacter(p, a, 'MARIE').ok).toBe(false)
   })
 
+  it('présents en plus : ajout, modification, suppression, annulables', () => {
+    const { planning, day1, day2 } = twoDays()
+    const added = addDayPresent(planning, day1, { nom: '  Marc ', role: 'figurant' }, ids)
+    const withMarc = planningOf(added)
+    const marc = readShooting(withMarc).jours.find((d) => d.id === day1)!.presents
+    expect(marc).toEqual([{ id: added.ok ? added.createdId : '', nom: 'Marc', role: 'figurant' }])
+    expect(readShooting(withMarc).jours.find((d) => d.id === day2)!.presents).toEqual([])
+    expect(addDayPresent(planning, day1, { nom: '  ' }, ids).ok).toBe(false)
+    expect(addDayPresent(planning, 'inconnu', { nom: 'Marc' }, ids).ok).toBe(false)
+    const renamed = planningOf(updateDayPresent(withMarc, day1, marc[0].id, { role: 'doublure' }))
+    expect(readShooting(renamed).jours.find((d) => d.id === day1)!.presents[0]).toMatchObject({
+      nom: 'Marc',
+      role: 'doublure'
+    })
+    expect(updateDayPresent(withMarc, day1, marc[0].id, { nom: '' }).ok).toBe(false)
+    const removed = planningOf(removeDayPresent(renamed, day1, marc[0].id))
+    expect(readShooting(removed).jours.find((d) => d.id === day1)!.presents).toEqual([])
+    expect(removeDayPresent(removed, day1, marc[0].id).ok).toBe(false)
+  })
+
   it('filtre et regroupe par lieu exact', () => {
     expect(filterScenes(scenes, { location: 'cuisine' }).map((s) => s.label)).toEqual([
       'S_0010',
@@ -449,8 +472,8 @@ describe('fichier planning.json', () => {
     const planning = parsePlanning(raw, ids)
     const shooting = readShooting(planning)
     expect(shooting.jours).toEqual([
-      { id: 'j1', date: '2026-12-01', titre: 'A', scenes: ['c1', 'c2'], note: '' },
-      { id: 'j2', date: null, titre: '', scenes: [], note: '' }
+      { id: 'j1', date: '2026-12-01', titre: 'A', scenes: ['c1', 'c2'], note: '', presents: [] },
+      { id: 'j2', date: null, titre: '', scenes: [], note: '', presents: [] }
     ])
     expect(shooting.muets).toEqual({ c1: ['MARIE'] })
     const changed = planningOf(updateShootingDay(planning, 'j1', { titre: 'B' }))

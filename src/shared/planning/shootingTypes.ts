@@ -5,6 +5,15 @@
 import type { DayNight, IntExt } from '../stats/computeStats'
 import type { IsoDate } from './types'
 
+/** Personne présente un jour sans venir du dépouillement (figurant, doublure…) : ajoutée à la main. */
+export interface ExtraPresent {
+  /** Identifiant interne permanent (UUID). */
+  id: string
+  nom: string
+  /** Rôle facultatif (« figurant »). */
+  role: string
+}
+
 export interface ShootingDay {
   /** Identifiant interne permanent (UUID). */
   id: string
@@ -14,6 +23,8 @@ export interface ShootingDay {
   /** Identifiants de cartes, dans l'ordre de tournage. */
   scenes: string[]
   note: string
+  /** « Présents en plus » (étape 18C-6) ; absent des anciens fichiers = liste vide. */
+  presents: ExtraPresent[]
 }
 
 /**

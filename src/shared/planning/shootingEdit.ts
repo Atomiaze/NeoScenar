@@ -6,7 +6,7 @@ import { nameKey } from '../research/sheetNames'
 import type { PlanningResult } from './planningEdit'
 import { isIsoDate } from './planningData'
 import { readShooting, withShooting } from './shootingData'
-import type { SceneMark, Shooting, ShootingDay } from './shootingTypes'
+import type { ExtraPresent, SceneMark, Shooting, ShootingDay } from './shootingTypes'
 import type { Planning } from './types'
 
 const invalid: PlanningResult = { ok: false, problem: 'invalid' }
@@ -40,7 +40,8 @@ export function addShootingDay(
     date: fields.date ?? null,
     titre: (fields.titre ?? '').trim(),
     scenes: [],
-    note: ''
+    note: '',
+    presents: []
   }
   return done(planning, { ...shooting, jours: [...shooting.jours, day] }, day.id)
 }
@@ -129,6 +130,73 @@ export function removeSceneFromDay(
   return done(
     planning,
     mapDay(shooting, dayId, (d) => ({ ...d, scenes: d.scenes.filter((id) => id !== cardId) }))
+  )
+}
+
+function cleanLine(text: string): string {
+  return text.replace(/\s+/g, ' ').trim()
+}
+
+/** « Présents en plus » : ajoute une ligne (nom obligatoire, rôle facultatif) à un jour. */
+export function addDayPresent(
+  planning: Planning,
+  dayId: string,
+  fields: { nom: string; role?: string },
+  ids: IdSource
+): PlanningResult {
+  const nom = cleanLine(fields.nom)
+  if (nom === '') return invalid
+  const shooting = readShooting(planning)
+  if (!shooting.jours.some((d) => d.id === dayId)) return notFound
+  const present: ExtraPresent = { id: ids.newId(), nom, role: cleanLine(fields.role ?? '') }
+  return done(
+    planning,
+    mapDay(shooting, dayId, (d) => ({ ...d, presents: [...d.presents, present] })),
+    present.id
+  )
+}
+
+export function updateDayPresent(
+  planning: Planning,
+  dayId: string,
+  presentId: string,
+  patch: { nom?: string; role?: string }
+): PlanningResult {
+  const shooting = readShooting(planning)
+  const day = shooting.jours.find((d) => d.id === dayId)
+  if (!day?.presents.some((p) => p.id === presentId)) return notFound
+  if (patch.nom !== undefined && cleanLine(patch.nom) === '') return invalid
+  return done(
+    planning,
+    mapDay(shooting, dayId, (d) => ({
+      ...d,
+      presents: d.presents.map((p) =>
+        p.id === presentId
+          ? {
+              ...p,
+              ...(patch.nom === undefined ? {} : { nom: cleanLine(patch.nom) }),
+              ...(patch.role === undefined ? {} : { role: cleanLine(patch.role) })
+            }
+          : p
+      )
+    }))
+  )
+}
+
+export function removeDayPresent(
+  planning: Planning,
+  dayId: string,
+  presentId: string
+): PlanningResult {
+  const shooting = readShooting(planning)
+  const day = shooting.jours.find((d) => d.id === dayId)
+  if (!day?.presents.some((p) => p.id === presentId)) return notFound
+  return done(
+    planning,
+    mapDay(shooting, dayId, (d) => ({
+      ...d,
+      presents: d.presents.filter((p) => p.id !== presentId)
+    }))
   )
 }
 

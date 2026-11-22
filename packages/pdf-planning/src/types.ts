@@ -85,6 +85,8 @@ export interface PdfShootingDay {
   /** « Léa Dupont (MARIE, PAUL) ». */
   called: string[]
   withoutInterpreter: string[]
+  /** « Marc — figurant » : présents ajoutés à la main pour ce jour. */
+  presents: string[]
 }
 
 export interface ShootingPdfInput extends PdfCommon {

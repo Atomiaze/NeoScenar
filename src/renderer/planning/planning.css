@@ -874,3 +874,23 @@
   background: var(--accent);
   border-radius: 2px;
 }
+
+/* « Présents en plus » d'un jour de tournage (18C-6) */
+.shooting-day-presents ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.shooting-day-presents li,
+.shooting-day-presents-add {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  margin-bottom: 4px;
+}
+
+.shooting-day-presents input {
+  flex: 1;
+  min-width: 0;
+}

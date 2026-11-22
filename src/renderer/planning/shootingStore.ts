@@ -3,15 +3,18 @@ import type { IdSource } from '../../shared/decoupage/factories'
 import { breakdownScenes } from '../../shared/planning/breakdown'
 import { readShooting } from '../../shared/planning/shootingData'
 import {
+  addDayPresent,
   addMuteCharacter,
   addSceneToDay,
   addShootingDay,
   moveSceneToDay,
   rememberSceneMarks,
+  removeDayPresent,
   removeMuteCharacter,
   removeSceneFromDay,
   removeShootingDay,
   removeVanishedScenes,
+  updateDayPresent,
   updateShootingDay,
   type MarkSource
 } from '../../shared/planning/shootingEdit'
@@ -272,4 +275,22 @@ export function addMute(cardId: string, name: string): void {
 
 export function removeMute(cardId: string, name: string): void {
   applyShootingChange((planning) => removeMuteCharacter(planning, cardId, name))
+}
+
+// « Présents en plus » d'un jour (étape 18C-6) : figurants, doublures, interprètes sans fiche.
+
+export function addPresent(dayId: string, nom: string, role: string): void {
+  applyShootingChange((planning) => addDayPresent(planning, dayId, { nom, role }, ids))
+}
+
+export function savePresent(
+  dayId: string,
+  presentId: string,
+  patch: { nom?: string; role?: string }
+): void {
+  applyShootingChange((planning) => updateDayPresent(planning, dayId, presentId, patch))
+}
+
+export function deletePresent(dayId: string, presentId: string): void {
+  applyShootingChange((planning) => removeDayPresent(planning, dayId, presentId))
 }

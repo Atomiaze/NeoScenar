@@ -142,7 +142,8 @@ export const DAYS: PdfShootingDay[] = [
     eighths: 15,
     locations: ['CUISINE', 'SALON'],
     called: ['Léa Dupont (MARIE)', 'Tom Leroy (PAUL)'],
-    withoutInterpreter: []
+    withoutInterpreter: [],
+    presents: ['Marc — figurant']
   },
   {
     date: '2027-03-02',
@@ -162,7 +163,8 @@ export const DAYS: PdfShootingDay[] = [
     eighths: 3,
     locations: ['RUE'],
     called: [],
-    withoutInterpreter: ['MARIE']
+    withoutInterpreter: ['MARIE'],
+    presents: []
   },
   {
     date: null,
@@ -172,7 +174,8 @@ export const DAYS: PdfShootingDay[] = [
     eighths: 0,
     locations: [],
     called: [],
-    withoutInterpreter: []
+    withoutInterpreter: [],
+    presents: []
   }
 ]
 

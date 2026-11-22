@@ -2,11 +2,25 @@
 // par `mergePlanning` ; ici on ne touche qu'à `jours`, `muets` et `reperes`.
 
 import { isIsoDate } from './planningData'
-import type { SceneMark, Shooting, ShootingDay } from './shootingTypes'
+import type { ExtraPresent, SceneMark, Shooting, ShootingDay } from './shootingTypes'
 import type { Planning } from './types'
 
 function isObject(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null && !Array.isArray(value)
+}
+
+function parsePresents(raw: unknown): ExtraPresent[] {
+  if (!Array.isArray(raw)) return []
+  const seen = new Set<string>()
+  const list: ExtraPresent[] = []
+  for (const item of raw) {
+    if (!isObject(item) || typeof item.id !== 'string' || item.id === '' || seen.has(item.id))
+      continue
+    if (typeof item.nom !== 'string' || item.nom.trim() === '') continue
+    seen.add(item.id)
+    list.push({ id: item.id, nom: item.nom, role: typeof item.role === 'string' ? item.role : '' })
+  }
+  return list
 }
 
 function parseDay(raw: unknown): ShootingDay | null {
@@ -20,7 +34,8 @@ function parseDay(raw: unknown): ShootingDay | null {
     titre: typeof raw.titre === 'string' ? raw.titre : '',
     // Une scène écrite deux fois dans le même jour n'a pas de sens : la première est gardée.
     scenes: [...new Set(scenes)],
-    note: typeof raw.note === 'string' ? raw.note : ''
+    note: typeof raw.note === 'string' ? raw.note : '',
+    presents: parsePresents(raw.presents)
   }
 }
 

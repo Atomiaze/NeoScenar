@@ -57,6 +57,7 @@ export const LABELS = {
   locations: 'Lieux : ',
   called: 'Convoqués : ',
   withoutInterpreter: 'Sans interprète : ',
+  presents: 'Présents en plus : ',
   note: 'Note : ',
   days: (n: number): string => (n === 1 ? '1 jour de tournage' : `${n} jours de tournage`),
   unplanned: (n: number): string =>
