@@ -10,7 +10,8 @@ import {
   openResearchDialog,
   researchStore,
   selectBranch,
-  selectCredits,
+  selectSection,
+  type ProjectSection,
   selectSheet
 } from './researchStore'
 
@@ -111,6 +112,9 @@ export function ResearchTree() {
   return (
     <nav className="research-tree" aria-label={fr.research.tree}>
       <ul>
+        <SimpleEntry section="titlePage" label={fr.research.titlePage.branch} />
+        <SimpleEntry section="logLine" label={fr.research.comingSoonViews.logLine.branch} />
+        <SimpleEntry section="synopsis" label={fr.research.comingSoonViews.synopsis.branch} />
         <SheetBranch
           kind="personnages"
           label={fr.research.characters}
@@ -124,22 +128,25 @@ export function ResearchTree() {
           emptyText={fr.research.emptyPlaces}
         />
         <DocumentsBranch />
-        <CreditsEntry />
+        <SimpleEntry section="credits" label={fr.research.credits.branch} />
+        <SimpleEntry section="pitch" label={fr.research.comingSoonViews.pitch.branch} />
+        <SimpleEntry section="tagLine" label={fr.research.comingSoonViews.tagLine.branch} />
+        <SimpleEntry section="intention" label={fr.research.comingSoonViews.intention.branch} />
       </ul>
     </nav>
   )
 }
 
-/** Entrée « Générique », sous Documents : ouvre le formulaire du générique. */
-function CreditsEntry() {
-  const section = useStore(researchStore, (state) => state.section)
+/** Entrée simple (sans flèche ni compteur) : ouvre sa vue dans la zone de droite. */
+function SimpleEntry({ section, label }: { section: ProjectSection; label: string }) {
+  const current = useStore(researchStore, (state) => state.section)
   return (
     <li className="research-branch">
       <button
-        className={`research-branch-title${section === 'credits' ? ' active' : ''}`}
-        onClick={selectCredits}
+        className={`research-branch-title${current === section ? ' active' : ''}`}
+        onClick={() => selectSection(section)}
       >
-        {fr.research.credits.branch}
+        {label}
       </button>
     </li>
   )

@@ -11,6 +11,7 @@ import { PlaceSheetView } from './PlaceSheetView'
 import { ResearchDialogs } from './ResearchDialogs'
 import { ResearchTree } from './ResearchTree'
 import { CreditsView } from './CreditsView'
+import { ComingSoonView, TitlePageView } from './ProjectSectionViews'
 import { loadCredits } from './creditsStore'
 import {
   currentSheet,
@@ -23,7 +24,13 @@ import {
 } from './researchStore'
 
 /** Module Recherches : arbre et liste des fiches à gauche, fiche ouverte à droite. */
-export function ResearchModule() {
+export function ResearchModule({
+  projectId,
+  projectTitle
+}: {
+  projectId: string
+  projectTitle: string
+}) {
   const kind = useStore(researchStore, (state) => state.kind)
   const status = useStore(researchStore, (state) => state.status)
   const error = useStore(researchStore, (state) => state.error)
@@ -72,7 +79,8 @@ export function ResearchModule() {
   return (
     <div className="research-module">
       <div className="toolbar" role="toolbar">
-        {section === 'credits' ? null : section === 'documents' ? (
+        {section === 'credits' ||
+        (section !== 'sheets' && section !== 'documents') ? null : section === 'documents' ? (
           <div className="toolbar-group">
             <button
               className="tool-button"
@@ -141,7 +149,15 @@ export function ResearchModule() {
       <div className="research-body">
         <ResearchTree />
         <main className="research-sheet">
-          {section === 'credits' ? (
+          {section === 'titlePage' ? (
+            <TitlePageView projectId={projectId} projectTitle={projectTitle} />
+          ) : section === 'logLine' ||
+            section === 'synopsis' ||
+            section === 'pitch' ||
+            section === 'tagLine' ||
+            section === 'intention' ? (
+            <ComingSoonView section={section} />
+          ) : section === 'credits' ? (
             <CreditsView />
           ) : section === 'documents' ? (
             docNote ? (

@@ -173,7 +173,9 @@ export default async function ({ app, check, log, newProject }) {
   await app.module('Données du projet')
   await sleep(1500)
   await closeBanner()
-  await app.click('.research-branch-title')
+  await app.evaluate(
+    `[...document.querySelectorAll('.research-branch-title')].find((b) => b.textContent.trim().startsWith('Personnages'))?.click()`
+  )
   await openSheet('ZOE')
   await typeName('Zoé')
   check((await app.dialog()) === null, 'sans occurrence : pas de fenêtre')

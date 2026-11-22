@@ -146,7 +146,7 @@ export function ProjectView({
         {!linkReady ? (
           <p className="cards-message muted">{fr.scriptLink.loading}</p>
         ) : module === 'research' ? (
-          <ResearchModule />
+          <ResearchModule projectId={project.id} projectTitle={project.title} />
         ) : module === 'cards' ? (
           <CardsModule projectId={project.id} settings={project.settings} />
         ) : module === 'stats' ? (

@@ -60,7 +60,9 @@ export default async function ({ app, check, log, newProject }) {
   await sleep(300)
   for (let i = 0; i < 15; i++) await app.menu('Présentation', 'Agrandir')
   await sleep(800)
-  log(`    taille du texte : ${await app.evaluate(`getComputedStyle(document.querySelector('.cm-line')).fontSize`)}`)
+  log(
+    `    taille du texte : ${await app.evaluate(`getComputedStyle(document.querySelector('.cm-line')).fontSize`)}`
+  )
   await pass('matrix-grand')
 
   // Retour aux réglages d'avant.
@@ -69,7 +71,9 @@ export default async function ({ app, check, log, newProject }) {
   await sleep(500)
   await app.evaluate(`document.querySelector('input[name="theme"][value="defaut"]').click()`)
   await sleep(500)
-  const back = await app.evaluate(`document.documentElement.dataset.theme + ' ' + getComputedStyle(document.querySelector('.cm-line')).fontSize`)
+  const back = await app.evaluate(
+    `document.documentElement.dataset.theme + ' ' + getComputedStyle(document.querySelector('.cm-line')).fontSize`
+  )
   log(`    après remise : ${back}`)
   check(back.startsWith('defaut'), 'thème remis sur « Par défaut »')
 }

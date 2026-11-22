@@ -36,6 +36,18 @@ export type ResearchDialog =
   | { kind: 'docDelete'; entry: DocSelection }
   | null
 
+/** Rubriques sans fiches : entrées simples du panneau (comme « Générique »). */
+export type ProjectSection =
+  | 'sheets'
+  | 'documents'
+  | 'credits'
+  | 'titlePage'
+  | 'logLine'
+  | 'synopsis'
+  | 'pitch'
+  | 'tagLine'
+  | 'intention'
+
 interface ResearchState {
   /** Le module est affiché (le menu Annuler n'agit alors pas sur les cartes). */
   active: boolean
@@ -46,7 +58,7 @@ interface ResearchState {
   loaded: boolean
   selected: string | null
   /** Branche affichée : les fiches (Personnages, Lieux) ou les documents. */
-  section: 'sheets' | 'documents' | 'credits'
+  section: ProjectSection
   /** Arbre des documents, relu sur le disque ; null avant la première lecture. */
   documents: DocumentFolder | null
   docSelected: DocSelection | null
@@ -118,6 +130,11 @@ export function selectDocument(docSelected: DocSelection | null): void {
 /** Choisir l'entrée « Générique » de l'arbre. */
 export function selectCredits(): void {
   researchStore.set({ section: 'credits' })
+}
+
+/** Choisir une entrée simple du panneau (page de titre, synopsis…). */
+export function selectSection(section: ProjectSection): void {
+  researchStore.set({ section })
 }
 
 export function selectSheet(kind: SheetKind, fileName: string | null): void {

@@ -227,6 +227,22 @@ const macTexts = {
     places: 'Lieux',
     documents: 'Documents',
     comingSoon: 'Bientôt disponible',
+    titlePage: {
+      branch: 'Page de titre',
+      intro:
+        'Ces informations sont écrites en tête du scénario (Fountain) et imprimées sur la page de titre du PDF.',
+      save: 'Enregistrer',
+      saved: 'Page de titre enregistrée.'
+    },
+    // Vues provisoires, remplies en 18C-2 et 18C-3.
+    comingSoonViews: {
+      logLine: { branch: 'Log line', title: 'Log line' },
+      synopsis: { branch: 'Synopsis', title: 'Synopsis' },
+      pitch: { branch: 'Pitch', title: 'Pitch' },
+      tagLine: { branch: 'Tag line', title: 'Tag line' },
+      intention: { branch: 'Note d’intention', title: 'Note d’intention' },
+      soon: 'À venir'
+    },
     newSheet: 'Nouveau',
     deleteSheet: 'Supprimer',
     loading: 'Chargement des fiches…',

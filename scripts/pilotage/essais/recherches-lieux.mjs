@@ -39,7 +39,7 @@ export default async function ({ app, check, log, newProject }) {
     )
   const valueOf = (label, tag) => app.evaluate(`(${labelled(label, tag)})?.value ?? null`)
   const clickBranch = (index) =>
-    app.evaluate(`document.querySelectorAll('.research-branch-title')[${index}].click()`)
+    app.evaluate(`document.querySelectorAll('.research-branch-title')[${index} + 3].click()`)
 
   await app.openProject(projectFile)
   await app.module('Données du projet')

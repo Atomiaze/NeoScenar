@@ -73,30 +73,43 @@ function TitlePageForm({ initial }: { initial: TitlePageValues }) {
         </>
       }
     >
-      <div className="title-page-fields">
-        {TITLE_PAGE_FIELDS.map((field) => (
-          <label key={field} className="title-page-field">
-            <span>{t.fields[field]}</span>
-            {MULTILINE.has(field) ? (
-              <textarea
-                spellCheck={SPELLCHECKED.has(field)}
-                rows={3}
-                value={values[field]}
-                onChange={(event) => set(field, event.target.value)}
-              />
-            ) : (
-              <input
-                type="text"
-                spellCheck={false}
-                value={values[field]}
-                autoFocus={field === 'Title'}
-                onChange={(event) => set(field, event.target.value)}
-              />
-            )}
-            {t.help[field] && <small className="muted">{t.help[field]}</small>}
-          </label>
-        ))}
-      </div>
+      <TitlePageFields values={values} onChange={set} />
     </Dialog>
+  )
+}
+
+/** Champs du formulaire de la page de titre, partagés par la fenêtre et la vue Données du projet. */
+export function TitlePageFields({
+  values,
+  onChange
+}: {
+  values: TitlePageValues
+  onChange(field: TitlePageField, value: string): void
+}) {
+  return (
+    <div className="title-page-fields">
+      {TITLE_PAGE_FIELDS.map((field) => (
+        <label key={field} className="title-page-field">
+          <span>{t.fields[field]}</span>
+          {MULTILINE.has(field) ? (
+            <textarea
+              spellCheck={SPELLCHECKED.has(field)}
+              rows={3}
+              value={values[field]}
+              onChange={(event) => onChange(field, event.target.value)}
+            />
+          ) : (
+            <input
+              type="text"
+              spellCheck={false}
+              value={values[field]}
+              autoFocus={field === 'Title'}
+              onChange={(event) => onChange(field, event.target.value)}
+            />
+          )}
+          {t.help[field] && <small className="muted">{t.help[field]}</small>}
+        </label>
+      ))}
+    </div>
   )
 }

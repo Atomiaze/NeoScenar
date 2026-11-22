@@ -49,7 +49,7 @@ export default async function ({ app, check, newProject }) {
   await app.openProject(projectFile)
   await app.module('Données du projet')
   await sleep(500)
-  await app.evaluate(`document.querySelectorAll('.research-branch-title')[2].click()`)
+  await app.evaluate(`document.querySelectorAll('.research-branch-title')[5].click()`)
   await sleep(300)
 
   // Dossier à la racine, puis sous-dossier dans le dossier choisi.

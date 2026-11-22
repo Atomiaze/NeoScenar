@@ -34,7 +34,7 @@ export default async function ({ app, check, log, newProject }) {
       const branches = [...document.querySelectorAll('.research-branch')]
       const out = {}
       ;['personnages', 'lieux', 'documents'].forEach((name, i) => {
-        const b = branches[i]
+        const b = branches[i + 3]
         const title = textStart(b.querySelector('.research-branch-title'))
         const dot = b.querySelector('.sheet-dot')
         const name_ = b.querySelector('.doc-chevron') ?? b.querySelector('.sheet-row-name')
@@ -91,7 +91,7 @@ export default async function ({ app, check, log, newProject }) {
   for (const theme of ['defaut', 'cobalt', 'or', 'matrix', 'pinklady', 'forest', 'aqua']) {
     await app.evaluate(`window.neoscenar.setTheme(${JSON.stringify(theme)})`)
     await sleep(400)
-    await app.evaluate(`document.querySelectorAll('.research-branch-title')[1].click()`)
+    await app.evaluate(`document.querySelectorAll('.research-branch-title')[4].click()`)
     await sleep(300)
     const colors = await app.evaluate(`(() => {
       const t = document.querySelector('.research-branch-title.active')
