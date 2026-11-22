@@ -242,14 +242,26 @@ const macTexts = {
       rule: 'Ligne horizontale',
       hint: 'Le texte est enregistré au format Markdown, lisible dans Obsidian : # Titre, **gras**, *italique*, --- pour une ligne.'
     },
-    // Vues provisoires, remplies en 18C-3 (log line, tag line).
+    versions: {
+      logLine: {
+        intro: 'Écrivez plusieurs versions de la log line (le film en une ou deux phrases).'
+      },
+      tagLine: { intro: 'Écrivez plusieurs versions de la tag line (la phrase d’accroche).' },
+      version: (n: number): string => `Version ${n}`,
+      add: 'Ajouter une version',
+      remove: 'Supprimer cette version',
+      retained: 'Retenue pour la page de titre',
+      empty: 'Aucune version. Cliquez sur « + » pour en écrire une.',
+      deleteTitle: 'Supprimer cette version ?',
+      deleteMessage: 'Le texte de cette version sera perdu.',
+      hint: 'Ces textes sont enregistrés dans un fichier Markdown du projet ; seule la version retenue est imprimée sur la page de titre du PDF, jamais dans le scénario.'
+    },
     comingSoonViews: {
       logLine: { branch: 'Log line', title: 'Log line' },
       synopsis: { branch: 'Synopsis', title: 'Synopsis' },
       pitch: { branch: 'Pitch', title: 'Pitch' },
       tagLine: { branch: 'Tag line', title: 'Tag line' },
-      intention: { branch: 'Note d’intention', title: 'Note d’intention' },
-      soon: 'À venir'
+      intention: { branch: 'Note d’intention', title: 'Note d’intention' }
     },
     newSheet: 'Nouveau',
     deleteSheet: 'Supprimer',

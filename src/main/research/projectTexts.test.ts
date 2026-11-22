@@ -46,4 +46,12 @@ describe('ProjectTexts', () => {
     await expect(texts.read('../projet')).rejects.toThrow()
     expect(() => texts.write('projet', 'x')).toThrow()
   })
+
+  it('accepte log line et tag line, refuse un nom inconnu', async () => {
+    texts.write('logLine', '## Version 1\n\nUn père.\n')
+    await texts.flush()
+    expect(await readFile(join(dataDir, 'log-line.md'), 'utf8')).toContain('Un père.')
+    expect(() => texts.write('toString', 'x')).toThrow()
+    expect(await texts.read('tagLine')).toBe('')
+  })
 })

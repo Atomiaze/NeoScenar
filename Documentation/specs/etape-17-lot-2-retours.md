@@ -61,7 +61,7 @@ Une sous-étape = plan court, réalisation, essais, accord de David, commit, mis
 - [ ] Les trois documents sont indépendants ; rien n'est écrit tant que je n'ai pas tapé.
 - [ ] Tests de l'analyse du sous-ensemble Markdown (fonction pure dans `src/shared/`).
 
-## 18C-3 — Log line et tag line
+## 18C-3 — Log line et tag line (réalisée le 22 nov. 2026)
 
 **À faire**
 

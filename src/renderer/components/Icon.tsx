@@ -8,6 +8,7 @@ const PATHS = {
   stats: 'M5 20V11M10 20V5M15 20v-7M20 20V8',
   planning: 'M4 6h16v14H4zM4 10h16M8 3v5M16 3v5M8 14h3M13 14h3M8 17h3',
   plus: 'M12 5v14M5 12h14',
+  trash: 'M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13M10 11v6M14 11v6',
   plusMany: 'M9 4v10M4 9h10M15 10h5M15 15h5M10 20h10',
   renumber: 'M4 7h3v10M4 17h6M14 7h5l-4 5h2a2.5 2.5 0 1 1-2.5 3',
   lockClosed: 'M6 11h12v9H6zM8.5 11V8a3.5 3.5 0 0 1 7 0v3',

@@ -3,10 +3,10 @@ import { join } from 'node:path'
 import { fr } from '../../renderer/i18n/fr'
 import type { SaveStatus } from '../../shared/api'
 import {
-  isMarkdownTextName,
-  MARKDOWN_TEXT_FILES,
+  isProjectTextName,
+  PROJECT_TEXT_FILES,
   MAX_TEXT_LENGTH,
-  type MarkdownTextName
+  type ProjectTextName
 } from '../../shared/projectTexts'
 import { writeFileSafely } from '../fs/safeWrite'
 import { AutoSaver } from '../project/autoSaver'
@@ -31,14 +31,14 @@ async function exists(path: string): Promise<boolean> {
   }
 }
 
-function checkName(name: unknown): MarkdownTextName {
-  if (!isMarkdownTextName(name)) throw new ProjectError(fr.research.docs.notFound)
+function checkName(name: unknown): ProjectTextName {
+  if (!isProjectTextName(name)) throw new ProjectError(fr.research.docs.notFound)
   return name
 }
 
 export class ProjectTexts {
   private readonly saver: AutoSaver<true>
-  private queued = new Map<MarkdownTextName, string>()
+  private queued = new Map<ProjectTextName, string>()
 
   constructor(private readonly options: ProjectTextsOptions) {
     this.saver = new AutoSaver<true>({
@@ -63,8 +63,8 @@ export class ProjectTexts {
     this.saver.discard()
   }
 
-  private path(name: MarkdownTextName): string {
-    return join(this.options.dataDir, MARKDOWN_TEXT_FILES[name])
+  private path(name: ProjectTextName): string {
+    return join(this.options.dataDir, PROJECT_TEXT_FILES[name])
   }
 
   async read(rawName: unknown): Promise<string> {

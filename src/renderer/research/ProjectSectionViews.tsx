@@ -5,19 +5,6 @@ import { useStore } from '../state/createStore'
 import { TitlePageFields } from '../script/TitlePageDialog'
 import { loadScenario, saveTitlePage, scriptStore } from '../script/scriptStore'
 
-/** Vue provisoire des rubriques du lot 2 (remplies en 18C-3). */
-export function ComingSoonView({ section }: { section: 'logLine' | 'tagLine' }) {
-  const t = fr.research.comingSoonViews
-  return (
-    <div className="research-form">
-      <div className="research-sheet-header">
-        <h2>{t[section].title}</h2>
-      </div>
-      <p className="panel-empty">{t.soon}</p>
-    </div>
-  )
-}
-
 /** Page de titre, éditée dans le module (mêmes champs et même écriture que la fenêtre du scénario). */
 export function TitlePageView({
   projectId,

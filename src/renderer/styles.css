@@ -2559,3 +2559,33 @@ button:disabled {
 .md-editor-host .md-hidden {
   color: transparent;
 }
+
+/* Log line et tag line : liste de versions (18C-3). */
+.version-block {
+  margin-top: 1rem;
+}
+
+.version-head {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.version-head h3 {
+  flex: 1;
+  font-size: 1rem;
+}
+
+.version-retained {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.9rem;
+}
+
+.version-block textarea {
+  width: 100%;
+  margin-top: 0.4rem;
+  resize: vertical;
+  font: inherit;
+}

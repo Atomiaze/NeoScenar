@@ -23,7 +23,7 @@ import type {
 import type { CreditsContent, CreditsData } from './credits/types'
 import type { CrewMember, Planning } from './planning/types'
 import type { DocumentFolder, DocumentImage } from './research/documents'
-import type { MarkdownTextName } from './projectTexts'
+import type { ProjectTextName } from './projectTexts'
 import type { Sheet, SheetImage, SheetKind, SheetPatch, SheetRename } from './research/types'
 import type { ScriptColors } from './themes/scriptColors'
 import type { ThemeChoice } from './themes/themes'
@@ -580,9 +580,9 @@ export interface NeoScenarApi {
   readDocumentNote(path: string): Promise<Result<string>>
   /** Nouveau texte d'une note, enregistré automatiquement. */
   writeDocumentNote(path: string, text: string): Promise<Result<void>>
-  /** Synopsis, pitch ou note d'intention (Markdown dans neoscenar/) ; un fichier absent donne ''. */
-  readProjectText(name: MarkdownTextName): Promise<Result<string>>
-  writeProjectText(name: MarkdownTextName, text: string): Promise<Result<void>>
+  /** Synopsis, pitch, note d'intention, log line ou tag line (dans neoscenar/) ; un fichier absent donne ''. */
+  readProjectText(name: ProjectTextName): Promise<Result<string>>
+  writeProjectText(name: ProjectTextName, text: string): Promise<Result<void>>
   storeDocumentImageFile(folder: string, sourcePath: string): Promise<Result<DocumentImage>>
   storeDocumentImageBytes(
     folder: string,

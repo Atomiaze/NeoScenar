@@ -1,5 +1,5 @@
 // Étape 18C-1 : ordre des 10 rubriques de Données du projet sur les 7 thèmes, page de titre
-// éditée dans le module (aller-retour avec le fichier et la fenêtre du Scénario), vues « À venir »,
+// éditée dans le module (aller-retour avec le fichier et la fenêtre du Scénario), ouverture des rubriques,
 // et aucun fichier modifié à l'ouverture d'un projet.
 
 import { readdirSync, readFileSync, statSync } from 'node:fs'
@@ -53,15 +53,14 @@ export default async function ({ app, check, log, newProject }) {
       `[...document.querySelectorAll('.research-tree .research-branch-title')].find((b) => b.textContent.replace(/\\d+$/, '').trim() === ${JSON.stringify(label)})?.click()`
     )
 
-  // Vues provisoires.
-  // Synopsis, Pitch et Note d'intention sont réalisés en 18C-2 (essai documents-markdown.mjs).
+  // Les autres rubriques ont leurs essais (documents-markdown.mjs, log-line-tag-line.mjs).
   for (const label of ['Log line', 'Tag line']) {
     await clickEntry(label)
     await sleep(300)
     const view = await app.evaluate(
-      `({ h: document.querySelector('.research-sheet h2')?.textContent, text: document.querySelector('.research-sheet .panel-empty')?.textContent, active: document.querySelector('.research-branch-title.active')?.textContent.trim() })`
+      `({ h: document.querySelector('.research-sheet h2')?.textContent, active: document.querySelector('.research-branch-title.active')?.textContent.trim() })`
     )
-    check(view.h === label && view.text === 'À venir', `${label} : vue « À venir »`)
+    check(view.h === label, `${label} : vue ouverte`)
     check(view.active === label, `${label} : rubrique active`)
   }
 
