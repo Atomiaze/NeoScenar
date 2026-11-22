@@ -19,10 +19,12 @@ import { PageIndicator } from './PageIndicator'
 import {
   loadNavigatorShown,
   navigatorStore,
+  navigatorVisible,
   toggleNavigatorShown
 } from './navigator/navigatorStore'
-import { RevisionPalette, RevisionPopups } from './revision/RevisionPanel'
-import { revisionStore, togglePalette } from './revision/revisionStore'
+import { useNavigatorSqueeze } from './navigator/useNavigatorSqueeze'
+import { RevisionPalette, RevisionPopups, RevisionSidePanel } from './revision/RevisionPanel'
+import { loadRevisionPanelShown, revisionStore, togglePalette } from './revision/revisionStore'
 import './script.css'
 
 /** Module Scénario : barre d'outils, navigateur de scènes et éditeur du scénario. */
@@ -33,10 +35,13 @@ export function ScriptModule({ projectId }: { projectId: string }) {
   const loadError = useStore(scriptStore, (state) => state.loadError)
   const sendError = useStore(scriptStore, (state) => state.sendError)
   const notice = useStore(scriptStore, (state) => state.notice)
-  const navigatorShown = useStore(navigatorStore, (state) => state.shown && !state.suppressed)
+  const navigatorShown = useStore(navigatorStore, navigatorVisible)
   const focusMode = useStore(scriptStore, (state) => state.focusMode)
   const elementBarShown = useStore(scriptStore, (state) => state.elementBarShown)
   const paletteShown = useStore(revisionStore, (state) => state.paletteShown)
+  const revisionPanelShown = useStore(revisionStore, (state) => state.panelShown)
+  const sidePanelShown = paletteShown && revisionPanelShown && !focusMode && parts !== null
+  useNavigatorSqueeze(paletteShown, sidePanelShown, version)
 
   // Échap quitte le mode concentration, sauf s'il vient de fermer une liste d'autocomplétion ou le
   // panneau de recherche (CodeMirror marque alors la touche comme traitée).
@@ -51,6 +56,7 @@ export function ScriptModule({ projectId }: { projectId: string }) {
 
   useEffect(() => {
     void loadScenario(projectId)
+    void loadRevisionPanelShown()
   }, [projectId])
   useEffect(() => {
     void loadNavigatorShown()
@@ -120,6 +126,8 @@ export function ScriptModule({ projectId }: { projectId: string }) {
           {navigatorShown && <SceneNavigator />}
           {elementBarShown && !focusMode && <ElementBar />}
           <ScriptEditor key={version} version={version} />
+          {/* Après l'éditeur : il est attaché quand le panneau lit le texte pour la première fois. */}
+          {sidePanelShown && <RevisionSidePanel key={`revisions-${version}`} />}
         </div>
       )}
       <RevisionPopups />

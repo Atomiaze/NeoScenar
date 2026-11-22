@@ -11,19 +11,24 @@ import {
   clearAll,
   closeRevisionPopups,
   editCommentAtCursor,
+  goToRevision,
   revisionStore,
   saveComment,
+  toggleRevisionPanel,
+  watchRevisionList,
   type CommentEdit
 } from './revisionStore'
 import './revision.css'
 
 const t = fr.script.revision
+const tp = t.panel
 
 /** Les boutons de la palette ne prennent pas le focus : la sélection de l'éditeur reste en place. */
 const keepSelection = (event: React.MouseEvent): void => event.preventDefault()
 
 /** Palette du mode révision, sous la barre d'outils du Scénario. */
 export function RevisionPalette() {
+  const panelShown = useStore(revisionStore, (state) => state.panelShown)
   return (
     <div className="revision-palette" role="toolbar" aria-label={t.button}>
       <span className="revision-label">{t.paletteLabel}</span>
@@ -50,7 +55,55 @@ export function RevisionPalette() {
       <button className="tool-button" onMouseDown={keepSelection} onClick={askClearAll}>
         {t.clearAll}
       </button>
+      <button
+        className="tool-button"
+        title={tp.toggleTitle}
+        aria-pressed={panelShown}
+        onMouseDown={keepSelection}
+        onClick={toggleRevisionPanel}
+      >
+        {panelShown ? tp.hide : tp.show}
+      </button>
     </div>
+  )
+}
+
+/** Panneau des révisions, à droite du scénario : une ligne par marque, dans l'ordre du texte. */
+export function RevisionSidePanel() {
+  const items = useStore(revisionStore, (state) => state.items)
+  useEffect(() => watchRevisionList(), [])
+  return (
+    <aside className="revision-side-panel" aria-label={tp.label}>
+      <div className="revision-side-title">{tp.title(items.length)}</div>
+      {items.length === 0 ? (
+        <p className="revision-side-empty muted">{tp.empty}</p>
+      ) : (
+        <ul className="revision-side-list">
+          {items.map((item, position) => (
+            <li key={`${item.from}-${position}`}>
+              <button
+                className={`revision-side-row rev-${item.color}`}
+                title={item.comment || tp.rowTitle(t.colors[item.color])}
+                onMouseDown={keepSelection}
+                onClick={() => goToRevision(position)}
+              >
+                <span className="revision-side-head">
+                  <span className="revision-side-dot" aria-label={t.colors[item.color]} />
+                  <span
+                    className="revision-side-scene"
+                    title={item.scene ? undefined : tp.noSceneTitle}
+                  >
+                    {item.scene ?? tp.noScene}
+                  </span>
+                </span>
+                <span className="revision-side-excerpt">{item.excerpt}</span>
+                {item.comment && <span className="revision-side-comment">{item.comment}</span>}
+              </button>
+            </li>
+          ))}
+        </ul>
+      )}
+    </aside>
   )
 }
 

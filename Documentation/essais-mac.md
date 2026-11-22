@@ -208,6 +208,27 @@ Remarque : …
 
 ---
 
+## 12. Lot 3 (18C-7 et 18C-8)
+
+### Genre des personnages et crédits (18C-7)
+
+- [ ] Fiche personnage : le menu « Genre » propose, dans l'ordre, Femme, Homme, Non-binaire, Genre Fluide, Agenre, Neutre, Non défini. Une fiche existante affiche « Non défini » et son fichier `.md` n'est pas réécrit à l'ouverture.
+- [ ] Choisir « Femme » écrit `genre: Femme` dans le `.md` ; une valeur écrite à la main dans Obsidian (« Autre ») reste affichée dans le menu.
+- [ ] « À propos » et l'accueil montrent les trois crédits : Créé par David Delepinne, Module Révision Gabriel Delepinne, Soutien technique Mathilde Gossart.
+
+### Panneau des révisions (18C-8)
+
+- [ ] Scénario > **Révision** : le panneau « Révisions (n) » s'ouvre à droite ; une ligne par marque, dans l'ordre du texte : pastille, `S_00xx`, début du texte surligné, commentaire (deux lignes au plus, texte complet au survol).
+- [ ] Clic sur une ligne : le texte surligné est sélectionné et visible ; on peut taper aussitôt sans cliquer dans la page.
+- [ ] Je surligne, je tape dans un texte surligné, puis « Effacer toutes les marques » : le panneau suit (« Aucune révision ») ; Cmd + Z fait revenir les lignes.
+- [ ] « Masquer le panneau » : le choix est gardé pour ce projet après fermeture et réouverture ; un autre projet garde le panneau affiché.
+- [ ] Fenêtre réduite à environ 1280 px de large : le navigateur de scènes se masque tout seul et la page A4 est entière ; en agrandissant la fenêtre, il revient. Rouvert à la main, il reste ouvert jusqu'à la fermeture du mode révision.
+- [ ] Le survol d'un texte surligné montre toujours son commentaire.
+
+Remarque : …
+
+---
+
 ## Quand tout est coché
 
 - Envoyez-moi les remarques et les captures. Je corrige.

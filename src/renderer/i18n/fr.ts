@@ -1179,7 +1179,20 @@ const macTexts = {
       cleared: (count: number): string =>
         `${count === 1 ? '1 marque effacée' : `${count} marques effacées`}. Cmd + Z pour annuler.`,
       navigatorCount: (count: number): string =>
-        count === 1 ? '1 marque de révision' : `${count} marques de révision`
+        count === 1 ? '1 marque de révision' : `${count} marques de révision`,
+      /** Panneau des révisions, à droite du scénario (18C-8). */
+      panel: {
+        show: 'Afficher le panneau',
+        hide: 'Masquer le panneau',
+        toggleTitle: 'Afficher ou masquer la liste des révisions, à droite du scénario',
+        label: 'Liste des révisions',
+        title: (count: number): string => `Révisions (${count})`,
+        empty: 'Aucune révision',
+        noScene: '—',
+        noSceneTitle: 'Avant la première scène, ou scène sans numéro',
+        rowTitle: (color: string): string =>
+          `Surlignage ${color.toLowerCase()} : cliquer pour aller au texte`
+      }
     },
     elementSelector: 'Type de l’élément où se trouve le curseur',
     elementBar: 'Barre des éléments',

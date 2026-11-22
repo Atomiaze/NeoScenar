@@ -2,6 +2,7 @@ import { access } from 'node:fs/promises'
 import { dirname, join } from 'node:path'
 import { parseCustomVocabulary, type CustomVocabulary } from '../shared/customVocabulary'
 import { creditsOpenKey, openBlocksOf, withProjectOpen } from '../shared/credits/openState'
+import { isRevisionPanelShown, withRevisionPanelShown } from '../shared/revision/panelState'
 import type {
   CompleteStructureRequest,
   CreateProjectRequest,
@@ -887,6 +888,21 @@ export class AppController {
     await this.updatePreferences((prefs) => ({
       ...prefs,
       creditsOpen: withProjectOpen(prefs.creditsOpen, key, blocks)
+    })).catch(() => undefined)
+  }
+
+  async getRevisionPanelShown(): Promise<boolean> {
+    const key = this.creditsOpenKey()
+    if (key === null) return true
+    return isRevisionPanelShown((await this.getPreferences()).revisionPanelHidden, key)
+  }
+
+  async setRevisionPanelShown(shown: unknown): Promise<void> {
+    const key = this.creditsOpenKey()
+    if (key === null || typeof shown !== 'boolean') return
+    await this.updatePreferences((prefs) => ({
+      ...prefs,
+      revisionPanelHidden: withRevisionPanelShown(prefs.revisionPanelHidden, key, shown)
     })).catch(() => undefined)
   }
 

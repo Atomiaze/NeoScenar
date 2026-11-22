@@ -88,6 +88,8 @@ export const IPC_CHANNELS = {
   setShowThumbnails: 'prefs:set-show-thumbnails',
   getCreditsOpenBlocks: 'prefs:get-credits-open-blocks',
   setCreditsOpenBlocks: 'prefs:set-credits-open-blocks',
+  getRevisionPanelShown: 'prefs:get-revision-panel-shown',
+  setRevisionPanelShown: 'prefs:set-revision-panel-shown',
   getCustomVocabulary: 'prefs:get-custom-vocabulary',
   setCustomVocabulary: 'prefs:set-custom-vocabulary',
   getBlenderExportInfo: 'blender:get-export-info',
@@ -472,6 +474,9 @@ export interface NeoScenarApi {
   /** Blocs ouverts du formulaire du générique pour le projet ouvert (vide = tout replié). */
   getCreditsOpenBlocks(): Promise<string[]>
   setCreditsOpenBlocks(open: string[]): Promise<void>
+  /** Panneau des révisions affiché pour le projet ouvert (affiché par défaut). */
+  getRevisionPanelShown(): Promise<boolean>
+  setRevisionPanelShown(shown: boolean): Promise<void>
   /** Entrées personnelles des menus de plan (préférences de l'application). */
   getCustomVocabulary(): Promise<CustomVocabulary>
   setCustomVocabulary(value: CustomVocabulary): Promise<void>

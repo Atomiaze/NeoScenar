@@ -25,6 +25,10 @@ interface NavigatorState {
   shown: boolean
   /** Masqué de l'extérieur, quelle que soit la préférence (mode concentration, sous-étape G). */
   suppressed: boolean
+  /** Masqué tout seul : la page A4 ne tient pas à côté du panneau des révisions (18C-8). */
+  autoHidden: boolean
+  /** Ouvert ou fermé à la main pendant le mode révision : plus de masquage automatique. */
+  keepShown: boolean
 }
 
 export const navigatorStore = createStore<NavigatorState>({
@@ -32,8 +36,15 @@ export const navigatorStore = createStore<NavigatorState>({
   cursorLine: 1,
   collapsed: new Set(),
   shown: true,
-  suppressed: false
+  suppressed: false,
+  autoHidden: false,
+  keepShown: false
 })
+
+/** Le panneau est-il affiché à l'écran (préférence, mode concentration, manque de place) ? */
+export function navigatorVisible(state: NavigatorState): boolean {
+  return state.shown && !state.suppressed && !state.autoHidden
+}
 
 /** Nouvelle pagination (partagée avec les traits de page) : l'arbre est reconstruit à partir d'elle. */
 export function setNavigatorLayout(layout: PageLayout): void {
@@ -70,9 +81,24 @@ export function loadNavigatorShown(): Promise<void> {
 /** Bouton de la barre d'outils et menu Présentation > Navigateur de scènes. */
 export async function toggleNavigatorShown(): Promise<void> {
   await loadNavigatorShown()
+  // Un geste de l'élève l'emporte sur le masquage automatique jusqu'à la fin du mode révision.
+  if (navigatorStore.get().autoHidden) {
+    navigatorStore.set({ autoHidden: false, keepShown: true })
+    return
+  }
+  navigatorStore.set({ keepShown: true })
   const shown = !navigatorStore.get().shown
   navigatorStore.set({ shown })
   await window.neoscenar.setShowSceneNavigator(shown)
+}
+
+/** Début ou fin du mode révision : le navigateur retrouve son affichage habituel. */
+export function resetNavigatorSqueeze(): void {
+  navigatorStore.set({ autoHidden: false, keepShown: false })
+}
+
+export function setNavigatorAutoHidden(autoHidden: boolean): void {
+  if (navigatorStore.get().autoHidden !== autoHidden) navigatorStore.set({ autoHidden })
 }
 
 /** Masque le panneau de l'extérieur (mode concentration), sans toucher à la préférence. */

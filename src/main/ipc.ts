@@ -321,6 +321,10 @@ export function registerIpcHandlers(
     controller.setShowThumbnails(show)
   )
   ipcMain.handle(IPC_CHANNELS.getCreditsOpenBlocks, () => controller.getCreditsOpenBlocks())
+  ipcMain.handle(IPC_CHANNELS.getRevisionPanelShown, () => controller.getRevisionPanelShown())
+  ipcMain.handle(IPC_CHANNELS.setRevisionPanelShown, (_event, shown: unknown) =>
+    controller.setRevisionPanelShown(shown)
+  )
   ipcMain.handle(IPC_CHANNELS.getCustomVocabulary, () => controller.getCustomVocabulary())
   ipcMain.handle(IPC_CHANNELS.setCustomVocabulary, (_event, value: unknown) =>
     controller.setCustomVocabulary(value)

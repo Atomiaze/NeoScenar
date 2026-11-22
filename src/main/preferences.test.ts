@@ -58,6 +58,7 @@ describe('fichier des préférences', () => {
       scriptColors: { matrix: { note: '#ff00ff' } },
       welcomeImage: 'image-accueil-1700000000000.png',
       creditsOpen: { p1: ['equipe'] },
+      revisionPanelHidden: ['p1'],
       customVocabulary: {
         shotSizes: [],
         cameraMovements: [{ label: 'Plan drone', definition: 'Vue du ciel' }],

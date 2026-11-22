@@ -16,6 +16,8 @@ export default async function ({ app, check, log, newProject }) {
     scenarioFile
   )
   await app.openProject(projectFile)
+  // Fenêtre large : à 1280 px, le panneau des révisions (18C-8) masquerait le navigateur.
+  await app.main.evaluate(`${electron}.BrowserWindow.getAllWindows()[0].setSize(1700, 900)`)
   await app.module('Scénario')
   await sleep(2500)
   // Référence : le fichier tel que NeoScenar l'a laissé après l'ouverture (rapprochement compris).

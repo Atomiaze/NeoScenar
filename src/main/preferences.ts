@@ -3,6 +3,7 @@ import { join } from 'node:path'
 import { writeJsonSafely } from './fs/safeWrite'
 import { CARD_ZOOM, clampCardZoom } from '../shared/cardZoom'
 import { parseCreditsOpen, type CreditsOpenByProject } from '../shared/credits/openState'
+import { parseRevisionPanelHidden } from '../shared/revision/panelState'
 import {
   emptyCustomVocabulary,
   parseCustomVocabulary,
@@ -57,6 +58,8 @@ export interface Preferences {
   welcomeImage: string | null
   /** Blocs ouverts du formulaire du générique, par projet (17C). */
   creditsOpen: CreditsOpenByProject
+  /** Projets où le panneau des révisions est masqué (18C-8) ; affiché partout ailleurs. */
+  revisionPanelHidden: string[]
   /** Entrées personnelles des menus de plan (échelle, mouvement, angle), pour tous les projets. */
   customVocabulary: CustomVocabulary
 }
@@ -78,6 +81,7 @@ export function emptyPreferences(): Preferences {
     scriptColors: {},
     welcomeImage: null,
     creditsOpen: {},
+    revisionPanelHidden: [],
     customVocabulary: emptyCustomVocabulary()
   }
 }
@@ -129,6 +133,7 @@ export async function loadPreferences(userDataDir: string): Promise<Preferences>
       scriptColors: parseScriptColors(raw.scriptColors),
       welcomeImage: isWelcomeImageCopyName(raw.welcomeImage) ? raw.welcomeImage : null,
       creditsOpen: parseCreditsOpen(raw.creditsOpen),
+      revisionPanelHidden: parseRevisionPanelHidden(raw.revisionPanelHidden),
       customVocabulary: parseCustomVocabulary(raw.customVocabulary)
     }
   } catch {

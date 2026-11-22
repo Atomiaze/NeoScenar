@@ -116,3 +116,95 @@
   justify-content: flex-end;
   gap: 0.4rem;
 }
+
+/* Panneau des révisions, à droite du scénario (18C-8). */
+.revision-side-panel {
+  flex: none;
+  width: 280px;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  background: var(--surface);
+  border-left: 1px solid var(--border);
+  font-size: 0.85rem;
+}
+
+.revision-side-title {
+  flex: none;
+  padding: 0.55rem 0.75rem;
+  font-weight: 600;
+  border-bottom: 1px solid var(--border);
+  font-variant-numeric: tabular-nums;
+}
+
+.revision-side-empty {
+  padding: 0.75rem;
+  margin: 0;
+}
+
+.revision-side-list {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  margin: 0;
+  padding: 0.25rem 0;
+  list-style: none;
+}
+
+.revision-side-row {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  padding: 0.4rem 0.75rem;
+  text-align: left;
+  font: inherit;
+  color: var(--text);
+  background: none;
+  border: none;
+  border-radius: 0;
+  cursor: pointer;
+}
+
+.revision-side-row:hover,
+.revision-side-row:focus-visible {
+  background: var(--rev-color);
+  outline: none;
+}
+
+.revision-side-head {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.revision-side-dot {
+  flex: none;
+  width: 0.75rem;
+  height: 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  background: var(--rev-solid);
+}
+
+.revision-side-scene {
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.revision-side-excerpt {
+  font-family: 'Courier Prime', Courier, monospace;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Commentaire long : deux lignes au plus, le texte entier au survol (title). */
+.revision-side-comment {
+  color: var(--muted);
+  font-style: italic;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
