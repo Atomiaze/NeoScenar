@@ -54,7 +54,8 @@ Les numéros de commit antérieurs au 20 novembre 2026 (par exemple `710449c`) r
 - Essai `editeur-finitions.mjs` en échec, antérieur à 16A : la vérification « sans le réglage, le fond change » échoue (vérifié sur le code d'avant 16A).
 - Essai `dupliquer-depuis-scenario.mjs` instable : un échec sur trois passages (copie sélectionnée et curseur hors scène), réussi sinon, avant comme après 16A.
 - Essais avec l'aperçu PDF : de temps en temps (2 passages sur 10), un message interne de Chromium (« SharedImageManager… Invalid mailbox ») fait échouer « aucune erreur dans les consoles » ; sans lien avec NeoScenar.
-- Trait de page « trop haut sur É/À » (13A) : non reproduit à l'écran, corrigé par construction.
+- Trait de page sur les accents (É, È, À) en début de page : relevé sur l'iMac (essais Mac, 22 nov.), corrigé dans `pageBreaks.ts` (le trait se place au milieu de l'espace libre entre les descentes de la ligne précédente et le haut réel de l'accent ; sans place, il passe derrière le texte par fusion `darken`/`lighten`) ; pagination inchangée ; essai `trait-de-page-accents.mjs` (4 combinaisons thème × taille, captures zoomées). Le cas « derrière le texte » n'apparaît pas dans le scénario d'essai : non vu à l'écran.
+- Fiches avec accent (ÉLIOTT.md) : gardées (exception à la règle « sans accent »). `nameKey` et `fileNameTaken` comparent en NFC : le lien fiche ↔ personnage marche pour un nom NFD (Mac) comme NFC (Windows), testé dans `scriptSheets.test.ts`.
 
 ## Méthode de travail
 

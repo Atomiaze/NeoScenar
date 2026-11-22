@@ -269,8 +269,12 @@ export async function launch({ userData, screenshots }) {
     navigatorCurrent: () =>
       page.evaluate(`document.querySelector('.navigator-row.current')?.textContent ?? null`),
 
-    async screenshot(file) {
-      const shot = await page.send('Page.captureScreenshot', { format: 'png' })
+    /** `clip` facultatif : { x, y, width, height, scale } en pixels de la fenêtre (zoom sur un détail). */
+    async screenshot(file, clip) {
+      const shot = await page.send('Page.captureScreenshot', {
+        format: 'png',
+        ...(clip ? { clip: { scale: 1, ...clip } } : {})
+      })
       writeFileSync(join(screenshots, file), Buffer.from(shot.result.data, 'base64'))
       return join(screenshots, file)
     },

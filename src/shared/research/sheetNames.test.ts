@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import {
+  fileNameTaken,
   nameKey,
   proposeColor,
   SHEET_COLORS,
@@ -68,5 +69,11 @@ describe('sortCharacters', () => {
       sheet('MARIE', 'Principal')
     ])
     expect(sorted.map((s) => s.nom)).toEqual(['émile', 'MARIE', 'ANNA', 'PAUL', 'ZOÉ'])
+  })
+})
+
+describe('formes Unicode (NFD sur macOS, NFC sur Windows)', () => {
+  it('fileNameTaken ignore la forme Unicode', () => {
+    expect(fileNameTaken('ÉLIOTT.md'.normalize('NFD'), ['ÉLIOTT.md'.normalize('NFC')])).toBe(true)
   })
 })

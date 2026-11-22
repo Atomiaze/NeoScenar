@@ -173,3 +173,36 @@ describe('renameInScript', () => {
     )
   })
 })
+
+describe('noms avec accents : NFD (macOS) et NFC (Windows)', () => {
+  const nfc = 'ÉLIOTT'.normalize('NFC')
+  const nfd = 'ÉLIOTT'.normalize('NFD')
+  const script = `INT. CAFÉ - JOUR #10#\n\n${nfc}\nSalut.\n`
+
+  it('les deux écritures sont bien différentes en mémoire', () => {
+    expect(nfc).not.toBe(nfd)
+  })
+
+  it.each([
+    ['fiche NFD, scénario NFC', nfd],
+    ['fiche NFC, scénario NFC', nfc]
+  ])('lie la fiche au personnage (%s)', (_label, sheetName) => {
+    const names = scriptNames(doc(script))
+    expect(sheetUsage(sheet(sheetName), presentKeys(names.personnages))).toBe('used')
+  })
+
+  it('lie une fiche NFC à un scénario écrit en NFD', () => {
+    const names = scriptNames(doc(script.replace(nfc, nfd)))
+    expect(sheetUsage(sheet(nfc), presentKeys(names.personnages))).toBe('used')
+  })
+
+  it('ne crée pas de seconde fiche pour le même nom', () => {
+    expect(planSheets('personnages', [{ name: nfc, count: 1 }], [nfd]).create).toEqual([])
+    expect(planSheets('personnages', [{ name: nfd, count: 1 }], [nfc]).create).toEqual([])
+  })
+
+  it('le renommage trouve le nom quelle que soit l’écriture', () => {
+    const changes = renameInScript(script, doc(script), 'personnages', nfd, 'ÉLIOT')
+    expect(changes.length).toBeGreaterThan(0)
+  })
+})

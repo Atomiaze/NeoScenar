@@ -34,15 +34,18 @@ export function sheetFileName(name: string): string {
   return `${safeFileStem(name)}${SHEET_EXTENSION}`
 }
 
-/** Nom de fiche sans tenir compte de la casse (MARIE = Marie). */
+/**
+ * Nom de fiche sans tenir compte de la casse (MARIE = Marie) ni de la forme Unicode : macOS écrit
+ * parfois « É » en deux caractères (NFD), Windows en un seul (NFC).
+ */
 export function nameKey(name: string): string {
-  return cleanSheetName(name).toLocaleUpperCase('fr')
+  return cleanSheetName(name.normalize('NFC')).toLocaleUpperCase('fr')
 }
 
 /** Vrai si ce nom de fichier est déjà pris (le Mac et Windows ignorent la casse). */
 export function fileNameTaken(fileName: string, existing: readonly string[]): boolean {
-  const key = fileName.toLocaleLowerCase('fr')
-  return existing.some((name) => name.toLocaleLowerCase('fr') === key)
+  const key = fileName.normalize('NFC').toLocaleLowerCase('fr')
+  return existing.some((name) => name.normalize('NFC').toLocaleLowerCase('fr') === key)
 }
 
 /**
