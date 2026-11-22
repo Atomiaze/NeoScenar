@@ -72,6 +72,7 @@ import {
   writeCreditsText
 } from './credits/creditsExport'
 import { DocumentsFolder } from './research/documentsFolder'
+import { ProjectTexts } from './research/projectTexts'
 import { SheetFolder } from './research/sheetFolder'
 import { parseSheetKind, parseSheetPatch } from './research/sheetRequests'
 import type { CreditsContent } from '../shared/credits/types'
@@ -182,6 +183,8 @@ export class AppController {
   private documents: DocumentsFolder | null = null
   /** Générique du film (neoscenar/generique.json). */
   private credits: CreditsSession | null = null
+  /** Synopsis, pitch et note d'intention (Markdown dans neoscenar/). */
+  private texts: ProjectTexts | null = null
   /** Planning du projet (neoscenar/planning.json). */
   private planning: PlanningSession | null = null
   private readonly blender: BlenderExporter
@@ -239,6 +242,7 @@ export class AppController {
       this.sheetFolders().some((folder) => folder.hasUnsavedChanges) ||
       (this.documents?.hasUnsavedChanges ?? false) ||
       (this.credits?.hasUnsavedChanges ?? false) ||
+      (this.texts?.hasUnsavedChanges ?? false) ||
       (this.planning?.hasUnsavedChanges ?? false)
     )
   }
@@ -259,6 +263,7 @@ export class AppController {
     this.sheetFolders().forEach((folder) => folder.discard())
     this.documents?.discard()
     this.credits?.discard()
+    this.texts?.discard()
     this.planning?.discard()
     return true
   }
@@ -344,6 +349,9 @@ export class AppController {
       this.sheets = loaded ? this.createSheetFolders(loaded) : null
       this.documents = loaded
         ? new DocumentsFolder({ dataDir: loaded.dataDir, onStatus: this.options.onResearchStatus })
+        : null
+      this.texts = loaded
+        ? new ProjectTexts({ dataDir: loaded.dataDir, onStatus: this.options.onResearchStatus })
         : null
       this.credits = loaded
         ? new CreditsSession({ dataDir: loaded.dataDir, onStatus: this.options.onResearchStatus })
@@ -504,6 +512,20 @@ export class AppController {
     return attempt(() => this.requireDocuments().writeNote(path, text))
   }
 
+  private requireTexts(): ProjectTexts {
+    this.requireCurrent()
+    if (!this.texts) throw new ProjectError(fr.errors.noProjectOpen)
+    return this.texts
+  }
+
+  readProjectText(name: unknown): Promise<Result<string>> {
+    return attempt(() => this.requireTexts().read(name))
+  }
+
+  writeProjectText(name: unknown, text: unknown): Promise<Result<void>> {
+    return attempt(async () => this.requireTexts().write(name, text))
+  }
+
   storeDocumentImageFile(folder: unknown, sourcePath: unknown): Promise<Result<DocumentImage>> {
     return attempt(async () => {
       if (typeof sourcePath !== 'string') throw new ProjectError(fr.images.unreadable)
@@ -613,6 +635,7 @@ export class AppController {
       ...this.sheetFolders().map((folder) => folder.flush()),
       this.documents?.flush() ?? true,
       this.credits?.flush() ?? true,
+      this.texts?.flush() ?? true,
       this.planning?.flush() ?? true
     ])
     return results.every(Boolean)

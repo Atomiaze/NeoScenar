@@ -20,7 +20,7 @@ Rédigée le 21 novembre 2026 dans le projet Claude. Source : note de David du 2
   - `neoscenar/log-line.md`, `neoscenar/tag-line.md` (format en 18C-3).
 - Un fichier absent = document vide. Il n'est créé qu'à la première saisie (un projet existant ne change pas tant qu'on n'écrit rien). Écriture sûre (`writeFileSafely`), comme le reste.
 - Un fichier modifié ailleurs (Obsidian) est relu au retour dans NeoScenar, comme `scenario.fountain`.
-- Ces fichiers suivent le projet partout : copie sur clé, versions (étape 13), « Enregistrer sous ». Vérifier que les versions les incluent.
+- Ces fichiers suivent le projet partout : copie sur clé, « Enregistrer sous ». **Décision de David (22 nov.) : les versions (étape 13) ne les incluent pas** (une version = scénario + découpage, comme pour les documents et le générique) ; même règle pour log line et tag line (18C-3).
 - Le correcteur orthographique (16B) est actif dans tous ces champs.
 - Textes affichés dans `fr.ts`. On ne renomme rien dans le code existant (`research` reste `research`).
 
@@ -44,7 +44,7 @@ Une sous-étape = plan court, réalisation, essais, accord de David, commit, mis
 - [ ] Page de titre modifiée dans Données du projet → visible dans l'éditeur et dans le PDF, et inversement.
 - [ ] Un projet existant s'ouvre sans qu'aucun fichier ne change.
 
-## 18C-2 — Synopsis, pitch, note d'intention
+## 18C-2 — Synopsis, pitch, note d'intention (réalisée le 22 nov. 2026)
 
 **À faire**
 

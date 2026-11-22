@@ -54,7 +54,8 @@ export default async function ({ app, check, log, newProject }) {
     )
 
   // Vues provisoires.
-  for (const label of ['Log line', 'Synopsis', 'Pitch', 'Tag line', 'Note d’intention']) {
+  // Synopsis, Pitch et Note d'intention sont réalisés en 18C-2 (essai documents-markdown.mjs).
+  for (const label of ['Log line', 'Tag line']) {
     await clickEntry(label)
     await sleep(300)
     const view = await app.evaluate(

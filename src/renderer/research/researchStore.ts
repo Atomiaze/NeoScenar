@@ -1,3 +1,5 @@
+import { redo, undo } from '@codemirror/commands'
+import { EditorView } from '@codemirror/view'
 import type { SaveStatus } from '../../shared/api'
 import type { DocumentFolder } from '../../shared/research/documents'
 import type { ScriptNames } from '../../shared/research/scriptSheets'
@@ -102,7 +104,11 @@ export function setResearchActive(active: boolean): void {
  */
 export function handleResearchUndo(command: 'undo' | 'redo'): boolean {
   if (!researchStore.get().active) return false
-  if (isTypingTarget(document.activeElement)) document.execCommand(command)
+  // Un document Markdown (CodeMirror) a son propre historique.
+  const editor = document.activeElement?.closest('.cm-editor')
+  const markdown = editor instanceof HTMLElement ? EditorView.findFromDOM(editor) : null
+  if (markdown) (command === 'undo' ? undo : redo)(markdown)
+  else if (isTypingTarget(document.activeElement)) document.execCommand(command)
   return true
 }
 

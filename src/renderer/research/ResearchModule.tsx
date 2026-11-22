@@ -11,6 +11,7 @@ import { PlaceSheetView } from './PlaceSheetView'
 import { ResearchDialogs } from './ResearchDialogs'
 import { ResearchTree } from './ResearchTree'
 import { CreditsView } from './CreditsView'
+import { MarkdownDocumentView } from '../markdown/MarkdownDocumentView'
 import { ComingSoonView, TitlePageView } from './ProjectSectionViews'
 import { loadCredits } from './creditsStore'
 import {
@@ -151,11 +152,13 @@ export function ResearchModule({
         <main className="research-sheet">
           {section === 'titlePage' ? (
             <TitlePageView projectId={projectId} projectTitle={projectTitle} />
-          ) : section === 'logLine' ||
-            section === 'synopsis' ||
-            section === 'pitch' ||
-            section === 'tagLine' ||
-            section === 'intention' ? (
+          ) : section === 'synopsis' || section === 'pitch' || section === 'intention' ? (
+            <MarkdownDocumentView
+              key={section}
+              name={section}
+              title={fr.research.comingSoonViews[section].title}
+            />
+          ) : section === 'logLine' || section === 'tagLine' ? (
             <ComingSoonView section={section} />
           ) : section === 'credits' ? (
             <CreditsView />

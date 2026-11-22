@@ -130,6 +130,8 @@ const api: NeoScenarApi = {
   deleteDocument: (path) => ipcRenderer.invoke(IPC_CHANNELS.deleteDocument, path),
   readDocumentNote: (path) => ipcRenderer.invoke(IPC_CHANNELS.readDocumentNote, path),
   writeDocumentNote: (path, text) => ipcRenderer.invoke(IPC_CHANNELS.writeDocumentNote, path, text),
+  readProjectText: (name) => ipcRenderer.invoke(IPC_CHANNELS.readProjectText, name),
+  writeProjectText: (name, text) => ipcRenderer.invoke(IPC_CHANNELS.writeProjectText, name, text),
   storeDocumentImageFile: (folder, sourcePath) =>
     ipcRenderer.invoke(IPC_CHANNELS.storeDocumentImageFile, folder, sourcePath),
   storeDocumentImageBytes: (folder, bytes, name) =>

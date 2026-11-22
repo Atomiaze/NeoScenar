@@ -208,6 +208,12 @@ export function registerIpcHandlers(
   ipcMain.handle(IPC_CHANNELS.readDocumentNote, (_event, path: unknown) =>
     controller.readDocumentNote(path)
   )
+  ipcMain.handle(IPC_CHANNELS.readProjectText, (_event, name: unknown) =>
+    controller.readProjectText(name)
+  )
+  ipcMain.handle(IPC_CHANNELS.writeProjectText, (_event, name: unknown, text: unknown) =>
+    controller.writeProjectText(name, text)
+  )
   ipcMain.handle(IPC_CHANNELS.writeDocumentNote, (_event, path: unknown, text: unknown) =>
     controller.writeDocumentNote(path, text)
   )

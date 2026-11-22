@@ -234,7 +234,15 @@ const macTexts = {
       save: 'Enregistrer',
       saved: 'Page de titre enregistrée.'
     },
-    // Vues provisoires, remplies en 18C-2 et 18C-3.
+    markdown: {
+      toolbar: 'Mise en forme',
+      heading: (level: number): string => `Titre ${level}`,
+      bold: 'Gras (Cmd/Ctrl + B)',
+      italic: 'Italique (Cmd/Ctrl + I)',
+      rule: 'Ligne horizontale',
+      hint: 'Le texte est enregistré au format Markdown, lisible dans Obsidian : # Titre, **gras**, *italique*, --- pour une ligne.'
+    },
+    // Vues provisoires, remplies en 18C-3 (log line, tag line).
     comingSoonViews: {
       logLine: { branch: 'Log line', title: 'Log line' },
       synopsis: { branch: 'Synopsis', title: 'Synopsis' },

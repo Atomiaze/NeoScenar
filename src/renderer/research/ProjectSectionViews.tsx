@@ -4,14 +4,9 @@ import { fr } from '../i18n/fr'
 import { useStore } from '../state/createStore'
 import { TitlePageFields } from '../script/TitlePageDialog'
 import { loadScenario, saveTitlePage, scriptStore } from '../script/scriptStore'
-import type { ProjectSection } from './researchStore'
 
-/** Vue provisoire des rubriques du lot 2 (remplies en 18C-2 et 18C-3). */
-export function ComingSoonView({
-  section
-}: {
-  section: Exclude<ProjectSection, 'sheets' | 'documents' | 'credits' | 'titlePage'>
-}) {
+/** Vue provisoire des rubriques du lot 2 (remplies en 18C-3). */
+export function ComingSoonView({ section }: { section: 'logLine' | 'tagLine' }) {
   const t = fr.research.comingSoonViews
   return (
     <div className="research-form">
