@@ -3,6 +3,12 @@
 NeoScenar est une application de bureau gratuite et libre pour écrire des scénarios, pensée pour les étudiants en audio-visuel de l’IES Saint-Luc Liège.
 Elle fonctionne entièrement sur l’ordinateur, sans compte ni connexion, et ajoutera au scénario le découpage technique, le storyboard et l’export vers Blender.
 
+## Installation
+
+Pour l’instant, NeoScenar est disponible **sur Mac seulement** (Intel et Apple Silicon) : téléchargez le fichier `NeoScenar-…-mac.dmg` dans la page des Releases, puis suivez la section « Ouvrir NeoScenar sur Mac » ci-dessous.
+
+Windows et Linux : plus tard.
+
 ## Prérequis
 
 - [Node.js](https://nodejs.org/fr) en version LTS (24 ou plus récente)

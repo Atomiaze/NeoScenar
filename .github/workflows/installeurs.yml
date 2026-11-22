@@ -1,5 +1,6 @@
-# Sur une étiquette v* (par exemple v0.1.0) : construit les installeurs des trois systèmes et
+# Sur une étiquette v* (par exemple v0.1.0) : construit l'installeur Mac (.dmg universel) et
 # prépare un brouillon de « Release » GitHub. David relit le brouillon et le publie lui-même.
+# Décision du 21 nov. 2026 : Mac d'abord. Windows et Linux sont gardés en commentaire.
 name: Installeurs
 
 on:
@@ -18,10 +19,12 @@ jobs:
         include:
           - os: macos-latest
             systeme: --mac
-          - os: windows-latest
-            systeme: --win
-          - os: ubuntu-latest
-            systeme: --linux
+          # À réactiver à l'étape 16D (Windows) :
+          # - os: windows-latest
+          #   systeme: --win
+          # À réactiver à l'étape 16F (Linux) :
+          # - os: ubuntu-latest
+          #   systeme: --linux
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v7
@@ -50,9 +53,8 @@ jobs:
           name: installeurs-${{ matrix.os }}
           path: |
             dist/*.dmg
-            dist/*.exe
-            dist/*.deb
-            dist/*.AppImage
+            # À réactiver à l'étape 16D (Windows) : dist/*.exe
+            # À réactiver à l'étape 16F (Linux) : dist/*.deb et dist/*.AppImage
           if-no-files-found: error
 
   brouillon:
@@ -72,13 +74,11 @@ jobs:
           TAG: ${{ github.ref_name }}
         run: |
           cat > notes.md <<'NOTES'
-          **Version d'essai (pre-release).** Choisissez le fichier de votre système :
-
-          - **Mac** (Intel et Apple Silicon) : `NeoScenar-…-mac.dmg`
-          - **Windows** : `NeoScenar-…-windows-installation.exe` (installé dans votre compte, sans droit administrateur) ou `NeoScenar-…-windows-portable.exe` (rien à installer)
-          - **Ubuntu / Linux** : `NeoScenar-…-linux.deb` (conseillé) ou `NeoScenar-…-linux.AppImage`
+          **Version d'essai (pre-release), pour Mac.** Téléchargez `NeoScenar-…-mac.dmg` (Mac Intel et Apple Silicon).
 
           L'application n'est pas signée : un avertissement apparaît au premier lancement (voir le guide d'installation).
+
+          Windows et Linux : plus tard.
           NOTES
           gh release create "$TAG" installeurs/* \
             --repo "$GITHUB_REPOSITORY" \

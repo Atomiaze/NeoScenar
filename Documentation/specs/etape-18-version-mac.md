@@ -17,7 +17,7 @@ Rédigée le 21 novembre 2026 dans le projet Claude. À lire avec `etat-du-proje
 |---|---|---|
 | 18A | Installeurs : Mac seulement sur les étiquettes | ici |
 | 18B | Défauts relevés pendant 16D, à vérifier sur Mac | ici |
-| 18C | Lot 2 des retours d'usage | à rédiger (`specs/etape-17-lot-2-retours.md`) |
+| 18C | Lot 2 des retours d'usage | `specs/etape-17-lot-2-retours.md` |
 | 18D | Essais complets sur l'iMac de David, avec le `.dmg` | ici |
 | 18E | Essais chez la collègue, puis sur les Mac de l'école | ici |
 | 18F | Guide d'installation Mac pour les élèves | ici |
@@ -44,7 +44,7 @@ Ces remarques viennent des essais Windows et Ubuntu du 21 novembre, mais elles n
 
 ## 18C — Lot 2 des retours d'usage
 
-Contenu décidé le 21 nov. (voir `etat-du-projet.md`, « Retours d'usage ») : documents log line, tag line, synopsis, pitch et note d'intention, en Markdown dans `neoscenar/` ; nouvel ordre des rubriques du panneau Données du projet ; fenêtre d'export avec cases à cocher ; plan de tournage (personnages sans dialogue proposés, interprètes ajoutés à la main par jour). **Spec à rédiger dans une conversation dédiée du projet Claude** avant de coder.
+Contenu décidé le 21 nov. (voir `etat-du-projet.md`, « Retours d'usage ») : documents log line, tag line, synopsis, pitch et note d'intention, en Markdown dans `neoscenar/` ; nouvel ordre des rubriques du panneau Données du projet ; fenêtre d'export avec cases à cocher ; plan de tournage (personnages sans dialogue proposés, interprètes ajoutés à la main par jour). Spec rédigée le 21 nov. : `specs/etape-17-lot-2-retours.md` (18C-1 à 18C-6).
 
 ## 18D — Essais complets sur l'iMac de David
 
@@ -58,7 +58,9 @@ Contenu décidé le 21 nov. (voir `etat-du-projet.md`, « Retours d'usage ») : 
 
 **Chez la collègue** : liste courte tirée de `essais-mac.md` (installation, premier lancement, un projet complet, exports). Noter le modèle du Mac (Intel ou Apple Silicon) et la version de macOS.
 
-**Mac de l'école** : c'est le vrai test, et le plus risqué. À vérifier avant tout le reste, sur une session **élève** :
+**Mac de l'école** : **David en est l'administrateur** (21 nov.). Il installe lui-même NeoScenar dans `/Applications` et lève l'avertissement d'Apple une fois par Mac (« Ouvrir quand même », ou retrait de l'attribut de quarantaine : `xattr -dr com.apple.quarantine /Applications/NeoScenar.app`). À vérifier : qu'une session **élève** ouvre ensuite NeoScenar sans aucun avertissement. Le guide 18F reste nécessaire pour les élèves qui installent chez eux.
+
+Points à vérifier aussi, sur une session élève (utiles pour les Mac personnels des élèves) :
 
 - l'élève peut-il installer l'application **sans mot de passe administrateur** ? Glisser dans `/Applications` le demande souvent sur un compte standard. Solution prévue : glisser NeoScenar dans un dossier `Applications` **de son propre dossier** (`~/Applications`), ou le lancer depuis un dossier personnel ;
 - l'élève peut-il **ouvrir une application non signée** ? Sur macOS 15 et plus, le clic droit ▸ Ouvrir ne suffit plus : il faut passer par Réglages Système ▸ Confidentialité et sécurité ▸ « Ouvrir quand même ». Noter si un mot de passe est demandé, et lequel ;
