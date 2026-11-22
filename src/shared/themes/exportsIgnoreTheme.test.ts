@@ -32,7 +32,7 @@ async function pdfOfExample(): Promise<Buffer> {
       italic: font('Italic'),
       boldItalic: font('BoldItalic')
     },
-    options: { pageDeTitre: true, numerotation: 'fountain' }
+    options: { pageDeTitre: true, numerotation: 'fountain', scenario: true }
   })
   return Buffer.from(bytes)
 }

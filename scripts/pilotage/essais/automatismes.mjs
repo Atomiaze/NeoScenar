@@ -95,7 +95,7 @@ export default async function ({ app, check, log, newProject }) {
   const pdfState = () =>
     app.evaluate(`(() => ({
       count: document.querySelector('.pdf-page-count')?.textContent ?? null,
-      boxes: [...document.querySelectorAll('.pdf-options input')].map((i) => i.checked),
+      acts: document.querySelector('.pdf-options input[data-part="nouvellePageParActe"]')?.checked,
       labels: [...document.querySelectorAll('.pdf-options label')].map((l) => l.textContent)
     }))()`)
   const waitCount = async (previous) => {
@@ -113,8 +113,8 @@ export default async function ({ app, check, log, newProject }) {
     before.labels.includes('Nouvelle page à chaque acte'),
     'case « Nouvelle page à chaque acte »'
   )
-  check(before.boxes[2] === false, 'décochée par défaut')
-  await app.click('.pdf-options label:nth-of-type(3) input')
+  check(before.acts === false, 'décochée par défaut')
+  await app.click('.pdf-options input[data-part="nouvellePageParActe"]')
   const after = await waitCount(before.count)
   log(`    pages : ${before.count} → ${after.count}`)
   check(parseInt(after.count) === parseInt(before.count) + 1, 'une page de plus avec l’option')

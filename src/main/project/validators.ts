@@ -85,7 +85,12 @@ function parsePdfOptions(check: Checker, value: unknown): PdfExportOptions {
       'exportPdf.numerotation'
     ),
     // Étape 13D : absent des projets plus anciens, donc désactivé.
-    nouvellePageParActe: record['nouvellePageParActe'] === true
+    nouvellePageParActe: record['nouvellePageParActe'] === true,
+    // Étape 18C-4 : absents des projets plus anciens, donc scénario coché et documents décochés.
+    scenario: record['scenario'] !== false,
+    synopsis: record['synopsis'] === true,
+    pitch: record['pitch'] === true,
+    noteIntention: record['noteIntention'] === true
   }
 }
 

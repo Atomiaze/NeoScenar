@@ -74,7 +74,7 @@ function pdfInput(text: string) {
     pagination: paginate(document, layout, { continued: true }),
     layout,
     fonts,
-    options: { pageDeTitre: true, numerotation: 'fountain' as const }
+    options: { pageDeTitre: true, numerotation: 'fountain' as const, scenario: true }
   }
 }
 

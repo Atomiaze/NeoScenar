@@ -205,7 +205,11 @@ export class AppController {
       appVersion: options.appVersion,
       env: options.blenderEnvironment
     })
-    this.pdf = new PdfExporter({ current: () => this.requireCurrent(), ...options.pdfResources })
+    this.pdf = new PdfExporter({
+      current: () => this.requireCurrent(),
+      readText: (name) => this.requireTexts().read(name),
+      ...options.pdfResources
+    })
     this.storyboard = new StoryboardExporter({
       current: () => this.requireCurrent(),
       flush: () => this.flushDecoupage(),

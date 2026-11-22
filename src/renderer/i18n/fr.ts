@@ -240,6 +240,8 @@ const macTexts = {
       bold: 'Gras (Cmd/Ctrl + B)',
       italic: 'Italique (Cmd/Ctrl + I)',
       rule: 'Ligne horizontale',
+      pdfTitle: (title: string): string =>
+        `Dans le PDF, ce document commence par le titre « ${title.toLocaleUpperCase('fr')} » : inutile de l’écrire ici.`,
       hint: 'Le texte est enregistré au format Markdown, lisible dans Obsidian : # Titre, **gras**, *italique*, --- pour une ligne.'
     },
     versions: {
@@ -1297,7 +1299,22 @@ const macTexts = {
     title: 'Exporter le scénario en PDF',
     previewLabel: 'Aperçu du PDF',
     generating: 'Préparation de l’aperçu…',
-    includeTitlePage: 'Inclure la page de titre',
+    partsLabel: 'Contenu du PDF',
+    parts: {
+      pageDeTitre: 'Page de titre',
+      scenario: 'Scénario',
+      synopsis: 'Synopsis',
+      pitch: 'Pitch',
+      noteIntention: 'Note d’intention'
+    },
+    emptyPart: 'Document vide',
+    scenarioOptions: 'Options du scénario',
+    nothingToExport: 'Rien à exporter : cochez au moins une partie qui n’est pas vide.',
+    documentTitles: {
+      synopsis: 'Synopsis',
+      pitch: 'Pitch',
+      noteIntention: 'Note d’intention'
+    },
     numberScenes: 'Numéroter les scènes 1, 2, 3',
     numberScenesHint: 'Dans le PDF seulement : le scénario et les cartes gardent leurs numéros.',
     newPageForActs: 'Nouvelle page à chaque acte',

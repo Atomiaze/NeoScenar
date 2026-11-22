@@ -8,6 +8,8 @@ import type { DocumentInfo, PagePlan, PdfFonts } from './types.ts'
 /** Épaisseur et position du soulignement de Courier Prime (130 et −185 sur 2048). */
 const UNDERLINE_THICKNESS = 130 / 2048
 const UNDERLINE_POSITION = 185 / 2048
+/** Ligne horizontale des documents : trait fin, en points. */
+const RULE_THICKNESS = 0.5
 
 export async function renderPdf(
   pages: PagePlan[],
@@ -48,6 +50,15 @@ export async function renderPdf(
           color: black
         })
       }
+    }
+    for (const rule of plan.rules ?? []) {
+      const y = size.heightPt - rule.y
+      page.drawLine({
+        start: { x: rule.x1, y },
+        end: { x: rule.x2, y },
+        thickness: RULE_THICKNESS,
+        color: black
+      })
     }
   }
   return pdf.save()

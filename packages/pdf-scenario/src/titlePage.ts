@@ -10,7 +10,7 @@ import {
 } from '@neoscenar/fountain'
 import { columnX, rowBaseline, textWidth } from './metrics.ts'
 import { lineRuns } from './runs.ts'
-import type { DocumentInfo, PagePlan, TextRun } from './types.ts'
+import type { DocumentInfo, PagePlan, TextRun, TitleExtras } from './types.ts'
 
 type Field = 'title' | 'credit' | 'author' | 'source' | 'contact' | 'date'
 
@@ -94,8 +94,24 @@ function valueLines(value: string, width: number, uppercase: boolean): StyledLin
   return lines
 }
 
-/** Page de titre, ou null si le scénario n'a rien à y imprimer. */
-export function titlePagePlan(doc: FountainDocument, layout: ResolvedLayout): PagePlan | null {
+/** Lignes d'un texte simple (log line, tag line) : sans mise en forme, coupées à la largeur du texte. */
+function plainLines(value: string | null | undefined, width: number): StyledLine[] {
+  return (value ?? '')
+    .split('\n')
+    .map((line) => line.trim())
+    .filter((line) => line !== '')
+    .flatMap((line) => wrapLine(line, width).map((text) => ({ text, marks: [] })))
+}
+
+/**
+ * Page de titre, ou null si rien n'est à y imprimer. La tag line (en italique) puis la log line
+ * retenues sont centrées sous le titre et l'auteur ; elles ne viennent jamais du Fountain.
+ */
+export function titlePagePlan(
+  doc: FountainDocument,
+  layout: ResolvedLayout,
+  extras?: TitleExtras
+): PagePlan | null {
   const values = titlePageValues(doc)
   const width = layout.textWidthCh
   const charWidth = layout.profile.font.charWidthPt
@@ -104,17 +120,21 @@ export function titlePagePlan(doc: FountainDocument, layout: ResolvedLayout): Pa
     valueLines(values[field] ?? '', width, field === 'title')
   const runs: TextRun[] = []
 
-  const place = (field: Field, firstRow: number, centered: boolean): number => {
-    const block = lines(field)
+  const placeBlock = (
+    block: StyledLine[],
+    firstRow: number,
+    centered: boolean,
+    base: { underline?: boolean; italic?: boolean }
+  ): number => {
     block.forEach((line, i) => {
       const x = centered ? pageCenter - textWidth(layout, line.text) / 2 : columnX(layout, 0)
       const baseline = rowBaseline(layout, firstRow - 1 + i)
-      runs.push(
-        ...lineRuns(line.text, x, baseline, charWidth, line.marks, { underline: field === 'title' })
-      )
+      runs.push(...lineRuns(line.text, x, baseline, charWidth, line.marks, base))
     })
     return firstRow + block.length
   }
+  const place = (field: Field, firstRow: number, centered: boolean): number =>
+    placeBlock(lines(field), firstRow, centered, { underline: field === 'title' })
 
   // Un bloc sur plusieurs lignes repousse les suivants, en gardant une ligne vide entre eux.
   let next = 1
@@ -122,6 +142,12 @@ export function titlePagePlan(doc: FountainDocument, layout: ResolvedLayout): Pa
     if (lines(field).length === 0) continue
     next = place(field, Math.max(ROWS[field], next), true) + 1
   }
+  // Sous le dernier bloc centré, après une ligne vide ; au plus tôt à la place de la mention.
+  const tagLine = plainLines(extras?.tagLine, width)
+  const logLine = plainLines(extras?.logLine, width)
+  if (tagLine.length + logLine.length > 0) next = Math.max(next + 1, ROWS.source + 2)
+  if (tagLine.length > 0) next = placeBlock(tagLine, next, true, { italic: true }) + 1
+  if (logLine.length > 0) next = placeBlock(logLine, next, true, {}) + 1
   if (lines('contact').length > 0) next = place('contact', Math.max(ROWS.contact, next), false) + 1
   const date = lines('date')
   if (date.length > 0) place('date', Math.max(layout.linesPerPage - date.length + 1, next), true)

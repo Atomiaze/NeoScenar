@@ -4,7 +4,7 @@ Détail des décisions passées : decisions-archive.md (ne lire qu'en cas de bes
 
 Page courte, à lire **en premier** au début de toute nouvelle conversation (projet Claude) ou session (Claude Code). Elle est tenue à jour par Claude Code à chaque commit d'étape ou de sous-étape. Le détail se trouve dans `cahier-des-charges.md` (référence complète) et `specs/` (une spécification par étape) : ne les lire qu'en cas de besoin.
 
-Dernière mise à jour : 22 novembre 2026 (étapes 0 à 15, 16A à 16C, 17A à 17F terminées (lot 1 fini) ; « À propos » réalisée, en attente de validation ; **décision : version Mac d'abord** ; 18A réalisée (essai de l'étiquette en attente) ; 18B terminée ; 18C-1 à 18C-3 terminées ; prochaine : 18C-4).
+Dernière mise à jour : 22 novembre 2026 (étapes 0 à 15, 16A à 16C, 17A à 17F terminées (lot 1 fini) ; « À propos » réalisée, en attente de validation ; **décision : version Mac d'abord** ; 18A réalisée (essai de l'étiquette en attente) ; 18B terminée ; 18C-1 à 18C-4 terminées ; prochaine : 18C-5).
 
 ## Où on en est
 
@@ -42,6 +42,7 @@ Les numéros de commit antérieurs au 20 novembre 2026 (par exemple `710449c`) r
   - *Lot 2, dans l'étape 18 (18C)* : nouveaux documents (log line, tag line, synopsis, pitch, note d'intention) en Markdown dans `neoscenar/`, et fenêtre d'export avec cases à cocher (page de titre, scénario, synopsis, pitch, note d'intention) ; log line et tag line dans le PDF seulement, jamais dans le Fountain ; plan de tournage : personnages cités sans dialogue proposés comme suggestions, et interprètes ajoutés à la main par jour.
   - *18C-2 faite (22 nov.)* : synopsis, pitch et note d'intention = éditeur Markdown partagé (CodeMirror, sans `lang-markdown`), fichiers `neoscenar/synopsis.md`, `pitch.md`, `note-intention.md` créés à la première saisie, relus au retour dans l'appli ; sous-ensemble pur dans `src/shared/markdown/`. **Les versions (étape 13) n'incluent pas ces fichiers** (décision de David : une version = scénario + découpage, comme documents et générique) ; même règle pour log line et tag line (18C-3).
   - *18C-3 faite (22 nov.)* : log line et tag line = liste de versions (+, poubelle confirmée si non vide, case « retenue », une seule à la fois) dans `neoscenar/log-line.md` et `tag-line.md` ; format et lecture tolérante dans `src/shared/versionedTexts.ts` (`retainedText` servira au PDF en 18C-4) ; mêmes canaux que synopsis/pitch (`ProjectTexts`), relus au retour dans l'appli.
+  - *18C-4 faite (22 nov.)* : fenêtre PDF avec cases Page de titre, Scénario, Synopsis, Pitch, Note d'intention (vide = grisée « Document vide » ; rien de coché = « Rien à exporter », Enregistrer grisé ; options du scénario grisées sans scénario) ; ordre : titre, synopsis, pitch, note, scénario (confirmé par David) ; titre automatique en titre 1 en tête de chaque document, annoncé dans l'éditeur ; tag line (italique) puis log line retenues centrées sur la page de titre ; plan des pages du scénario seul vérifié identique à avant ; essai `export-pdf-documents.mjs`.
   - *Écarté* : réglage des raccourcis.
 - **Thèmes (19 nov.)** : Par défaut (l'actuel), Cobalt, Or, Matrix, PinkLady, Forest, Aqua. À l'écran, la page du scénario suit le thème (couleur du fond et du texte), toujours en Courier et au format Final Draft A4. Les couleurs des éléments du scénario (notes en vert, bandeaux d'actes…) sont réglables dans les préférences, pour l'écran seulement. Les exports (PDF) restent toujours en page blanche, texte noir, Courier, Final Draft A4 : les thèmes n'y touchent jamais.
 
@@ -50,6 +51,7 @@ Les numéros de commit antérieurs au 20 novembre 2026 (par exemple `710449c`) r
 - Windows et Linux : défauts relevés le 21 nov. (correcteur hors ligne sous Windows, icône du dock et AppImage sous Ubuntu, compte standard et portable non essayés) : voir `specs/etape-16-windows-linux.md`. Les trois remarques de 16D sont traitées en 18B (trait de page : propre à Windows, noté dans la spec 16).
 - Essai `editeur-finitions.mjs` en échec, antérieur à 16A : la vérification « sans le réglage, le fond change » échoue (vérifié sur le code d'avant 16A).
 - Essai `dupliquer-depuis-scenario.mjs` instable : un échec sur trois passages (copie sélectionnée et curseur hors scène), réussi sinon, avant comme après 16A.
+- Essais avec l'aperçu PDF : de temps en temps (2 passages sur 10), un message interne de Chromium (« SharedImageManager… Invalid mailbox ») fait échouer « aucune erreur dans les consoles » ; sans lien avec NeoScenar.
 - Trait de page « trop haut sur É/À » (13A) : non reproduit à l'écran, corrigé par construction.
 
 ## Méthode de travail

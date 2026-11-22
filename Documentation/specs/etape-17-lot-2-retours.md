@@ -89,14 +89,16 @@ Une sous-étape = plan court, réalisation, essais, accord de David, commit, mis
 - [ ] Je supprime une version : confirmation, renumérotation, la version retenue reste la bonne.
 - [ ] Un fichier écrit à la main dans Obsidian est relu sans perte.
 
-## 18C-4 — Fenêtre d'export PDF
+## 18C-4 — Fenêtre d'export PDF (réalisée le 22 nov. 2026)
+
+*Décision de David (22 nov.) : chaque document commence par un titre automatique en titre 1 (SYNOPSIS, PITCH, NOTE D'INTENTION) ; l'éditeur du document l'annonce, pour que l'élève ne le retape pas.*
 
 **À faire**
 
 - Dans la fenêtre « Exporter le scénario en PDF », cases à cocher : **Page de titre, Scénario, Synopsis, Pitch, Note d'intention**. Les options du scénario (numérotation, nouvelle page par acte) sont grisées si « Scénario » n'est pas coché.
 - Une case dont le document est vide est grisée, avec l'infobulle « Document vide ». Au moins une case doit être cochée, sinon le bouton Enregistrer est grisé.
 - Les choix sont gardés comme les options actuelles (`PdfExportOptions`, avec valeurs par défaut pour les anciens réglages : page de titre et scénario cochés, le reste décoché).
-- **Ordre dans le PDF** : page de titre, synopsis, pitch, note d'intention, scénario. *(À confirmer par David au premier essai.)*
+- **Ordre dans le PDF** : page de titre, synopsis, pitch, note d'intention, scénario (confirmé par David le 22 nov.).
 - **Page de titre** : si une log line et/ou une tag line sont retenues, elles sont imprimées sous le titre et l'auteur, centrées : la tag line en italique, puis la log line. Rien n'est écrit dans le Fountain. Si aucune n'est retenue, la page de titre ne change pas.
 - **Documents** : chacun commence sur une nouvelle page. A4, mêmes marges que le scénario, Courier 12 (cohérent avec le reste du PDF). Titre 1 : gras, majuscules ; Titre 2 : gras ; Titre 3 : gras italique ; ligne horizontale : trait fin sur la largeur du texte. Pages des documents non numérotées ; la numérotation du scénario ne change pas.
 - L'aperçu montre exactement le fichier enregistré. Le nom du fichier ne change pas.

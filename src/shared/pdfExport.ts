@@ -11,12 +11,38 @@ export interface PdfExportOptions {
    * pagination à l'écran, jamais le fichier.
    */
   nouvellePageParActe: boolean
+  /** Étape 18C-4 : parties du PDF à imprimer, en plus de la page de titre. */
+  scenario: boolean
+  synopsis: boolean
+  pitch: boolean
+  noteIntention: boolean
 }
 
+/** Parties du PDF qu'on peut cocher, dans l'ordre de la fenêtre. */
+export const PDF_PARTS = ['pageDeTitre', 'scenario', 'synopsis', 'pitch', 'noteIntention'] as const
+
+export type PdfPart = (typeof PDF_PARTS)[number]
+
+/** Parties qui ont quelque chose à imprimer (une partie vide est grisée dans la fenêtre). */
+export type PdfPartsAvailable = Record<PdfPart, boolean>
+
+/** Anciens réglages : page de titre et scénario cochés, le reste décoché. */
 export const DEFAULT_PDF_OPTIONS: PdfExportOptions = {
   pageDeTitre: true,
   numerotation: 'fountain',
-  nouvellePageParActe: false
+  nouvellePageParActe: false,
+  scenario: true,
+  synopsis: false,
+  pitch: false,
+  noteIntention: false
+}
+
+/** Au moins une partie cochée et non vide : sinon il n'y a rien à exporter. */
+export function hasSomethingToExport(
+  options: PdfExportOptions,
+  available: PdfPartsAvailable
+): boolean {
+  return PDF_PARTS.some((part) => options[part] && available[part])
 }
 
 /** Ce que l'interface envoie : le texte ACTUEL de l'éditeur (même non enregistré) et les options. */
@@ -31,6 +57,7 @@ export interface PdfPreview {
   /** Octets du PDF réel, affichés par la visionneuse PDF de Chromium. */
   bytes: Uint8Array
   pageCount: number
+  available: PdfPartsAvailable
 }
 
 /** « project » : dans exports/ du projet ; « choose » : l'élève choisit l'emplacement. */

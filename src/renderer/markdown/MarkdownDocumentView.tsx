@@ -9,6 +9,13 @@ import { applyEdit, externalChange, markdownExtension } from './markdownExtensio
 
 const t = fr.research.markdown
 
+/** Titre imprimé automatiquement en haut du document dans le PDF (18C-4). */
+const PDF_TITLES: Record<MarkdownTextName, string> = {
+  synopsis: fr.pdfExport.documentTitles.synopsis,
+  pitch: fr.pdfExport.documentTitles.pitch,
+  intention: fr.pdfExport.documentTitles.noteIntention
+}
+
 function selectionOf(view: EditorView): { from: number; to: number } {
   const { from, to } = view.state.selection.main
   return { from, to }
@@ -106,6 +113,7 @@ export function MarkdownDocumentView({ name, title }: { name: MarkdownTextName; 
       <header className="research-sheet-header">
         <h2>{title}</h2>
       </header>
+      <p className="field-help md-pdf-title">{t.pdfTitle(PDF_TITLES[name])}</p>
       <div className="md-toolbar" role="toolbar" aria-label={t.toolbar}>
         {([1, 2, 3] as const).map((level) => (
           <button

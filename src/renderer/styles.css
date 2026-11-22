@@ -1862,6 +1862,36 @@ button:disabled {
   font-weight: 600;
 }
 
+.pdf-options fieldset {
+  border: 0;
+  padding: 0;
+  margin: 0 0 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.pdf-options legend {
+  font-weight: 600;
+  padding: 0;
+  margin-bottom: 0.25rem;
+}
+
+/* Partie vide, ou options du scénario quand le scénario n'est pas coché. */
+.pdf-options .checkbox.disabled,
+.pdf-options fieldset:disabled {
+  opacity: 0.5;
+}
+
+.pdf-options .checkbox.disabled,
+.pdf-options fieldset:disabled .checkbox {
+  cursor: default;
+}
+
+.pdf-options .muted {
+  margin: 0;
+}
+
 .storyboard-options {
   overflow-y: auto;
   max-height: min(62vh, 640px);

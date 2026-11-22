@@ -16,7 +16,7 @@ export default async function ({ app, check, log, newProject }) {
       open: !!document.querySelector('.pdf-dialog'),
       frame: document.querySelector('.pdf-preview iframe')?.src ?? null,
       count: document.querySelector('.pdf-page-count')?.textContent ?? null,
-      boxes: [...document.querySelectorAll('.pdf-options input')].map((i) => i.checked)
+      boxes: ['pageDeTitre', 'numerotation'].map((p) => document.querySelector('.pdf-options input[data-part="' + p + '"]')?.checked)
     }))()`)
   const waitPreview = async () => {
     for (let i = 0; i < 40; i++) {
@@ -44,13 +44,13 @@ export default async function ({ app, check, log, newProject }) {
   await app.screenshot('export-pdf-apercu.png')
 
   // Option « page de titre » décochée : une page de moins (si le scénario a une page de titre).
-  await app.click('.pdf-options label:nth-of-type(1) input')
+  await app.click('.pdf-options input[data-part="pageDeTitre"]')
   await sleep(1500)
   const second = await waitPreview()
   log('    sans page de titre :', second.count)
   check(second.count !== first.count, 'décocher la page de titre change le nombre de pages')
-  await app.click('.pdf-options label:nth-of-type(1) input')
-  await app.click('.pdf-options label:nth-of-type(2) input')
+  await app.click('.pdf-options input[data-part="pageDeTitre"]')
+  await app.click('.pdf-options input[data-part="numerotation"]')
   await sleep(1500)
 
   await app.dialogButton('Enregistrer')

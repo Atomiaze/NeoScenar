@@ -32,7 +32,11 @@ const fonts = {
   boldItalic: font('BoldItalic')
 }
 
-export const DEFAULT_OPTIONS: PdfOptions = { pageDeTitre: true, numerotation: 'fountain' }
+export const DEFAULT_OPTIONS: PdfOptions = {
+  pageDeTitre: true,
+  numerotation: 'fountain',
+  scenario: true
+}
 
 export function inputFor(
   text: string,

@@ -1,3 +1,4 @@
+import { DEFAULT_PDF_OPTIONS } from '../../shared/pdfExport'
 import { mkdir, readFile, writeFile } from 'node:fs/promises'
 import { join } from 'node:path'
 import { afterEach, beforeEach, describe, expect, it } from 'vitest'
@@ -130,7 +131,7 @@ describe('création d’un projet', () => {
       settings: { fps: 25, resolution: { width: 1920, height: 1080 } },
       filmFolders: ['04_Son'],
       lastBlenderExport: null,
-      exportPdf: { pageDeTitre: true, numerotation: 'fountain', nouvellePageParActe: false },
+      exportPdf: { ...DEFAULT_PDF_OPTIONS },
       exportStoryboard: { kind: 'planches', scope: 'all', sceneNumbers: [], newPagePerScene: false }
     })
     const decoupage = JSON.parse(await read('neoscenar/decoupage.json'))
