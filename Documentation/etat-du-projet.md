@@ -4,7 +4,7 @@ Détail des décisions passées : decisions-archive.md (ne lire qu'en cas de bes
 
 Page courte, à lire **en premier** au début de toute nouvelle conversation (projet Claude) ou session (Claude Code). Elle est tenue à jour par Claude Code à chaque commit d'étape ou de sous-étape. Le détail se trouve dans `cahier-des-charges.md` (référence complète) et `specs/` (une spécification par étape) : ne les lire qu'en cas de besoin.
 
-Dernière mise à jour : 22 novembre 2026 (étapes 0 à 15, 16A à 16C, 17A à 17F terminées (lot 1 fini) ; « À propos » réalisée, en attente de validation ; **décision : version Mac d'abord** ; 18A réalisée (essai de l'étiquette en attente) ; 18B terminée ; 18C-1 à 18C-5 terminées ; prochaine : 18C-6).
+Dernière mise à jour : 22 novembre 2026 (étapes 0 à 15, 16A à 16C, 17A à 17F terminées (lot 1 fini) ; « À propos » réalisée, en attente de validation ; **décision : version Mac d'abord** ; 18A réalisée (essai de l'étiquette reporté à 18G) ; 18B terminée ; 18C-1 à 18C-5 terminées ; prochaine : 18C-6).
 
 ## Où on en est
 
@@ -22,7 +22,7 @@ Les numéros de commit antérieurs au 20 novembre 2026 (par exemple `710449c`) r
   - 15A à 15E : planning (moteur, liste, ligne du temps, plan de tournage, exports PDF et .ics).
   - 16A à 16C : portabilité, correcteur et police, dépôt public avec installeurs (brouillon de Release `v0.1.0` non publié).
   - Fenêtre « À propos » : réalisée, en attente de validation.
-- **Ensuite — étape 18, version Mac complète et publiée** (`specs/etape-18-version-mac.md`) : 18A installeurs Mac seuls (réalisée, essai de l'étiquette en attente) ; 18B défauts relevés sur PC, vérifiés sur Mac (terminée : trait de page correct sur Mac, essai `trait-de-page-accents.mjs` ; numéros de scène du PDF = place dans le texte si pas de `#n#`, voulu, **à revérifier en 18D** ; PDF du scénario sans « 1. » sur la page 1 = convention Final Draft gardée ; storyboard : « N° de page : 1 / N » partout) ; 18C lot 2 des retours (spec `specs/etape-17-lot-2-retours.md`, sous-étapes 18C-1 à 18C-6) ; 18D essais sur l'iMac ; 18E chez la collègue puis sur les Mac de l'école ; 18F guide Mac ; 18G publication.
+- **Ensuite — étape 18, version Mac complète et publiée** (`specs/etape-18-version-mac.md`) : 18A installeurs Mac seuls (réalisée, essai de l'étiquette `v0.1.0` reporté à 18G) ; 18B défauts relevés sur PC, vérifiés sur Mac (terminée : trait de page correct sur Mac, essai `trait-de-page-accents.mjs` ; numéros de scène du PDF = place dans le texte si pas de `#n#`, voulu, **à revérifier en 18D** ; PDF du scénario sans « 1. » sur la page 1 = convention Final Draft gardée ; storyboard : « N° de page : 1 / N » partout) ; 18C lot 2 des retours (spec `specs/etape-17-lot-2-retours.md`, sous-étapes 18C-1 à 18C-6) ; 18D essais sur l'iMac (**décision 22 nov. : pas d'étiquette ni de Release, Claude Code construit le `.dmg` en local avec `npm run build:mac`, dans `dist/` ; liste des essais : `essais-mac.md`**) ; 18E chez la collègue puis sur les Mac de l'école ; 18F guide Mac ; 18G publication.
 - **Puis Windows** (16D essais et corrections, 16E guide et publication), **puis Linux** (16F, 16G). Essais du 21 nov. gardés dans `essais-16D.md` (en pause) ; défauts restants listés dans `specs/etape-16-windows-linux.md`.
 - **Non prioritaire** : mode plan de l'éditeur ; 12 import automatique des scans (reporté le 19 nov., seulement si les élèves le demandent ; marques, QR codes et JSON d'impression de l'étape 11 restent produits) ; imports Final Draft et KIT Scenarist ; plugin Obsidian. **Mis de côté** : retour Blender → NeoScenar.
 
@@ -60,5 +60,5 @@ Les numéros de commit antérieurs au 20 novembre 2026 (par exemple `710449c`) r
 - **Projet Claude (conversation)** : rédaction des spécifications, choix d'architecture, déblocages. **Claude Code** : réalisation, tests, vérification dans l'application réelle avec l'outil de pilotage (`scripts/pilotage/`, voir `CLAUDE.md`).
 - Une sous-étape = un plan court, la réalisation, des essais, puis l'accord de David avant le commit.
 - **Rapports de Claude Code courts** : 10 à 15 lignes, plus les décisions prises seul, les questions et les essais à faire par David.
-- **Jusqu'à la fin de 18C** : David ne tape aucune commande sauf `npm run dev` ; Claude Code lance les tests, les essais du pilote, les commits et les `git push` (après accord). Aucune étiquette ni Release GitHub avant 18D ; l'essai de l'étiquette `v0.1.0` est reporté au début de 18D.
+- **Jusqu'à la fin de 18C** : David ne tape aucune commande sauf `npm run dev` ; Claude Code lance les tests, les essais du pilote, les commits et les `git push` (après accord). Aucune étiquette ni Release GitHub avant 18G ; en 18D, Claude Code construit le `.dmg` en local (`npm run build:mac`) ; l'essai de l'étiquette `v0.1.0` est reporté à 18G.
 - **Conversations courtes** : une nouvelle conversation par étape dans le projet Claude ; `/clear` dans Claude Code après chaque commit de sous-étape.

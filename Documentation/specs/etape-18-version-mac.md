@@ -18,7 +18,7 @@ Rédigée le 21 novembre 2026 dans le projet Claude. À lire avec `etat-du-proje
 | 18A | Installeurs : Mac seulement sur les étiquettes | ici |
 | 18B | Défauts relevés pendant 16D, à vérifier sur Mac | ici |
 | 18C | Lot 2 des retours d'usage | `specs/etape-17-lot-2-retours.md` |
-| 18D | Essais complets sur l'iMac de David, avec le `.dmg` | ici |
+| 18D | Essais complets sur l'iMac de David, avec le `.dmg` construit en local | ici |
 | 18E | Essais chez la collègue, puis sur les Mac de l'école | ici |
 | 18F | Guide d'installation Mac pour les élèves | ici |
 | 18G | Publication de la version Mac | ici |
@@ -30,7 +30,7 @@ Rédigée le 21 novembre 2026 dans le projet Claude. À lire avec `etat-du-proje
 - `README.md` : l'installation ne présente que le Mac, avec la même phrase pour Windows et Linux.
 - `verification.yml` (tests à chaque envoi) : **inchangé**, toujours sur les trois systèmes.
 
-*Validé quand* : une étiquette d'essai donne un brouillon avec le seul `.dmg`.
+*Validé quand* : une étiquette d'essai donne un brouillon avec le seul `.dmg`. **(Décision du 22 nov. : cet essai d'étiquette `v0.1.0` est reporté à 18G ; aucune étiquette ni Release avant.)**
 
 ## 18B — Défauts relevés pendant 16D, à vérifier d'abord sur Mac
 
@@ -48,7 +48,9 @@ Contenu décidé le 21 nov. (voir `etat-du-projet.md`, « Retours d'usage ») : 
 
 ## 18D — Essais complets sur l'iMac de David
 
-- Claude Code prépare `Documentation/essais-mac.md`, sur le modèle de `essais-16D.md` : liste à cocher, ce qu'il faut voir, une ligne « Remarque » par bloc. On essaie **l'application installée depuis le `.dmg`** du brouillon, pas `npm run dev`.
+**Décision (22 nov.) : pas d'étiquette ni de Release GitHub pour 18D.** Claude Code construit lui-même le `.dmg` en local (`npm run build:mac`, résultat dans `dist/NeoScenar-<version>-mac.dmg`) et dit à David où il se trouve. L'essai de l'étiquette `v0.1.0` (brouillon de Release avec le seul `.dmg`) est reporté à 18G. Le « téléchargement » du `.dmg` est donc remplacé en 18D par l'ouverture du fichier local ; l'avertissement d'Apple est vérifié en 18E, sur un `.dmg` téléchargé.
+
+- Claude Code prépare `Documentation/essais-mac.md`, sur le modèle de `essais-16D.md` : liste à cocher, ce qu'il faut voir, une ligne « Remarque » par bloc. On essaie **l'application installée depuis le `.dmg`** construit en local, pas `npm run dev`.
 - Contenu : téléchargement et premier lancement (avertissement d'Apple, voir 18F) ; tous les modules ; tous les exports ; export Blender ; versions ; double-clic sur un `.neoscenar` ; copie du projet sur clé ; lots 1 et 2 des retours.
 - Reprendre les cases de `essais-16D.md` qui ont un sens sur Mac, sans ce qui est propre à Windows ou Linux.
 
@@ -79,5 +81,6 @@ Noter : version de macOS, modèle, ce que l'élève voit à chaque étape (captu
 ## 18G — Publication
 
 - Version : `0.1.0`, ou `0.2.0` si le lot 2 est dedans (à décider par David au moment de publier).
+- **Début de 18G : essai de l'étiquette `v0.1.0`** (reporté de 18A/18D) : un brouillon de Release avec le seul `.dmg`, vérifié avant de publier.
 - David publie lui-même le brouillon de Release (toujours en « pre-release » tant que la version commence par 0).
 - Mettre à jour `etat-du-projet.md` : version Mac publiée, prochaine étape 16D (Windows).
