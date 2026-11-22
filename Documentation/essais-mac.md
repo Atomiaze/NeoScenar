@@ -81,7 +81,7 @@ Remarque : …
 
 Ouvrez `Film_essai_Mac` (9 scènes) et parcourez chaque module.
 
-- [ ] **Scénario** : écriture, saisie semi-automatique des personnages et lieux, saut de page (le trait ne coupe jamais une lettre ni un É), mode révision, recherche. Page 1 / 7.
+- [x] **Scénario** : écriture, saisie semi-automatique des personnages et lieux, saut de page (le trait ne coupe jamais une lettre ni un É), mode révision, recherche. Page 1 / 7. ✅ 2026-11-22
 - [x] **Traits de page** : le trait de la page 2 est avant « LA MÈRE (V.O.) », puis INÈS (page 3), ÉLIOTT (4), LE CAISSIER (5), ÉLIOTT (6), « INT. MAISON D'INÈS - NUIT » (7). Essayez 2 thèmes et 2 tailles de texte. ✅ 2026-11-22
 - [x] **Cartes** : S_0001 à S_0009 ; ajout d'un plan à S_0001 ; déplacement d'une carte ; annuler / rétablir. ✅ 2026-11-22
 - [x] **Découpage / plans** : numérotation des plans, vignette dessinée (outil de dessin), fiche d'un plan. ✅ 2026-11-22

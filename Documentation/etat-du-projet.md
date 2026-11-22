@@ -4,7 +4,7 @@ Détail des décisions passées : decisions-archive.md (ne lire qu'en cas de bes
 
 Page courte, à lire **en premier** au début de toute nouvelle conversation (projet Claude) ou session (Claude Code). Elle est tenue à jour par Claude Code à chaque commit d'étape ou de sous-étape. Le détail se trouve dans `cahier-des-charges.md` (référence complète) et `specs/` (une spécification par étape) : ne les lire qu'en cas de besoin.
 
-Dernière mise à jour : 22 novembre 2026 (étapes 0 à 15, 16A à 16C, 17A à 17F terminées (lot 1 fini) ; « À propos » réalisée, en attente de validation ; **décision : version Mac d'abord** ; 18A réalisée (essai de l'étiquette reporté à 18G) ; 18B terminée ; 18C-1 à 18C-6 terminées, lot 2 terminé ; prochaine : 18D).
+Dernière mise à jour : 22 novembre 2026 (étapes 0 à 15, 16A à 16C, 17A à 17F terminées (lot 1 fini) ; « À propos » réalisée, en attente de validation ; **décision : version Mac d'abord** ; 18A réalisée (essai de l'étiquette reporté à 18G) ; 18B terminée ; 18C-1 à 18C-6 terminées, lot 2 terminé ; **18D validée, prochaine : 18E**).
 
 ## Où on en est
 
