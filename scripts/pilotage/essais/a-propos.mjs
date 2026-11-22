@@ -20,8 +20,13 @@ export default async function ({ app, check, log, newProject }) {
   const credit = await app.evaluate(`document.querySelector('.home-credit')?.innerText`)
   log(`accueil : ${credit}`)
   check(
-    /Créé par David Delepinne · version \d+\.\d+\.\d+/.test(credit ?? ''),
+    /Créé par David Delepinne[\s\S]*Version \d+\.\d+\.\d+/.test(credit ?? ''),
     'mention en bas de l’accueil'
+  )
+  check(
+    /Module Révision Gabriel Delepinne/.test(credit) &&
+      /Soutien technique Mathilde Gossart/.test(credit),
+    'crédits sur l’accueil'
   )
   await app.click('.home-credit .link-button')
   await sleep(400)
@@ -29,6 +34,8 @@ export default async function ({ app, check, log, newProject }) {
   check(about !== null, 'le lien « À propos » de l’accueil ouvre la fenêtre')
   await app.screenshot('a-propos.png')
   check(/David Delepinne/.test(about.text), 'auteur')
+  check(/Module Révision Gabriel Delepinne/.test(about.text), 'crédit Module Révision')
+  check(/Soutien technique Mathilde Gossart/.test(about.text), 'crédit Soutien technique')
   check(/Version \d+\.\d+\.\d+/.test(about.text), 'version')
   check(/GPL-3\.0/.test(about.text), 'licence')
   check(about.repo, 'lien vers le dépôt')

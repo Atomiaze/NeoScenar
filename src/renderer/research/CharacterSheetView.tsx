@@ -1,6 +1,11 @@
 import type { ReactNode } from 'react'
 import { isHexColor, SHEET_COLORS } from '../../shared/research/sheetNames'
-import { CHARACTER_ROLES, SHEET_SCHEMAS, type Sheet } from '../../shared/research/types'
+import {
+  CHARACTER_GENDERS,
+  CHARACTER_ROLES,
+  SHEET_SCHEMAS,
+  type Sheet
+} from '../../shared/research/types'
 import { fr } from '../i18n/fr'
 import { SheetGallery } from './SheetGallery'
 import { SheetNameHeading } from './SheetNameHeading'
@@ -26,6 +31,10 @@ export function CharacterSheetView({ sheet }: { sheet: Sheet }) {
   const role = prop('role')
   // Un rôle écrit ailleurs (« antagoniste ») reste proposé tel quel.
   const roles = ['', ...CHARACTER_ROLES, ...(role && !roleKnown(role) ? [role] : [])]
+  // Absent = « Non défini » ; un genre écrit ailleurs reste proposé tel quel.
+  const gender = prop('genre') || 'Non défini'
+  const genders: string[] = [...CHARACTER_GENDERS]
+  if (!genders.includes(gender)) genders.push(gender)
   const color = prop('couleur')
 
   return (
@@ -61,6 +70,20 @@ export function CharacterSheetView({ sheet }: { sheet: Sheet }) {
               {roles.map((value) => (
                 <option key={value} value={value}>
                   {t.roles[value] ?? value}
+                </option>
+              ))}
+            </select>
+          </Field>
+          <Field label={t.fields.genre}>
+            <select
+              value={gender}
+              onChange={(event) =>
+                setProp('genre', event.target.value === 'Non défini' ? '' : event.target.value)
+              }
+            >
+              {genders.map((value) => (
+                <option key={value} value={value}>
+                  {value}
                 </option>
               ))}
             </select>

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { APP_AUTHOR, APP_LICENSE } from '../../shared/appInfo'
+import { APP_AUTHOR, APP_CREDITS, APP_LICENSE } from '../../shared/appInfo'
 import { fr } from '../i18n/fr'
 import { Dialog } from './Dialog'
 
@@ -26,7 +26,14 @@ export function AboutDialog({ onClose }: { onClose(): void }) {
       <p className="about-name">{fr.app.name}</p>
       <p className="muted">{version ? t.version(version) : fr.home.versionLoading}</p>
       <p>{t.tagline}</p>
-      <p>{t.createdBy(APP_AUTHOR)}</p>
+      <p className="about-credits">
+        {t.createdBy(APP_AUTHOR)}
+        {APP_CREDITS.map((credit) => (
+          <span key={credit.role} className="about-credit-line">
+            {t.credit(credit.role, credit.name)}
+          </span>
+        ))}
+      </p>
       <p>{t.license(APP_LICENSE)}</p>
       <p className="muted">{t.licenseNote}</p>
       <p>

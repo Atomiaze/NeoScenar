@@ -83,11 +83,27 @@ export default async function ({ app, check, log, newProject }) {
     Object.getOwnPropertyDescriptor(HTMLSelectElement.prototype, 'value').set.call(select, 'principal')
     select.dispatchEvent(new Event('change', { bubbles: true }))
   })()`)
+  // Genre : « Non défini » au départ, sept valeurs, valeur enregistrée dans l'en-tête.
+  const genders = await app.evaluate(`(() => {
+    const select = ${labelled('Genre', 'select')}
+    return { current: select.value, options: [...select.options].map((o) => o.value) }
+  })()`)
+  check(genders.current === 'Non défini', `genre au départ : ${genders.current}`)
+  check(
+    genders.options.join('|') === 'Femme|Homme|Non-binaire|Genre Fluide|Agenre|Neutre|Non défini',
+    `les sept genres : ${genders.options.join('|')}`
+  )
+  await app.evaluate(`(() => {
+    const select = ${labelled('Genre', 'select')}
+    Object.getOwnPropertyDescriptor(HTMLSelectElement.prototype, 'value').set.call(select, 'Genre Fluide')
+    select.dispatchEvent(new Event('change', { bubbles: true }))
+  })()`)
   await sleep(1500)
   const saved = readSheet()
   check(saved.includes('interprete: Léa Dupont'), 'interprète enregistré')
   check(saved.includes('age: 16\n'), 'âge enregistré comme un nombre')
   check(saved.includes('role: principal'), 'rôle enregistré')
+  check(saved.includes('genre: Genre Fluide'), 'genre enregistré')
   check(saved.includes('## Description\n\nElle rêve de Bruxelles.\n'), 'description enregistrée')
   check(
     (await app.evaluate(`document.querySelector('.save-indicator')?.textContent`)) === 'Enregistré',

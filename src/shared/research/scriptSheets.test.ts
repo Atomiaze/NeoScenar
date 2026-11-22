@@ -41,7 +41,7 @@ function sheet(nom: string, changes: Partial<Sheet> = {}): Sheet {
     kind: 'personnages',
     fileName: `${nom}.md`,
     nom,
-    props: { interprete: '', age: '', role: '', couleur: '#E07A5F', resume: '' },
+    props: { interprete: '', age: '', role: '', genre: '', couleur: '#E07A5F', resume: '' },
     sections: { description: '', objectifs: '', relations: '' },
     auto: true,
     images: [],

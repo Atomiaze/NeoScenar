@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import type { HomeData, Result, ProjectSummary } from '../../shared/api'
-import { APP_AUTHOR } from '../../shared/appInfo'
+import { APP_AUTHOR, APP_CREDITS } from '../../shared/appInfo'
 import { fr } from '../i18n/fr'
 
 /** Événement de la fenêtre : l'image d'accueil vient de changer (Réglages). */
@@ -59,14 +59,17 @@ export function HomeScreen({ onNewProject, onAbout, onError }: HomeScreenProps) 
           <h1>{fr.app.name}</h1>
         </header>
 
-        <div className="home-intro">
-          <p className="welcome">{fr.home.welcome}</p>
-          <p className="welcome">{fr.home.accompanies}</p>
-          <ul className="home-promises">
-            {fr.home.accompaniesList.map((line) => (
-              <li key={line}>{line}</li>
-            ))}
-          </ul>
+        <div className="home-credit">
+          <p>{fr.about.createdBy(APP_AUTHOR)}</p>
+          {APP_CREDITS.map((credit) => (
+            <p key={credit.role}>{fr.about.credit(credit.role, credit.name)}</p>
+          ))}
+          <p className="muted">
+            {version ? fr.home.version(version) : fr.home.versionLoading} ·{' '}
+            <button className="link-button" onClick={onAbout}>
+              {fr.home.aboutLink}
+            </button>
+          </p>
         </div>
 
         <div className="home-actions">
@@ -112,15 +115,6 @@ export function HomeScreen({ onNewProject, onAbout, onError }: HomeScreenProps) 
             ))}
           </ul>
         </section>
-
-        <footer className="home-credit muted">
-          <span>
-            {version ? fr.home.credit(APP_AUTHOR, version) : fr.home.creditLoading(APP_AUTHOR)}
-          </span>
-          <button className="link-button" onClick={onAbout}>
-            {fr.home.aboutLink}
-          </button>
-        </footer>
       </div>
     </main>
   )

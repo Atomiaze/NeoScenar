@@ -29,9 +29,8 @@ export default async function ({ app, check, log, newProject }) {
         content: box('.home-content'),
         img: img && { natural: img.naturalWidth, loaded: img.complete && img.naturalWidth > 0, src: img.src, fit: getComputedStyle(img).objectFit },
         title: document.querySelector('.home-header h1')?.textContent,
-        version: document.querySelector('.home-credit span')?.textContent,
-        welcome: [...document.querySelectorAll('.welcome')].map((e) => e.textContent),
-        promises: [...document.querySelectorAll('.home-promises li')].map((e) => e.textContent),
+        credits: [...document.querySelectorAll('.home-credit p')].map((e) => e.textContent),
+        intro: document.querySelectorAll('.welcome, .home-promises').length,
         buttons: [...document.querySelectorAll('.home-actions button')].map((e) => e.textContent),
         recents: document.querySelectorAll('.recent li').length,
         scrollX: document.documentElement.scrollWidth > innerWidth
@@ -41,20 +40,15 @@ export default async function ({ app, check, log, newProject }) {
   // 1. Disposition et textes.
   let l = await layout()
   log('  fenêtre', l.width, 'visuel', JSON.stringify(l.visual))
+  check(l.title === 'NeoScenar', 'titre')
   check(
-    l.title === 'NeoScenar' && /^Créé par David Delepinne · version \d+\.\d+\.\d+$/.test(l.version),
-    'titre et mention en bas'
+    l.credits[0] === 'Créé par David Delepinne' &&
+      l.credits[1] === 'Module Révision Gabriel Delepinne' &&
+      l.credits[2] === 'Soutien technique Mathilde Gossart' &&
+      /^Version \d+\.\d+\.\d+ · À propos$/.test(l.credits[3]),
+    `crédits puis version et À propos : ${JSON.stringify(l.credits)}`
   )
-  check(
-    l.welcome[0] === 'Bienvenue !' && l.welcome[1] === 'NeoScenar vous accompagne',
-    'Bienvenue / NeoScenar vous accompagne'
-  )
-  check(
-    l.promises.length === 6 &&
-      l.promises[3] === 'dans la réalisation de votre storyboard' &&
-      l.promises[4] === 'dans la centralisation de vos données',
-    'six lignes, textes corrigés'
-  )
+  check(l.intro === 0, 'Bienvenue et la liste « vous accompagne » supprimés')
   check(
     l.buttons.join('|') === 'Nouveau projet…|Ouvrir un projet…',
     'boutons Nouveau projet… et Ouvrir un projet…'
@@ -78,13 +72,12 @@ export default async function ({ app, check, log, newProject }) {
         bg: root.getPropertyValue('--background').trim(),
         accent: root.getPropertyValue('--accent').trim(),
         h1: c('.home-header h1').color,
-        promise: c('.home-promises').color,
         visualBg: c('.home-visual').backgroundColor,
         src: document.querySelector('.home-visual img').src
       }
     })()`)
     check(s.src === before && s.visualBg === 'rgb(37, 37, 45)', `${id} : visuel inchangé`)
-    check(s.h1 !== '' && s.h1 === s.promise, `${id} : titre et liste en couleur d'accent`)
+    check(s.h1 !== '', `${id} : titre en couleur d'accent`)
     await app.screenshot(`accueil-${id}.png`)
   }
   await app.evaluate(`window.neoscenar.setTheme('defaut')`)

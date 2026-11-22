@@ -17,6 +17,7 @@ const macTexts = {
     title: 'À propos de NeoScenar',
     tagline: 'Écriture de scénarios, découpage technique et storyboard pour l’audio-visuel.',
     createdBy: (author: string): string => `Créé par ${author}`,
+    credit: (role: string, name: string): string => `${role} ${name}`,
     version: (version: string): string => `Version ${version}`,
     license: (license: string): string => `Licence ${license}`,
     licenseNote:
@@ -30,20 +31,8 @@ const macTexts = {
     formatDate: (isoDate: string): string => dateFormat.format(new Date(isoDate))
   },
   home: {
-    welcome: 'Bienvenue !',
-    accompanies: 'NeoScenar vous accompagne',
-    accompaniesList: [
-      'dans votre planification',
-      'dans l’écriture de votre scénario',
-      'dans votre découpage technique',
-      'dans la réalisation de votre storyboard',
-      'dans la centralisation de vos données',
-      'dans la création de votre générique'
-    ],
     version: (version: string): string => `Version ${version}`,
     versionLoading: 'Version…',
-    credit: (author: string, version: string): string => `Créé par ${author} · version ${version}`,
-    creditLoading: (author: string): string => `Créé par ${author}`,
     aboutLink: 'À propos',
     newProject: 'Nouveau projet…',
     openProject: 'Ouvrir un projet…',
@@ -287,6 +276,7 @@ const macTexts = {
       interprete: 'Interprète',
       age: 'Âge',
       role: 'Rôle',
+      genre: 'Genre',
       couleur: 'Couleur',
       resume: 'Résumé',
       description: 'Description',

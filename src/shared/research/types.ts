@@ -8,6 +8,17 @@ export type SheetKind = 'personnages' | 'lieux'
 export const CHARACTER_ROLES = ['principal', 'secondaire', 'figurant'] as const
 export type CharacterRole = (typeof CHARACTER_ROLES)[number]
 
+/** Genres proposés pour un personnage (libellés écrits tels quels dans la fiche). « Non défini » = absent. */
+export const CHARACTER_GENDERS = [
+  'Femme',
+  'Homme',
+  'Non-binaire',
+  'Genre Fluide',
+  'Agenre',
+  'Neutre',
+  'Non défini'
+] as const
+
 /** Ce que NeoScenar connaît d'un type de fiche. */
 export interface SheetSchema {
   /** Valeur de la propriété « type ». */
@@ -29,7 +40,7 @@ export const SHEET_IMAGES_FOLDER = 'images'
 export const SHEET_SCHEMAS: Record<SheetKind, SheetSchema> = {
   personnages: {
     type: 'personnage',
-    props: ['interprete', 'age', 'role', 'couleur', 'resume'],
+    props: ['interprete', 'age', 'role', 'genre', 'couleur', 'resume'],
     numericProps: ['age'],
     sections: [
       ['description', 'Description'],

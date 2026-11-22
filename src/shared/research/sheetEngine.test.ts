@@ -75,6 +75,7 @@ describe('parseSheet', () => {
       interprete: 'Léa Dupont',
       age: '16',
       role: 'principal',
+      genre: '',
       couleur: '#E07A5F',
       resume: 'Lycéenne qui veut quitter sa ville.'
     })
@@ -205,6 +206,16 @@ describe('applySheetPatch', () => {
   })
 })
 
+describe('genre', () => {
+  it('absent = vide, sans réécrire la fiche ; une valeur est écrite puis relue', () => {
+    expect(parseSheet(MARIE, 'personnages').props.genre).toBe('')
+    expect(applySheetPatch(MARIE, 'personnages', { props: { genre: '' } })).toBe(MARIE)
+    const written = applySheetPatch(MARIE, 'personnages', { props: { genre: 'Genre Fluide' } })
+    expect(written).toContain('genre: Genre Fluide')
+    expect(parseSheet(written, 'personnages').props.genre).toBe('Genre Fluide')
+  })
+})
+
 describe('newSheetText', () => {
   it('écrit une fiche complète au format de la spécification', () => {
     const text = newSheetText('personnages', 'MARIE', { couleur: '#E07A5F' })
@@ -214,6 +225,7 @@ nom: MARIE
 interprete: ""
 age: ""
 role: ""
+genre: ""
 couleur: "#E07A5F"
 resume: ""
 auto: false
