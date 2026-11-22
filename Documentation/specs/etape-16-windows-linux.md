@@ -78,7 +78,7 @@ Reprendre la section 1 de `essais-16D.md` avec la version Mac publiée comme bas
 - **Correcteur réseau coupé** : le mot faux n'est **pas souligné** (le français est installé dans Windows). À corriger.
 - **Compte standard** (sans droit administrateur) : pas encore essayé (seul un compte administrateur était disponible).
 - **Version portable** : pas encore essayée.
-- Défauts de 18B jugés propres à Windows, s'il y en a.
+- **Trait de page qui traverse l'accent d'un É** (vu sous Windows ; absent sur Mac, vérifié en 18B avec l'essai `trait-de-page-accents.mjs` : thèmes Par défaut et Matrix, plus grande taille de texte). Propre à Windows : à revoir en 16D (police, rendu).
 - Pilotage et `npm test` sur le PC (section 3) : facultatif.
 
 *Validé quand* : toutes les cases de la section 1 sont cochées.
@@ -96,7 +96,7 @@ Reprendre la section 2 de `essais-16D.md`. **Déjà validé le 21 nov.** : `.deb
 - **Icône générique dans le dock** (carré gris avec roue dentée) au lieu du logo : à corriger (nom de classe de fenêtre / fichier `.desktop`).
 - **AppImage** : double-clic sans effet et **sans aucun message**, même avec l'exécution autorisée. Le lancer dans un terminal pour lire l'erreur (`libfuse2`, AppArmor…) ; ne pas contourner avec `--no-sandbox` sans en parler à David.
 - **Désinstallation** : pas encore essayée.
-- Défauts de 18B jugés propres à Linux, s'il y en a.
+- Défauts de 18B jugés propres à Linux : à revoir en 16F si le trait de page traverse aussi l'accent sous Ubuntu (voir 16D). Les deux autres remarques (numéros de scène 1, 2, 3 et numéros de page) ne sont pas des défauts : voir 18B.
 
 *Validé quand* : toutes les cases de la section 2 sont cochées.
 

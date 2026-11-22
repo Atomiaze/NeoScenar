@@ -4,7 +4,7 @@ Détail des décisions passées : decisions-archive.md (ne lire qu'en cas de bes
 
 Page courte, à lire **en premier** au début de toute nouvelle conversation (projet Claude) ou session (Claude Code). Elle est tenue à jour par Claude Code à chaque commit d'étape ou de sous-étape. Le détail se trouve dans `cahier-des-charges.md` (référence complète) et `specs/` (une spécification par étape) : ne les lire qu'en cas de besoin.
 
-Dernière mise à jour : 21 novembre 2026 (étapes 0 à 15, 16A à 16C, 17A à 17F terminées (lot 1 fini) ; « À propos » réalisée, en attente de validation ; **décision : version Mac d'abord** ; prochaine : 18A).
+Dernière mise à jour : 21 novembre 2026 (étapes 0 à 15, 16A à 16C, 17A à 17F terminées (lot 1 fini) ; « À propos » réalisée, en attente de validation ; **décision : version Mac d'abord** ; 18A réalisée (essai de l'étiquette en attente) ; 18B terminée ; prochaine : 18C).
 
 ## Où on en est
 
@@ -22,7 +22,7 @@ Les numéros de commit antérieurs au 20 novembre 2026 (par exemple `710449c`) r
   - 15A à 15E : planning (moteur, liste, ligne du temps, plan de tournage, exports PDF et .ics).
   - 16A à 16C : portabilité, correcteur et police, dépôt public avec installeurs (brouillon de Release `v0.1.0` non publié).
   - Fenêtre « À propos » : réalisée, en attente de validation.
-- **Ensuite — étape 18, version Mac complète et publiée** (`specs/etape-18-version-mac.md`) : 18A installeurs Mac seuls ; 18B défauts relevés sur PC, vérifiés sur Mac ; 18C lot 2 des retours (spec à rédiger) ; 18D essais sur l'iMac ; 18E chez la collègue puis sur les Mac de l'école ; 18F guide Mac ; 18G publication.
+- **Ensuite — étape 18, version Mac complète et publiée** (`specs/etape-18-version-mac.md`) : 18A installeurs Mac seuls (réalisée, essai de l'étiquette en attente) ; 18B défauts relevés sur PC, vérifiés sur Mac (terminée : trait de page correct sur Mac, essai `trait-de-page-accents.mjs` ; numéros de scène du PDF = place dans le texte si pas de `#n#`, voulu, **à revérifier en 18D** ; PDF du scénario sans « 1. » sur la page 1 = convention Final Draft gardée ; storyboard : « N° de page : 1 / N » partout) ; 18C lot 2 des retours (spec `specs/etape-17-lot-2-retours.md`, sous-étapes 18C-1 à 18C-6) ; 18D essais sur l'iMac ; 18E chez la collègue puis sur les Mac de l'école ; 18F guide Mac ; 18G publication.
 - **Puis Windows** (16D essais et corrections, 16E guide et publication), **puis Linux** (16F, 16G). Essais du 21 nov. gardés dans `essais-16D.md` (en pause) ; défauts restants listés dans `specs/etape-16-windows-linux.md`.
 - **Non prioritaire** : mode plan de l'éditeur ; 12 import automatique des scans (reporté le 19 nov., seulement si les élèves le demandent ; marques, QR codes et JSON d'impression de l'étape 11 restent produits) ; imports Final Draft et KIT Scenarist ; plugin Obsidian. **Mis de côté** : retour Blender → NeoScenar.
 
@@ -45,7 +45,7 @@ Les numéros de commit antérieurs au 20 novembre 2026 (par exemple `710449c`) r
 
 ## Points ouverts
 
-- Windows et Linux : défauts relevés le 21 nov. (correcteur hors ligne sous Windows, icône du dock et AppImage sous Ubuntu, compte standard et portable non essayés) : voir `specs/etape-16-windows-linux.md`. Trois remarques peut-être communes au Mac (accent traversé par le trait de page, numéros de scène dans le PDF, numéros de page du storyboard) : 18B.
+- Windows et Linux : défauts relevés le 21 nov. (correcteur hors ligne sous Windows, icône du dock et AppImage sous Ubuntu, compte standard et portable non essayés) : voir `specs/etape-16-windows-linux.md`. Les trois remarques de 16D sont traitées en 18B (trait de page : propre à Windows, noté dans la spec 16).
 - Essai `editeur-finitions.mjs` en échec, antérieur à 16A : la vérification « sans le réglage, le fond change » échoue (vérifié sur le code d'avant 16A).
 - Essai `dupliquer-depuis-scenario.mjs` instable : un échec sur trois passages (copie sélectionnée et curseur hors scène), réussi sinon, avant comme après 16A.
 - Trait de page « trop haut sur É/À » (13A) : non reproduit à l'écran, corrigé par construction.
