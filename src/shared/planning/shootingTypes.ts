@@ -61,6 +61,8 @@ export interface BreakdownScene {
   eighths: number | null
   /** Personnages qui parlent, puis les muets ajoutés. */
   characters: SceneCharacter[]
+  /** Noms cités dans l'action sans y parler ni être déjà muets : proposés, jamais enregistrés. */
+  suggestions: string[]
 }
 
 /** Fiche Personnage, réduite à ce dont le dépouillement a besoin. */

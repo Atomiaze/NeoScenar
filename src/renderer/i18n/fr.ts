@@ -868,6 +868,9 @@ const macTexts = {
     addMuteHint:
       'Les muets sont ajoutés au plan de tournage seulement : le scénario n’est pas modifié.',
     removeMute: (name: string): string => `Retirer ${name} de cette scène`,
+    suggestions: 'Suggestions',
+    suggestionsHint: 'Cités dans l’action, sans parler dans cette scène.',
+    suggestionAdd: (name: string): string => `Ajouter ${name} aux personnages muets`,
     plannedOn: 'Planifiée le',
     notPlanned: 'Pas encore planifiée.',
     warningsTitle: (count: number): string =>

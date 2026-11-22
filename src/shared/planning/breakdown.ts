@@ -23,6 +23,22 @@ export function eighthsOfPage(seconds: number): number {
   return Math.max(1, Math.round((seconds / 60) * 8 + 1e-9))
 }
 
+/** Texte sans majuscules ni accents, pour chercher un nom dans l'action. */
+function plainText(text: string): string {
+  return text
+    .normalize('NFD')
+    .replace(/\p{Diacritic}/gu, '')
+    .toLocaleLowerCase('fr')
+}
+
+/** Le nom apparaît comme mot entier (« Paul » ne se trouve pas dans « Paulette »). */
+function mentionsName(plainAction: string, name: string): boolean {
+  const plainName = plainText(name).trim()
+  if (plainName === '') return false
+  const escaped = plainName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+  return new RegExp(`(?<![\\p{L}\\p{N}])${escaped}(?![\\p{L}\\p{N}])`, 'u').test(plainAction)
+}
+
 /** Interprète par nom de fiche (clé `nameKey`) ; null si le champ est vide. */
 function interpreterIndex(sheets: readonly CharacterSheetInfo[]): Map<string, string | null> {
   const index = new Map<string, string | null>()
@@ -48,6 +64,13 @@ export function breakdownScenes(
   const seconds = new Map(
     estimateDurations(doc, pagination).scenes.map((s) => [s.index, s.seconds])
   )
+  // Personnages connus : fiches + noms qui parlent quelque part dans le scénario.
+  const known = new Map<string, string>()
+  for (const sheet of sheets) known.set(nameKey(sheet.nom), sheet.nom)
+  for (const element of doc.elements) {
+    const name = element.type === 'character' ? (element.character?.name ?? '').trim() : ''
+    if (name !== '' && !known.has(nameKey(name))) known.set(nameKey(name), name)
+  }
   const used = new Set<string>()
   const result: BreakdownScene[] = []
 
@@ -60,8 +83,10 @@ export function breakdownScenes(
     const toWrite = nameKey(scene.info.location) === nameKey(PLACEHOLDER_HEADING)
     const characters: SceneCharacter[] = []
     const seen = new Set<string>()
+    const actionLines: string[] = []
     for (const element of scene.elements) {
       if (element.type === 'section') break
+      if (element.type === 'action') actionLines.push(element.text)
       const name = element.type === 'character' ? (element.character?.name ?? '').trim() : ''
       if (name === '' || seen.has(nameKey(name))) continue
       seen.add(nameKey(name))
@@ -84,6 +109,14 @@ export function breakdownScenes(
       })
     }
 
+    const plainAction = plainText(actionLines.join('\n'))
+    const suggestions = toWrite
+      ? []
+      : [...known]
+          .filter(([key, name]) => !seen.has(key) && mentionsName(plainAction, name))
+          .map(([, name]) => name)
+          .sort((a, b) => a.localeCompare(b, 'fr'))
+
     result.push({
       cardId: card.id,
       label: sceneLabel(number),
@@ -94,7 +127,8 @@ export function breakdownScenes(
       dayNight: toWrite ? 'unknown' : dayNightOf(scene.info.time),
       location: toWrite ? '' : scene.info.location.trim(),
       eighths: toWrite ? null : eighthsOfPage(seconds.get(scene.index) ?? 0),
-      characters
+      characters,
+      suggestions
     })
   }
   return result

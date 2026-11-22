@@ -84,6 +84,41 @@ INT. CUISINE - NUIT
 Paul reste seul.
 `
 
+describe('suggestions de personnages muets', () => {
+  const suggestionsOf = (text: string, sheets: { nom: string; interprete: string }[] = []) => {
+    const linked = link(text)
+    return breakdown(linked.text, linked.cards, sheets).map((s) => s.suggestions)
+  }
+
+  it('propose un personnage cité dans l’action qui ne parle pas dans la scène', () => {
+    const { text, cards } = link(SCRIPT)
+    const scenes = breakdown(text, cards)
+    expect(scenes.map((s) => s.suggestions)).toEqual([[], ['MARIE'], ['PAUL']])
+  })
+
+  it('ne propose jamais un personnage qui parle dans la scène, ni un muet déjà ajouté', () => {
+    const { text, cards } = link(SCRIPT)
+    const doc = parse(text, { titlePage: false })
+    const withMute = breakdownScenes(doc, paginate(doc, scriptLayout), cards, [], {
+      [cards[1].id]: ['MARIE']
+    })
+    expect(withMute[0].suggestions).toEqual([])
+    expect(withMute[1].suggestions).toEqual([])
+    expect(withMute[1].characters.map((c) => c.nom)).toEqual(['MARIE'])
+  })
+
+  it('pas de faux positif sur une partie de mot', () => {
+    const script = `INT. SALON - JOUR\n\nPaulette entre.\n\nPAUL\nSalut.\n\nINT. CUISINE - JOUR\n\nPaulette entre.\n`
+    expect(suggestionsOf(script)[1]).toEqual([])
+  })
+
+  it('sans tenir compte des majuscules ni des accents, avec les fiches', () => {
+    const script = `INT. SALON - JOUR\n\nLÉA\nSalut.\n\nINT. CUISINE - JOUR\n\nLea entre, puis (Zoé) sourit.\n`
+    const out = suggestionsOf(script, [{ nom: 'Zoé', interprete: '' }])
+    expect(out[1]).toEqual(['LÉA', 'Zoé'])
+  })
+})
+
 describe('eighthsOfPage', () => {
   it('arrondit au huitième le plus proche, jamais en dessous de 1/8', () => {
     expect(eighthsOfPage(0)).toBe(1)

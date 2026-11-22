@@ -88,6 +88,28 @@ export function ShootingScenePanel({ cardId, scene, days, sheets }: ShootingScen
             ))}
           </ul>
 
+          {scene.suggestions.length > 0 && (
+            <div data-mute-suggestions>
+              <h3 className="field-label">{t.suggestions}</h3>
+              <p className="muted shooting-panel-hint">{t.suggestionsHint}</p>
+              <ul className="shooting-panel-characters">
+                {scene.suggestions.map((name) => (
+                  <li key={name} data-suggestion={name}>
+                    <span>{name}</span>
+                    <button
+                      className="icon-button"
+                      title={t.suggestionAdd(name)}
+                      aria-label={t.suggestionAdd(name)}
+                      onClick={() => addMute(cardId, name)}
+                    >
+                      +
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+
           <label className="field">
             <span className="field-label">{t.addMute}</span>
             {candidates.length === 0 ? (
