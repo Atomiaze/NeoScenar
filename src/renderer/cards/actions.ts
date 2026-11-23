@@ -533,6 +533,21 @@ export function editSceneDescription(sceneId: string, description: string): void
 }
 
 /**
+ * Marque (ou démarque) la scène comme brouillon dans le scénario (18C-13). Seul le texte change,
+ * mais c'est une étape d'annulation des cartes, comme la description.
+ */
+export function setSceneDraft(sceneId: string, draft: boolean): void {
+  const decoupage = currentDecoupage()
+  const scene = decoupage?.scenes.find((item) => item.id === sceneId)
+  if (!decoupage || !scene) return
+  commitCardsChange(decoupage, { label: 'edit' }, undefined, {
+    kind: 'setDraft',
+    number: { number: scene.number, letter: scene.letter },
+    draft
+  })
+}
+
+/**
  * Carte orpheline : remet son en-tête (ou « SCÈNE À ÉCRIRE ») dans le scénario, avec son numéro, à
  * la place qui correspond à ce numéro. La carte se reconnecte. Une étape d'annulation des cartes.
  */
@@ -618,7 +633,14 @@ export function handleUndoCommand(command: 'undo' | 'redo'): void {
     drawingUndo[command]()
     return
   }
-  if (isTypingTarget(document.activeElement)) {
+  // Une case à cocher de la fiche (« Brouillon ») n'a pas d'annulation à elle : Cmd + Z annule
+  // dans les cartes.
+  const focused = document.activeElement
+  const checkbox =
+    focused?.tagName === 'INPUT' &&
+    (focused as HTMLInputElement).type === 'checkbox' &&
+    !focused.closest('.overlay')
+  if (isTypingTarget(focused) && !checkbox) {
     document.execCommand(command)
     return
   }

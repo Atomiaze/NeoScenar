@@ -15,6 +15,7 @@ import {
 } from './cardTextEdits'
 import { readScriptScenes, type ScriptScene } from './scriptScenes'
 import { readSynopsis, setSynopsis } from './synopsis'
+import { setDraft } from './draftScene'
 import { applyTextChanges, type TextChange } from './textChanges'
 
 // Effet d'une action des cartes sur le texte, décrit par les numéros de scène (jamais par une
@@ -30,6 +31,7 @@ export type TextOp =
   | { kind: 'setHeading'; number: ItemNumber; heading: string }
   | { kind: 'setHeadingLine'; number: ItemNumber; line: string }
   | { kind: 'setDescription'; number: ItemNumber; description: string }
+  | { kind: 'setDraft'; number: ItemNumber; draft: boolean }
   | { kind: 'renumber'; mapping: { from: ItemNumber; to: ItemNumber }[] }
   | { kind: 'sequence'; ops: TextOp[] }
 
@@ -155,6 +157,13 @@ function run(b: Builder, op: TextOp): TextOp {
       if (!change) return NOTHING
       b.push([change])
       return { kind: 'setDescription', number: op.number, description: before }
+    }
+    case 'setDraft': {
+      const scene = findScene(b.text, op.number)
+      const change = scene ? setDraft(b.text, scene.line.from, op.draft) : null
+      if (!change) return NOTHING
+      b.push([change])
+      return { kind: 'setDraft', number: op.number, draft: !op.draft }
     }
     case 'renumber': {
       const present = new Set(

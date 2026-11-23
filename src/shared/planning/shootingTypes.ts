@@ -74,6 +74,8 @@ export interface BreakdownScene {
   characters: SceneCharacter[]
   /** Noms cités dans l'action sans y parler ni être déjà muets : proposés, jamais enregistrés. */
   suggestions: string[]
+  /** Scène brouillon (18C-13) : gardée dans le plan de tournage, avec son étiquette. */
+  draft?: boolean
 }
 
 /** Fiche Personnage, réduite à ce dont le dépouillement a besoin. */

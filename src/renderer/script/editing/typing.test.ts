@@ -376,4 +376,15 @@ describe('symboles Fountain tapés en début de ligne (18C-11)', () => {
     expect(t.text).toBe(`${HEADING}\n\n!.5 SECONDES`)
     expect(t.types).toEqual(['scene_heading', 'action'])
   })
+
+  it('saut de page sur une ligne vide (après Entrée) : « === » écrit à chaque fois', () => {
+    const t = new Typist(`${HEADING}\n\n`)
+    for (let i = 1; i <= 4; i++)
+      t.type(`Action ${i}.`).enter().run(setElementType('page_break')).enter()
+    t.type('Fin.')
+    expect(t.text).toBe(
+      `${HEADING}\n\nAction 1.\n\n===\n\nAction 2.\n\n===\n\nAction 3.\n\n===\n\nAction 4.\n\n===\n\nFin.`
+    )
+    expect(t.types.filter((type) => type === 'page_break')).toHaveLength(4)
+  })
 })

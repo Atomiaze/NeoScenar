@@ -2,6 +2,7 @@ import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { fr } from '../../i18n/fr'
 import type { NavigatorScene } from './buildNavigator'
 import { toggleDraft } from './draftActions'
+import { openDraftEditor } from '../draft/draftStore'
 
 const t = fr.script.navigator
 
@@ -66,6 +67,17 @@ export function NavigatorMenu({ menu, onClose }: { menu: NavigatorMenuState; onC
       >
         {scene.draft ? t.unmarkDraft : t.markDraft}
       </button>
+      {scene.draft && (
+        <button
+          role="menuitem"
+          onClick={() => {
+            onClose()
+            openDraftEditor(scene.from)
+          }}
+        >
+          {t.editDraft}
+        </button>
+      )}
     </div>
   )
 }

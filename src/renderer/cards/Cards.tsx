@@ -49,6 +49,8 @@ export interface DragHandle {
 interface SceneCardProps extends DragHandle {
   scene: Scene
   selected: boolean
+  /** Scène brouillon dans le scénario (18C-13) : grisée, avec son étiquette. */
+  draft?: boolean
 }
 
 export const SceneCard = memo(function SceneCard({
@@ -57,7 +59,8 @@ export const SceneCard = memo(function SceneCard({
   dragRef,
   listeners,
   dimmed,
-  title
+  title,
+  draft
 }: SceneCardProps) {
   const summary = fr.cards.sceneSummary(scene.shots.length, formatDuration(sceneDuration(scene)))
   return (
@@ -65,7 +68,7 @@ export const SceneCard = memo(function SceneCard({
       ref={dragRef}
       {...listeners}
       title={title}
-      className={cardClass('card scene-card', selected, scene.color, dimmed)}
+      className={`${cardClass('card scene-card', selected, scene.color, dimmed)}${draft ? ' draft' : ''}`}
       style={colorStyle(scene.color)}
       data-card-id={scene.id}
       data-card-kind="scene"
@@ -76,6 +79,11 @@ export const SceneCard = memo(function SceneCard({
       <span className="card-name">{scene.name}</span>
       <span className="card-heading">{scene.heading}</span>
       {scene.orphan && <span className="orphan-label">{fr.cards.orphanLabel}</span>}
+      {draft && (
+        <span className="draft-tag" title={fr.script.navigator.draftHint}>
+          {fr.script.navigator.draft}
+        </span>
+      )}
       <span className="card-summary">{summary}</span>
     </div>
   )

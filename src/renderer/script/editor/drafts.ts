@@ -94,7 +94,35 @@ const keepBlocksApart = EditorState.transactionFilter.of((tr) => {
   return [tr, { selection: EditorSelection.cursor(Math.max(0, inside.from - 1)) }]
 })
 
+let searchHitHandler: ((from: number | null) => void) | null = null
+
+/**
+ * Qui prévenir quand la recherche tombe dans un brouillon (en-tête de la scène, sa fenêtre est
+ * proposée), ou sur un résultat ordinaire (null : le signalement disparaît).
+ */
+export function onDraftSearchHit(handler: (from: number | null) => void): void {
+  searchHitHandler = handler
+}
+
+/**
+ * La recherche (⌘ + F) trouve aussi le texte des brouillons, mais il n'est pas à l'écran : le curseur
+ * va juste après la scène (« Suivant » continue de là) et la scène est signalée.
+ */
+const searchInDrafts = EditorState.transactionFilter.of((tr) => {
+  if (!tr.isUserEvent('select.search') || !tr.selection) return tr
+  const head = tr.selection.main.from
+  const block = draftBlocksOf(tr.startState).find((b) => head >= b.from && head < b.to)
+  const handler = searchHitHandler
+  if (handler) queueMicrotask(() => handler(block?.from ?? null))
+  if (!block) return tr
+  return {
+    selection: EditorSelection.cursor(block.to),
+    scrollIntoView: true,
+    userEvent: 'select.search'
+  }
+})
+
 export function draftScenes(): Extension {
   // Au plus bas : la réparation passe avant le rapprochement (lui aussi au plus bas, inscrit avant).
-  return [draftField, protectBlocks, Prec.lowest(keepBlocksApart)]
+  return [draftField, protectBlocks, searchInDrafts, Prec.lowest(keepBlocksApart)]
 }

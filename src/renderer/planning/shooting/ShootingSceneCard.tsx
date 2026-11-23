@@ -72,6 +72,11 @@ export function ShootingSceneCard({
     >
       <div className="shooting-scene-top">
         <strong className="shooting-scene-label">{label}</strong>
+        {scene?.draft && (
+          <span className="draft-tag" title={fr.script.navigator.draftHint}>
+            {fr.script.navigator.draft}
+          </span>
+        )}
         {scene && scene.eighths !== null && (
           <span className="shooting-scene-tags muted">
             {t.intExt[scene.intExt]} · {t.dayNight[scene.dayNight]}

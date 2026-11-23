@@ -2,8 +2,9 @@
 // reste dans le Fountain, mais elle n'est ni affichée dans l'éditeur, ni imprimée, ni comptée.
 
 import { parse, type FountainDocument, type FountainElement } from '@neoscenar/fountain'
-import type { TextRange } from './scriptScenes'
-import { minimalTextChange, type TextChange } from './textChanges'
+import { readScriptScenes, type TextRange } from './scriptScenes'
+import { numberKey } from '../decoupage/order'
+import { applyTextChanges, minimalTextChange, type TextChange } from './textChanges'
 
 export const DRAFT_NOTE = '[[BROUILLON]]'
 
@@ -128,4 +129,45 @@ export function setDraft(text: string, from: number, draft: boolean): TextChange
   }
   const result = lines.join('\n')
   return minimalTextChange(text, result)
+}
+
+/** Numéros (clés « 30 », « 30A ») des scènes brouillon du texte : pour les Cartes et le storyboard. */
+export function draftNumberKeys(text: string): Set<string> {
+  const doc = parse(text, { titlePage: false })
+  const drafts = new Set(
+    [...draftHeadings(doc)].map((index) => doc.elements[index].position?.startOffset)
+  )
+  return new Set(
+    readScriptScenes(text, doc).flatMap((scene) =>
+      scene.number && drafts.has(scene.line.from) ? [numberKey(scene.number)] : []
+    )
+  )
+}
+
+/**
+ * Texte de la scène brouillon proposé dans sa fenêtre : son bloc sans la note [[BROUILLON]] ni les
+ * lignes vides finales.
+ */
+export function draftEditableText(blockText: string): string {
+  const change = setDraft(blockText, 0, false)
+  const text = change ? applyTextChanges(blockText, [change]) : blockText
+  return text.trimEnd()
+}
+
+/**
+ * Nouveau bloc après la fenêtre d'édition : la note remise sous l'en-tête, et les lignes vides
+ * finales d'origine (au moins une ligne vide avant la scène suivante). Null si la première ligne
+ * n'est plus un en-tête de scène.
+ */
+export function rebuiltDraftBlock(
+  edited: string,
+  originalBlock: string,
+  atTextEnd: boolean
+): string | null {
+  const body = edited.trimEnd()
+  const change = setDraft(body, 0, true)
+  if (!change) return null
+  let trailing = originalBlock.slice(originalBlock.trimEnd().length)
+  if (!atTextEnd && !trailing.endsWith('\n\n')) trailing = '\n\n'
+  return applyTextChanges(body, [change]) + trailing
 }

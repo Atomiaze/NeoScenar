@@ -27,6 +27,7 @@ import {
   updateSynopsis
 } from './navigatorStore'
 import { moveNavigatorScene } from './moveScene'
+import { openDraftEditor } from '../draft/draftStore'
 import { NavigatorMenu, type NavigatorMenuState } from './NavigatorMenu'
 import { dropTarget, highlightedPosition, visibleRows, type NavigatorRow } from './rows'
 import './navigator.css'
@@ -324,6 +325,9 @@ function SceneRow(props: RowProps) {
         .filter((part) => part !== '')
         .join('\n')}
       onClick={goFrom(row)}
+      onDoubleClick={() => {
+        if (scene.draft) openDraftEditor(scene.from)
+      }}
       onContextMenu={(event) => {
         event.preventDefault()
         props.onMenu({ x: event.clientX, y: event.clientY, scene })

@@ -8,7 +8,17 @@ import {
 } from '@neoscenar/fountain'
 import { readFileSync } from 'node:fs'
 import { join } from 'node:path'
-import { draftBlocks, draftHeadings, isDraftScene, setDraft, withoutDrafts } from './draftScene'
+import {
+  draftBlocks,
+  draftEditableText,
+  draftHeadings,
+  draftNumberKeys,
+  isDraftScene,
+  rebuiltDraftBlock,
+  setDraft,
+  withoutDrafts
+} from './draftScene'
+import { applyTextOp } from './textOps'
 import { applyTextChanges } from './textChanges'
 
 const layout = resolveLayout(
@@ -124,5 +134,32 @@ describe('scènes brouillon', () => {
     )
     expect(printed.elements.some((element) => element.text === 'Action B.')).toBe(false)
     expect(printed.elements.some((element) => element.text === 'Action C.')).toBe(true)
+  })
+
+  it('numéros des scènes brouillon', () => {
+    expect([...draftNumberKeys(SCRIPT)]).toEqual(['20'])
+  })
+
+  it('fenêtre d’édition : texte sans la note, puis bloc rebâti', () => {
+    const [block] = draftBlocks(parseBody(SCRIPT), SCRIPT.length)
+    const original = SCRIPT.slice(block.from, block.to)
+    const editable = draftEditableText(original)
+    expect(editable).toBe('INT. B - JOUR #20#\n\n= Une idée.\n\nAction B.\n\nMARIE\nBonjour.')
+    expect(rebuiltDraftBlock(editable, original, false)).toBe(original)
+    const edited = rebuiltDraftBlock(`${editable}\n\nAjout.\n\n\n`, original, false)
+    expect(edited).toBe(original.replace('Bonjour.\n\n', 'Bonjour.\n\nAjout.\n\n'))
+    // Sans en-tête en première ligne : refusé.
+    expect(rebuiltDraftBlock('Action seule.', original, false)).toBeNull()
+  })
+
+  it('opération des Cartes : marquer, puis annuler par l’inverse', () => {
+    const plain = SCRIPT.replace('[[BROUILLON]]\n', '')
+    const done = applyTextOp(plain, {
+      kind: 'setDraft',
+      number: { number: 20, letter: '' },
+      draft: true
+    })
+    expect(done.text).toBe(SCRIPT)
+    expect(applyTextOp(done.text, done.inverse).text).toBe(plain)
   })
 })

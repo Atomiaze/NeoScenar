@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { EditorState } from '@codemirror/state'
 import { createScriptState } from './createScriptState'
-import { draftBlocksOf } from './drafts'
+import { draftBlocksOf, onDraftSearchHit } from './drafts'
 import { computePageLayout } from './pageLayout'
 
 const SCRIPT = [
@@ -85,5 +85,19 @@ describe('scènes brouillon dans l’éditeur', () => {
     const printed = layout.printed.elements.map((element) => element.text)
     expect(printed).toEqual(['INT. A - JOUR', 'Action A.', 'INT. C - JOUR', 'Action C.'])
     expect(layout.doc.elements.length).toBeGreaterThan(printed.length)
+  })
+
+  it('la recherche tombée dans un brouillon met le curseur juste après et le signale', async () => {
+    const hits: (number | null)[] = []
+    onDraftSearchHit((from) => hits.push(from))
+    const state = createScriptState(SCRIPT)
+    const found = SCRIPT.indexOf('Action B.')
+    const after = state.update({
+      selection: { anchor: found, head: found + 6 },
+      userEvent: 'select.search'
+    }).state
+    expect(after.selection.main.head).toBe(C)
+    await Promise.resolve()
+    expect(hits).toEqual([B])
   })
 })

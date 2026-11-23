@@ -260,6 +260,19 @@ Remarque : …
 
 Remarque : …
 
+### Scène brouillon (18C-13)
+
+- [ ] Clic droit sur une scène du navigateur > « Marquer comme brouillon » : elle disparaît de la page, reste grisée avec « Brouillon » dans le navigateur, sans durée ; le nombre de scènes et de pages baisse. Cmd + Z la remet.
+- [ ] Avec les flèches, le curseur saute la scène brouillon ; taper sur la ligne vide au-dessus ne l'abîme pas.
+- [ ] Double-clic sur la scène brouillon : une fenêtre s'ouvre avec son texte (sans la note `[[BROUILLON]]`). J'ajoute une ligne, Valider : la scène reste brouillon et invisible ; Cmd + Z défait la modification d'un coup. Effacer l'en-tête puis Valider : refus avec un message.
+- [ ] Cmd + F sur un mot de la scène brouillon : un bandeau le signale, « Ouvrir le brouillon… » ouvre la fenêtre.
+- [ ] Cartes : la carte est en pointillés avec « Brouillon » ; dans sa fiche, la case « Brouillon » est cochée et « Modifier le brouillon… » ouvre la fenêtre. Décocher puis Cmd + Z : la scène redevient brouillon.
+- [ ] Plan de tournage : la scène est toujours là, avec « Brouillon ». Statistiques et PDF du scénario : elle n'y est pas.
+- [ ] Dans Obsidian, la note `[[BROUILLON]]` est sous l'en-tête ; l'effacer là-bas et revenir dans NeoScenar : la scène réapparaît.
+- [ ] Aide > Numéros : le paragraphe « Une scène brouillon… » est là.
+
+Remarque : …
+
 ---
 
 ## Quand tout est coché

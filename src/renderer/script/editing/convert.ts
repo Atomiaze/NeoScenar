@@ -143,6 +143,11 @@ export function convertLine(text: string, index: number, context: ConversionCont
   const lines = text.split('\n')
   const core = stripTypeMarkers(lines[index] ?? '', context.from)
   const line = adjustBlankLines(lines, index, context)
+  // Un saut de page n'a pas de texte à taper : il s'écrit tout de suite, même sur une ligne vide.
+  if (core === '' && context.to === 'page_break') {
+    lines[line] = formatForType('', 'page_break')
+    return { text: lines.join('\n'), line }
+  }
   if (core === '') {
     lines[line] = ''
     return { text: lines.join('\n'), line }

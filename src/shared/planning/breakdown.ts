@@ -11,6 +11,7 @@ import { numberKey } from '../decoupage/order'
 import type { Scene } from '../projectTypes'
 import { nameKey } from '../research/sheetNames'
 import { PLACEHOLDER_HEADING } from '../scriptLink/scriptScenes'
+import { draftHeadings } from '../scriptLink/draftScene'
 import { parseSceneNumber, sceneLabel } from '../scriptLink/sceneNumber'
 import { dayNightOf, intExtOf } from '../stats/computeStats'
 import type { BreakdownScene, CharacterSheetInfo, SceneCharacter } from './shootingTypes'
@@ -73,6 +74,7 @@ export function breakdownScenes(
   }
   const used = new Set<string>()
   const result: BreakdownScene[] = []
+  const drafts = draftHeadings(doc)
 
   for (const scene of getScenes(doc)) {
     const number = scene.info.number === null ? null : parseSceneNumber(scene.info.number)
@@ -128,7 +130,8 @@ export function breakdownScenes(
       location: toWrite ? '' : scene.info.location.trim(),
       eighths: toWrite ? null : eighthsOfPage(seconds.get(scene.index) ?? 0),
       characters,
-      suggestions
+      suggestions,
+      ...(drafts.has(scene.index) ? { draft: true } : {})
     })
   }
   return result

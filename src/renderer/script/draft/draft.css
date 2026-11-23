@@ -1,0 +1,63 @@
+/* Fenêtre d'une scène brouillon (18C-13) : la page du scénario, en plus court. */
+
+.dialog.draft-dialog {
+  width: min(900px, calc(100vw - 4rem));
+  max-width: none;
+}
+
+.draft-dialog-hint {
+  margin: 0 0 0.6rem;
+}
+
+.draft-editor-host {
+  height: min(60vh, 560px);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.draft-editor-host .cm-editor .cm-content {
+  min-height: 0;
+  margin: 1em auto;
+  padding: 2em 4em 2em 9em;
+}
+
+/* Résultat de recherche dans un brouillon, sous la barre d'outils du scénario. */
+.draft-search-hit {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.4rem 1rem;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  font-size: 0.9rem;
+}
+
+.draft-search-hit .draft-search-text {
+  flex: 1;
+  min-width: 0;
+}
+
+/* Étiquette « Brouillon » des cartes et du plan de tournage. */
+.draft-tag {
+  display: inline-block;
+  padding: 0 0.35rem;
+  border: 1px solid currentColor;
+  border-radius: 3px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.card.scene-card.draft {
+  border-style: dashed;
+}
+
+.card.scene-card.draft .card-heading {
+  font-style: italic;
+}
+
+.card .draft-tag {
+  align-self: flex-start;
+  justify-self: start;
+}

@@ -124,6 +124,8 @@ describe('changement de type d’une ligne', () => {
     expect(convert('ACTE 1', 0, { to: 'section' }).text).toBe('# ACTE 1')
     expect(convert('à revoir', 0, { to: 'note' }).text).toBe('[[à revoir]]')
     expect(convert('x', 0, { to: 'page_break' }).text).toBe('===')
+    // Ligne vide : le saut de page s'écrit quand même (il n'a pas de texte à taper).
+    expect(convert('', 0, { to: 'page_break' }).text).toBe('===')
   })
 
   it('retire les anciens marqueurs avant de réécrire', () => {

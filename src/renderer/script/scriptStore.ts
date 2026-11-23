@@ -114,6 +114,11 @@ const sheetNames: NameSource = () => {
   }
 }
 
+/** Propositions de l'éditeur (moments du cours, fiches) : reprises par la fenêtre d'un brouillon. */
+export function editorNameSources(): readonly NameSource[] {
+  return [vocabularyTimes, sheetNames]
+}
+
 /** Moments du cours, déjà lus (vide tant que la lecture n'est pas finie). */
 export function getSceneTimes(): readonly string[] {
   return sceneTimes

@@ -11,7 +11,8 @@ import {
   editScene,
   editSceneDescription,
   handleUndoCommand,
-  moveSceneTo
+  moveSceneTo,
+  setSceneDraft
 } from '../cards/actions'
 import { cardsStore, closeDialog, setSelection, unloadProject } from '../cards/cardsStore'
 import { single } from '../cards/selection'
@@ -152,6 +153,19 @@ describe('des cartes vers le scénario', () => {
     expect(scriptText()).not.toContain('Chloé creuse.')
     undo()
     expect(scriptText()).toBe(BODY)
+  })
+
+  it('marquer une scène comme brouillon depuis sa fiche, puis annuler et rétablir', () => {
+    setSceneDraft('S20', true)
+    expect(scriptText()).toContain('INT. B - JOUR #20#\n[[BROUILLON]]\n')
+    undo()
+    expect(scriptText()).toBe(BODY)
+    redo()
+    expect(scriptText()).toContain('INT. B - JOUR #20#\n[[BROUILLON]]\n')
+    setSceneDraft('S20', false)
+    expect(scriptText()).toBe(BODY)
+    undo()
+    expect(scriptText()).toContain('[[BROUILLON]]')
   })
 
   it('scenario.fountain modifié ailleurs : la fenêtre de conflit s’affiche, même dans les Cartes', () => {

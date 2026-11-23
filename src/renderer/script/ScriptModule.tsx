@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { HelpDialog } from '../components/HelpDialog'
 import { SaveIndicator } from '../components/SaveIndicator'
 import { fr } from '../i18n/fr'
+import { clearDraftSearchHit, draftStore, openDraftEditor } from './draft/draftStore'
 import { useStore } from '../state/createStore'
 import { ElementBar } from './ElementBar'
 import { ElementSelector } from './ElementSelector'
@@ -124,6 +125,7 @@ export function ScriptModule({ projectId }: { projectId: string }) {
         </div>
       )}
       {!focusMode && paletteShown && parts && <RevisionPalette />}
+      <DraftSearchHit />
       {status.state === 'error' && (
         <div className="banner error" role="alert">
           {fr.script.errorBanner(status.message)}
@@ -153,6 +155,21 @@ export function ScriptModule({ projectId }: { projectId: string }) {
           onClose={() => setHelpShown(false)}
         />
       )}
+    </div>
+  )
+}
+
+/** La recherche a trouvé un résultat dans une scène brouillon (18C-13) : sa fenêtre est proposée. */
+function DraftSearchHit() {
+  const hit = useStore(draftStore, (state) => state.searchHit)
+  if (!hit) return null
+  return (
+    <div className="draft-search-hit" role="status">
+      <span className="draft-search-text">{fr.script.draft.searchHit(hit.label, hit.heading)}</span>
+      <button className="primary" onClick={() => openDraftEditor(hit.from, hit.query ?? undefined)}>
+        {fr.script.draft.openDraft}
+      </button>
+      <button onClick={clearDraftSearchHit}>{fr.script.draft.closeHit}</button>
     </div>
   )
 }

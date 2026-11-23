@@ -53,6 +53,7 @@ import {
   removeMarkFromContextMenu
 } from './script/revision/revisionStore'
 import { VersionsDialog } from './versions/VersionsDialog'
+import { DraftEditorDialog, handleDraftUndo } from './script/draft/DraftEditorDialog'
 import {
   clearRestoreError,
   openVersions,
@@ -104,6 +105,7 @@ export function App(): React.JSX.Element {
       window.neoscenar.onMenuCommand((command) => {
         if (command === 'undo' || command === 'redo') {
           if (
+            !handleDraftUndo(command) &&
             !handlePlanningUndo(command) &&
             !handleResearchUndo(command) &&
             !handleScriptUndo(command)
@@ -180,6 +182,7 @@ export function App(): React.JSX.Element {
         <CreditsExportDialog resolution={project.settings.resolution} />
       )}
       {versionsOpen && project && <VersionsDialog />}
+      {project && <DraftEditorDialog />}
       {dialog === 'settings' && <SettingsDialog onClose={closeDialog} />}
       {dialog === 'about' && <AboutDialog onClose={closeDialog} />}
       {restoreError && <ErrorDialog message={restoreError} onClose={clearRestoreError} />}

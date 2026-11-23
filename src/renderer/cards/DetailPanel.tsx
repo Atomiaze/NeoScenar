@@ -6,6 +6,8 @@ import { Icon } from '../components/Icon'
 import { fr } from '../i18n/fr'
 import { useStore } from '../state/createStore'
 import { sceneDescription } from '../../shared/scriptLink'
+import { useIsDraft } from '../script/draft/useDraftKeys'
+import { openDraftEditorFor } from '../script/draft/draftStore'
 import { linkedText } from '../scriptLink/cardsLink'
 import { linkStore } from '../scriptLink/linkStore'
 import { scriptStore } from '../script/scriptStore'
@@ -14,6 +16,7 @@ import {
   deleteSelection,
   editScene,
   editSceneDescription,
+  setSceneDraft,
   editShot,
   recreateHeading
 } from './actions'
@@ -284,6 +287,7 @@ function SceneSheet({ scene, decoupage }: { scene: Scene; decoupage: Decoupage }
       />
       <HeadingCombobox scene={scene} decoupage={decoupage} />
       <DescriptionField scene={scene} />
+      {!scene.orphan && <DraftField scene={scene} />}
       <div className="field">
         <span className="field-label">{fr.panel.color}</span>
         <ColorChoices current={scene.color} onChoose={colorSelection} />
@@ -364,6 +368,36 @@ function DescriptionField({ scene }: { scene: Scene }) {
       <p className="field-help" id={`${id}-help`}>
         {shown === null ? fr.scriptLink.descriptionOrphan : fr.scriptLink.descriptionHint}
       </p>
+    </div>
+  )
+}
+
+/**
+ * Scène brouillon (18C-13) : lue dans le texte (note [[BROUILLON]] sous l'en-tête) et écrite par une
+ * étape d'annulation des cartes. Son texte se modifie dans sa fenêtre.
+ */
+function DraftField({ scene }: { scene: Scene }) {
+  const id = useId()
+  const draft = useIsDraft(scene)
+  const linked = useStore(linkStore, (state) => state.active)
+  return (
+    <div className="field">
+      <label className="checkbox" htmlFor={id}>
+        <input
+          id={id}
+          type="checkbox"
+          checked={draft}
+          disabled={!linked}
+          onChange={(event) => setSceneDraft(scene.id, event.target.checked)}
+        />
+        {fr.panel.draft}
+      </label>
+      <p className="field-help">{fr.panel.draftHelp}</p>
+      {draft && (
+        <button type="button" onClick={() => openDraftEditorFor(scene)}>
+          {fr.script.navigator.editDraft}
+        </button>
+      )}
     </div>
   )
 }

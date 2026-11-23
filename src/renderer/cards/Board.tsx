@@ -27,6 +27,7 @@ import { addScene } from './actions'
 import { Icon } from '../components/Icon'
 import { useStore } from '../state/createStore'
 import { dragStore } from './dragStore'
+import { useIsDraft } from '../script/draft/useDraftKeys'
 
 interface BoardProps {
   decoupage: Decoupage
@@ -239,9 +240,11 @@ function DraggableScene({ scene, ...props }: DraggableProps & { scene: Scene }) 
     data: { kind: 'scene' },
     disabled: props.locked
   })
+  const draft = useIsDraft(scene)
   return (
     <SceneCard
       scene={scene}
+      draft={draft}
       selected={props.selected}
       dimmed={props.dimmed}
       dragRef={setNodeRef}

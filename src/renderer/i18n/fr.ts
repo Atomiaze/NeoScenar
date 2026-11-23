@@ -1154,7 +1154,23 @@ const macTexts = {
       draft: 'Brouillon',
       draftHint: 'Scène brouillon : ni affichée dans l’éditeur, ni imprimée, ni comptée',
       markDraft: 'Marquer comme brouillon',
-      unmarkDraft: 'Retirer le statut brouillon'
+      unmarkDraft: 'Retirer le statut brouillon',
+      editDraft: 'Modifier le brouillon…'
+    },
+    /** Fenêtre d'une scène brouillon et résultat de recherche (18C-13). */
+    draft: {
+      title: 'Modifier le brouillon',
+      titleWithNumber: (label: string): string => `Modifier le brouillon ${label}`,
+      hint: 'Ce texte reste hors du scénario imprimé tant que la scène est un brouillon. La première ligne doit rester l’en-tête de la scène.',
+      validate: 'Valider',
+      cancel: 'Annuler',
+      headingNeeded:
+        'La première ligne doit être l’en-tête de la scène (par exemple « INT. CUISINE - JOUR »).',
+      changed: 'Le scénario a changé pendant la modification : fermez cette fenêtre et rouvrez-la.',
+      searchHit: (label: string, heading: string): string =>
+        `Résultat dans la scène brouillon ${label ? `${label} ` : ''}(${heading}), absente de la page.`,
+      openDraft: 'Ouvrir le brouillon…',
+      closeHit: 'Fermer'
     },
     /** Fenêtre « Aide » du module (18C-10), texte validé par David (`aide-scenario.md`). */
     help: {
@@ -1337,6 +1353,10 @@ const macTexts = {
             {
               kind: 'paragraph',
               text: 'Pour **déplacer une scène**, faites-la glisser dans le navigateur de scènes, à gauche. Tout son texte la suit, elle peut changer d’acte, et sa carte change de place. Cmd + Z annule.'
+            },
+            {
+              kind: 'paragraph',
+              text: 'Une **scène brouillon** est une idée que l’on garde sans l’imprimer : clic droit sur la scène dans le navigateur, puis **Marquer comme brouillon** (ou la case « Brouillon » de sa carte). Elle disparaît de la page, n’est ni imprimée ni comptée, et garde son numéro. Elle reste grisée dans le navigateur ; un double-clic l’ouvre dans une petite fenêtre pour la modifier. Dans le fichier, c’est la note `[[BROUILLON]]` sous l’en-tête.'
             }
           ]
         },
@@ -1485,6 +1505,9 @@ const macTexts = {
     }
   },
   panel: {
+    draft: 'Brouillon',
+    draftHelp:
+      'Une scène brouillon reste dans le scénario mais n’apparaît pas dans l’éditeur, n’est pas imprimée et n’est pas comptée.',
     empty: 'Sélectionnez une scène ou un plan',
     name: 'Nom',
     heading: 'En-tête de scène',

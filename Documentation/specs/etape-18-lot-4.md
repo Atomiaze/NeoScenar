@@ -17,9 +17,9 @@ Deux ajouts au module Scénario, avant 18E. Une sous-étape chacun, dans cet ord
 - **Repère visuel** : scène grisée + étiquette « Brouillon » dans le navigateur et sur la carte.
 - **Absente de l'éditeur** (décision de David) : une scène brouillon n'apparaît pas du tout dans l'éditeur. Elle reste dans le Fountain, mais elle est masquée et non paginée. Le curseur, la sélection et la suppression ne peuvent pas l'entamer (plage atomique). La page à l'écran = le PDF.
 - **Fenêtre d'édition** : on la modifie dans une petite fenêtre, ouverte depuis le navigateur (double-clic ou clic droit > « Modifier le brouillon… ») ou depuis la carte. La fenêtre a le même éditeur de scénario (éléments, raccourcis, propositions, Entrée / Tab) limité au texte de cette scène. Boutons Valider / Annuler. Valider = une seule étape d'annulation dans l'éditeur principal.
-- **Décidé par David** : la recherche (⌘ + F) ne trouve pas le texte des scènes brouillon, et le panneau des révisions ne montre pas leurs marques (les marques restent dans le fichier).
+- **Décidé par David (corrigé le 23 nov.)** : la recherche (⌘ + F) trouve aussi le texte des scènes brouillon ; un résultat dans un brouillon est signalé (la scène n'est pas à l'écran) et sa fenêtre d'édition est proposée. Le panneau des révisions ne montre pas leurs marques (les marques restent dans le fichier).
 - **Hors du PDF et des comptes** : ni imprimée, ni comptée dans les pages et la durée (compteur du haut, navigateur, statistiques). Son numéro reste réservé (pas de renumérotation).
 - **Pagination** : les scènes brouillon sont retirées *avant* l'appel à la pagination partagée (`packages/fountain`), qui n'est pas modifiée. Sans scène brouillon, résultat strictement identique à aujourd'hui (PDF de référence de KIT).
-- Hors du storyboard et du plan de tournage ? **Question à poser à David dans le plan.**
+- **Décidé par David (23 nov.)** : gardées dans le storyboard et le plan de tournage, avec l'étiquette « Brouillon ». Les statistiques ne les comptent pas (scènes, personnages, lieux).
 - Annulable (Cmd + Z), une seule étape.
 - Ajouter une ligne dans l'aide (onglet « Autres éléments » ou « Numéros »).
