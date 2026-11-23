@@ -123,7 +123,8 @@ describe('changement de type d’une ligne', () => {
     expect(convert('Résumé.', 0, { to: 'synopsis' }).text).toBe('= Résumé.')
     expect(convert('ACTE 1', 0, { to: 'section' }).text).toBe('# ACTE 1')
     expect(convert('à revoir', 0, { to: 'note' }).text).toBe('[[à revoir]]')
-    expect(convert('x', 0, { to: 'page_break' }).text).toBe('===')
+    // Ligne écrite : le texte est gardé, le saut de page est inséré sous son paragraphe.
+    expect(convert('x', 0, { to: 'page_break' })).toEqual({ text: 'x\n\n===', line: 2 })
     // Ligne vide : le saut de page s'écrit quand même (il n'a pas de texte à taper).
     expect(convert('', 0, { to: 'page_break' }).text).toBe('===')
   })
@@ -164,5 +165,28 @@ describe('changement de type d’une ligne', () => {
 describe('uppercaseOutsideParentheses', () => {
   it('garde les extensions telles quelles', () => {
     expect(uppercaseOutsideParentheses('élodie (v.o.) (suite)')).toBe('ÉLODIE (v.o.) (suite)')
+  })
+})
+
+describe('saut de page sur une ligne écrite', () => {
+  const at = (text: string, index: number, from: ElementType = 'action') =>
+    convertLine(text, index, { from, to: 'page_break', previous: null })
+
+  it('inséré sous le paragraphe, entre deux lignes vides', () => {
+    expect(at('Une action\nsur deux lignes.\n\nSuite.', 0)).toEqual({
+      text: 'Une action\nsur deux lignes.\n\n===\n\nSuite.',
+      line: 3
+    })
+    expect(at('Fin.\n', 0)).toEqual({ text: 'Fin.\n\n===', line: 2 })
+  })
+
+  it('une réplique n’est pas coupée', () => {
+    expect(at('MARIE\nBonjour.\n\nSuite.', 0, 'character').text).toBe(
+      'MARIE\nBonjour.\n\n===\n\nSuite.'
+    )
+  })
+
+  it('sur un saut de page, rien ne change', () => {
+    expect(at('===\n\nSuite.', 0, 'page_break').text).toBe('===\n\nSuite.')
   })
 })

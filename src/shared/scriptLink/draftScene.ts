@@ -131,9 +131,12 @@ export function setDraft(text: string, from: number, draft: boolean): TextChange
   return minimalTextChange(text, result)
 }
 
-/** Numéros (clés « 30 », « 30A ») des scènes brouillon du texte : pour les Cartes et le storyboard. */
-export function draftNumberKeys(text: string): Set<string> {
-  const doc = parse(text, { titlePage: false })
+/**
+ * Numéros (clés « 30 », « 30A ») des scènes brouillon du texte : pour les Cartes et le storyboard.
+ * `titlePage` : le texte est le fichier entier, page de titre comprise.
+ */
+export function draftNumberKeys(text: string, titlePage = false): Set<string> {
+  const doc = parse(text, { titlePage })
   const drafts = new Set(
     [...draftHeadings(doc)].map((index) => doc.elements[index].position?.startOffset)
   )

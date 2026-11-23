@@ -214,7 +214,8 @@ export class AppController {
     this.storyboard = new StoryboardExporter({
       current: () => this.requireCurrent(),
       flush: () => this.flushDecoupage(),
-      fontsDir: options.storyboardFontsDir
+      fontsDir: options.storyboardFontsDir,
+      readScenario: async () => (this.scenario ? await this.scenario.get() : null)
     })
     this.planningExport = new PlanningExporter({
       current: () => this.requireCurrent(),

@@ -74,9 +74,10 @@ let location: string
 let loaded: LoadedProject
 let flushed = 0
 
-function exporter(): StoryboardExporter {
+function exporter(scenario: string | null = null): StoryboardExporter {
   return new StoryboardExporter({
     current: () => loaded,
+    readScenario: async () => scenario,
     flush: async () => {
       flushed++
     },
@@ -119,6 +120,34 @@ describe('sélection des scènes', () => {
       options({ scope: 'scenes', sceneNumbers: ['S_0030'] })
     )
     expect(chosen).toEqual([])
+  })
+})
+
+describe('scènes brouillon (18C-13)', () => {
+  const SCENARIO = [
+    'Title: Film',
+    '',
+    'INT. LIEU 10 - JOUR #10#',
+    '',
+    'Action.',
+    '',
+    'INT. LIEU 20 - JOUR #20A#',
+    '[[BROUILLON]]',
+    '',
+    'Idée.',
+    ''
+  ].join('\n')
+
+  it('ne sont ni proposées ni imprimées', async () => {
+    const info = await exporter(SCENARIO).info()
+    expect(info.scenes.map((s) => s.number)).toEqual(['S_0010'])
+    const chosen = selectScenes(loaded.decoupage.scenes, options(), new Set(['20A']))
+    expect(chosen.map((s) => s.number)).toEqual([10])
+  })
+
+  it('sans texte lisible, rien n’est écarté', async () => {
+    const info = await exporter(null).info()
+    expect(info.scenes.map((s) => s.number)).toEqual(['S_0010', 'S_0020A'])
   })
 })
 

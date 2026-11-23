@@ -1301,7 +1301,11 @@ const macTexts = {
                   '`> texte <`',
                   'Un texte qui ressort, centré sur la page : FIN, un carton (« TROIS ANS PLUS TARD »), un titre de partie. À ne pas utiliser pour mettre une action en valeur.'
                 ],
-                ['Saut de page', '`===`', 'Commence une nouvelle page à l’impression.']
+                [
+                  'Saut de page',
+                  '`===`',
+                  'Commence une nouvelle page à l’impression. Sur une ligne écrite, le bouton l’ajoute en dessous.'
+                ]
               ]
             }
           ]

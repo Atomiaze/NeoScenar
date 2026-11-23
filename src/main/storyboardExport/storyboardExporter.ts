@@ -6,6 +6,8 @@ import { exportStoryboardPdf, type StoryboardShot } from '@neoscenar/pdf-storybo
 import { fr } from '../../renderer/i18n/fr'
 import type { PdfSavedFile } from '../../shared/pdfExport'
 import { formatSceneNumber, formatShotNumber } from '../../shared/numbering'
+import { numberKey } from '../../shared/decoupage/order'
+import { draftNumberKeys } from '../../shared/scriptLink/draftScene'
 import { PROJECT_FILES, type Scene } from '../../shared/projectTypes'
 import type {
   StoryboardExportInfo,
@@ -27,6 +29,8 @@ export interface StoryboardExporterDeps {
   flush(): Promise<void>
   /** Dossier des polices Inter. */
   fontsDir: string
+  /** Texte de scenario.fountain (dernier reçu de l'éditeur), pour écarter les scènes brouillon. */
+  readScenario?(): Promise<string | null>
   now?(): Date
 }
 
@@ -43,9 +47,17 @@ export function parseStoryboardRequest(raw: unknown): StoryboardExportOptions {
   }
 }
 
-/** Scènes proposées : ni orphelines, ni sans plan (elles ne donneraient aucune page). */
-export function exportableScenes(scenes: readonly Scene[]): Scene[] {
-  return scenes.filter((scene) => !scene.orphan && scene.shots.length > 0)
+/**
+ * Scènes proposées : ni orphelines, ni sans plan (elles ne donneraient aucune page), ni brouillon
+ * (18C-13 : un brouillon n'est jamais imprimé). `drafts` : clés des numéros (« 30 », « 30A »).
+ */
+export function exportableScenes(
+  scenes: readonly Scene[],
+  drafts: ReadonlySet<string> = new Set()
+): Scene[] {
+  return scenes.filter(
+    (scene) => !scene.orphan && scene.shots.length > 0 && !drafts.has(numberKey(scene))
+  )
 }
 
 export function sceneNumberOf(scene: Scene): string {
@@ -53,8 +65,12 @@ export function sceneNumberOf(scene: Scene): string {
 }
 
 /** Scènes à imprimer, dans l'ordre du film. Un numéro qui n'existe plus est ignoré. */
-export function selectScenes(scenes: readonly Scene[], options: StoryboardExportOptions): Scene[] {
-  const available = exportableScenes(scenes)
+export function selectScenes(
+  scenes: readonly Scene[],
+  options: StoryboardExportOptions,
+  drafts: ReadonlySet<string> = new Set()
+): Scene[] {
+  const available = exportableScenes(scenes, drafts)
   if (options.scope === 'all') return available
   const chosen = new Set(options.sceneNumbers)
   return available.filter((scene) => chosen.has(sceneNumberOf(scene)))
@@ -110,16 +126,25 @@ export class StoryboardExporter {
     return this.fonts
   }
 
+  /** Numéros des scènes brouillon du scénario (aucun si le texte est illisible). */
+  private async drafts(): Promise<ReadonlySet<string>> {
+    const text = await this.deps.readScenario?.().catch(() => null)
+    return text ? draftNumberKeys(text, true) : new Set()
+  }
+
   /** Options mémorisées (sans les scènes disparues) et scènes du film. */
   async info(): Promise<StoryboardExportInfo> {
     await this.deps.flush()
     const { project, decoupage } = this.deps.current()
-    const scenes: StoryboardSceneInfo[] = exportableScenes(decoupage.scenes).map((scene) => ({
-      number: sceneNumberOf(scene),
-      heading: scene.heading,
-      name: scene.name,
-      shotCount: scene.shots.length
-    }))
+    const drafts = await this.drafts()
+    const scenes: StoryboardSceneInfo[] = exportableScenes(decoupage.scenes, drafts).map(
+      (scene) => ({
+        number: sceneNumberOf(scene),
+        heading: scene.heading,
+        name: scene.name,
+        shotCount: scene.shots.length
+      })
+    )
     const existing = new Set(scenes.map((scene) => scene.number))
     const saved = project.exportStoryboard
     return {
@@ -131,7 +156,7 @@ export class StoryboardExporter {
   private async build(options: StoryboardExportOptions): Promise<Built> {
     await this.deps.flush()
     const { project, decoupage, dataDir } = this.deps.current()
-    const scenes = selectScenes(decoupage.scenes, options)
+    const scenes = selectScenes(decoupage.scenes, options, await this.drafts())
     const shots = toShots(scenes)
     const now = this.deps.now?.() ?? new Date()
     const printId = newPrintId(now)

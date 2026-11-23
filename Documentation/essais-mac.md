@@ -268,6 +268,8 @@ Remarque : …
 - [ ] Cmd + F sur un mot de la scène brouillon : un bandeau le signale, « Ouvrir le brouillon… » ouvre la fenêtre.
 - [ ] Cartes : la carte est en pointillés avec « Brouillon » ; dans sa fiche, la case « Brouillon » est cochée et « Modifier le brouillon… » ouvre la fenêtre. Décocher puis Cmd + Z : la scène redevient brouillon.
 - [ ] Plan de tournage : la scène est toujours là, avec « Brouillon ». Statistiques et PDF du scénario : elle n'y est pas.
+- [ ] Storyboard en PDF… : la scène brouillon n'est pas dans la liste des scènes ni dans le PDF.
+- [ ] Bouton « Saut de page » : sur une ligne vide, « === » s'écrit à chaque fois ; sur une ligne écrite, le texte reste et « === » s'ajoute dessous.
 - [ ] Dans Obsidian, la note `[[BROUILLON]]` est sous l'en-tête ; l'effacer là-bas et revenir dans NeoScenar : la scène réapparaît.
 - [ ] Aide > Numéros : le paragraphe « Une scène brouillon… » est là.
 

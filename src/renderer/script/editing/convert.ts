@@ -139,9 +139,32 @@ function adjustBlankLines(lines: string[], index: number, context: ConversionCon
  * Réécrit la ligne `index` (à partir de 0) du texte avec le type `context.to`. Une ligne vide garde
  * son contenu vide (le type est alors retenu par l'éditeur jusqu'à ce qu'on y écrive).
  */
+/**
+ * Saut de page demandé sur une ligne écrite : le texte est gardé et « === » est inséré sous son
+ * paragraphe (une réplique n'est pas coupée), entre deux lignes vides.
+ */
+function insertPageBreakBelow(lines: string[], index: number): Conversion {
+  let end = index
+  while (end + 1 < lines.length && !isBlank(lines[end + 1])) end++
+  const pageBreak = formatForType('', 'page_break')
+  // Fin du texte : une ligne vide, puis le saut de page.
+  if (end + 1 === lines.length) {
+    lines.push('', pageBreak)
+    return { text: lines.join('\n'), line: end + 2 }
+  }
+  // Sinon, la ligne vide qui suit le paragraphe est gardée ; une autre sépare la suite.
+  const next = lines[end + 2]
+  const after = next !== undefined && !isBlank(next) ? [''] : []
+  lines.splice(end + 2, 0, pageBreak, ...after)
+  return { text: lines.join('\n'), line: end + 2 }
+}
+
 export function convertLine(text: string, index: number, context: ConversionContext): Conversion {
   const lines = text.split('\n')
   const core = stripTypeMarkers(lines[index] ?? '', context.from)
+  if (core !== '' && context.to === 'page_break' && context.from !== 'page_break') {
+    return insertPageBreakBelow(lines, index)
+  }
   const line = adjustBlankLines(lines, index, context)
   // Un saut de page n'a pas de texte à taper : il s'écrit tout de suite, même sur une ligne vide.
   if (core === '' && context.to === 'page_break') {

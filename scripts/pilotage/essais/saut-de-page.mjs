@@ -1,5 +1,5 @@
 // Bouton « Saut de page » de la barre des éléments : sur une ligne vide (après Entrée), « === » est
-// écrit à chaque fois, même après plusieurs sauts de page.
+// écrit à chaque fois, même après plusieurs sauts de page. Sur une ligne écrite, il est ajouté dessous.
 
 import { readFileSync, writeFileSync } from 'node:fs'
 import { dirname, join } from 'node:path'
@@ -45,5 +45,16 @@ export default async function ({ app, check, log, newProject }) {
   const breaks = (file.match(/^===$/gm) ?? []).length
   check(breaks === 4, `quatre sauts de page écrits (${breaks})`)
   check(file.includes('Action 4.\n\n===\n\nFin.'), 'le dernier saut de page est suivi du texte')
+  // Sur une ligne écrite : le texte est gardé, le saut de page est ajouté en dessous.
+  await app.mouseClick('.cm-line', 'Action 2.')
+  await sleep(150)
+  await app.click('.element-bar-button[aria-label^="Saut de page"]')
+  await sleep(1800)
+  const after = readFileSync(fountainFile, 'utf8')
+  log('ligne écrite :', JSON.stringify(after))
+  check(
+    after.includes('Action 2.\n\n===\n\n===\n\nAction 3.'),
+    'ligne écrite : texte gardé, saut de page ajouté dessous'
+  )
   await app.screenshot('saut-de-page.png')
 }

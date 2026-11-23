@@ -20,6 +20,6 @@ Deux ajouts au module Scénario, avant 18E. Une sous-étape chacun, dans cet ord
 - **Décidé par David (corrigé le 23 nov.)** : la recherche (⌘ + F) trouve aussi le texte des scènes brouillon ; un résultat dans un brouillon est signalé (la scène n'est pas à l'écran) et sa fenêtre d'édition est proposée. Le panneau des révisions ne montre pas leurs marques (les marques restent dans le fichier).
 - **Hors du PDF et des comptes** : ni imprimée, ni comptée dans les pages et la durée (compteur du haut, navigateur, statistiques). Son numéro reste réservé (pas de renumérotation).
 - **Pagination** : les scènes brouillon sont retirées *avant* l'appel à la pagination partagée (`packages/fountain`), qui n'est pas modifiée. Sans scène brouillon, résultat strictement identique à aujourd'hui (PDF de référence de KIT).
-- **Décidé par David (23 nov.)** : gardées dans le storyboard et le plan de tournage, avec l'étiquette « Brouillon ». Les statistiques ne les comptent pas (scènes, personnages, lieux).
+- **Décidé par David (23 nov.)** : gardées dans le storyboard (Cartes) et le plan de tournage à l'écran, avec l'étiquette « Brouillon ». **On n'imprime pas les brouillons** : absentes du storyboard PDF. Les statistiques ne les comptent pas (scènes, personnages, lieux).
 - Annulable (Cmd + Z), une seule étape.
 - Ajouter une ligne dans l'aide (onglet « Autres éléments » ou « Numéros »).
