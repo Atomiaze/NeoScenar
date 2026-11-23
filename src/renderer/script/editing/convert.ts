@@ -35,7 +35,8 @@ export function stripTypeMarkers(line: string, from: ElementType): string {
     if (note) text = note[1].trim()
   }
   if (from === 'page_break' && /^={3,}$/.test(text)) return ''
-  text = text.replace(/^(?:!|@|\.(?=[\p{L}\p{N}])|>|~|=|#+)\s*/u, '')
+  // Un point suivi d'un chiffre (« .5 seconde ») fait partie du texte : il est gardé (18C-11).
+  text = text.replace(/^(?:!|@|\.(?=\p{L})|>|~|=|#+)\s*/u, '')
   if (from === 'centered') text = text.replace(/\s*<$/, '')
   if (from === 'parenthetical') {
     const inner = /^\((.*)\)$/.exec(text)

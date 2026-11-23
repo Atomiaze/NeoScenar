@@ -208,7 +208,7 @@ Remarque : …
 
 ---
 
-## 12. Lot 3 (18C-7 à 18C-10)
+## 12. Lot 3 (18C-7 à 18C-11)
 
 ### Genre des personnages et crédits (18C-7)
 
@@ -239,6 +239,11 @@ Remarque : …
 ### Aide du module Scénario (18C-10)
 
 - [ ] Scénario > **Aide** (à droite de « Révision ») : la fenêtre « Aide — Module Scénario » s'ouvre avec 8 onglets (Éléments, Clavier, Rédiger, Autres éléments, Mise en forme, Simultanés, Numéros, Révision) ; le texte est celui de `aide-scenario.md`, raccourcis avec ⌘. Échap ou « Fermer » la ferment. Lisible dans les 7 thèmes.
+
+### Symboles Fountain au clavier (18C-11)
+
+- [ ] Après une action, Entrée puis `# ACTE 1` : le bandeau d'acte apparaît tout de suite et reste en quittant la ligne ; ACTE 1 apparaît dans le navigateur. Même chose avec `= résumé` (synopsis), `~la la` (paroles), `===` (saut de page), `> FIN <` (centré), `> fondu au noir` (transition, en majuscules en quittant la ligne).
+- [ ] Après une transition (`CUT TO:`), Entrée puis `... et puis` : la ligne reste une action en minuscules. Entrée puis `.5 seconde plus tard` : action ; dans Obsidian, la ligne est `!.5 seconde plus tard`, sans numéro de scène.
 
 Remarque : …
 

@@ -18,6 +18,7 @@ import { analysisField } from '../editor/analysis'
 import { minimalTextChange } from '../../../shared/scriptLink/textChanges'
 import { normalizeCharacterLine } from './characterExtensions'
 import { convertLine, uppercaseOutsideParentheses } from './convert'
+import { markedType, startsWithLooseDot } from './typedMarkers'
 
 export interface PendingType {
   /** Début de la ligne. */
@@ -155,7 +156,14 @@ export const uppercaseWhileTyping = EditorState.transactionFilter.of((tr) => {
     const text = inserted.toString()
     const line = startState.doc.lineAt(fromA)
     const type = effectiveType(startState, line.number)
+    const typed = (startState.doc.sliceString(line.from, fromA) + text).trimStart()
     let result = text
+    // « > texte < » passe par « > texte » (transition), « [[ » ouvre une note et « ... » ne sera pas un
+    // en-tête : pas de majuscules pendant la frappe. Une vraie transition est mise en majuscules en quittant la ligne.
+    if (typed.startsWith('>') || typed.startsWith('[[') || startsWithLooseDot(typed)) {
+      changes.push({ from: fromA, to: toA, insert: text })
+      return
+    }
     if (type === 'scene_heading' || type === 'transition') result = text.toUpperCase()
     else if (type === 'character') {
       const before = startState.doc.sliceString(line.from, fromA)
@@ -201,6 +209,39 @@ function settleLines(tr: Transaction): TransactionSpec | null {
   for (const entry of pending) {
     const line = state.doc.lineAt(entry.pos)
     const read = lineTypes[line.number]
+    // « ... et puis », « .5 seconde » à la place d'une action ou d'un en-tête : c'est une action
+    // (écrite « !.5 » si Fountain la lirait comme un en-tête). On attend que le curseur parte.
+    if (
+      (entry.type === 'action' || entry.type === 'scene_heading') &&
+      startsWithLooseDot(line.text)
+    ) {
+      if (cursor.has(line.number)) {
+        // Affichée tout de suite comme une action.
+        if (entry.type !== 'action')
+          effects.push(setPendingType.of({ pos: entry.pos, type: 'action' }))
+        // « .5 » serait lu comme un en-tête : le « ! » est écrit dès la frappe, pour que le texte
+        // enregistré pendant la frappe (et relié aux cartes) ne contienne jamais de faux en-tête.
+        if (changes === null && read === 'scene_heading') {
+          changes = {
+            from: line.from + line.text.length - line.text.trimStart().length,
+            insert: '!'
+          }
+        }
+        continue
+      }
+      effects.push(clearPendingType.of(entry.pos))
+      if (changes === null && read !== 'action') {
+        changes = convertLineInState(state, line.number, 'action').changes
+      }
+      continue
+    }
+    // Un symbole Fountain tapé en début de ligne (#, =, ~, ===, !, @, .X, >, > <) l'emporte sur le
+    // type choisi par Entrée ou Tab, dès la frappe, si Fountain lit bien la ligne avec ce type.
+    const marked = markedType(line.text)
+    if (marked !== null && marked === read && marked !== entry.type) {
+      effects.push(clearPendingType.of(entry.pos))
+      continue
+    }
     if (read === entry.type && line.text.trim() !== '') {
       effects.push(clearPendingType.of(entry.pos))
       continue
@@ -229,7 +270,7 @@ function settleLines(tr: Transaction): TransactionSpec | null {
   if (changes === null && editedPos !== null) {
     const left = state.doc.lineAt(editedPos)
     const type = effectiveType(state, left.number)
-    if (!cursor.has(left.number) && type && UPPERCASE.has(type)) {
+    if (!cursor.has(left.number) && type && UPPERCASE.has(type) && !startsWithLooseDot(left.text)) {
       const settled = settledCase(left.text, type)
       if (settled !== left.text) changes = { from: left.from, to: left.to, insert: settled }
     }

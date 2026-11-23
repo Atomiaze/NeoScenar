@@ -264,3 +264,116 @@ describe('fidélité', () => {
     ])
   })
 })
+
+describe('symboles Fountain tapés en début de ligne (18C-11)', () => {
+  const HEADING = 'INT. A - JOUR'
+  const CONTEXTS: [string, string, (t: Typist) => Typist][] = [
+    ['Entrée après une action', `${HEADING}\n\nElle entre.`, (t) => t.enter()],
+    ['Entrée après un en-tête', HEADING, (t) => t.enter()],
+    ['Entrée après une réplique', `${HEADING}\n\nCHLOÉ\nBonjour.`, (t) => t.enter()],
+    ['Entrée après une transition', `${HEADING}\n\nElle sort.\n\nCUT TO:`, (t) => t.enter()],
+    ['Tab après une action', `${HEADING}\n\nElle entre.`, (t) => t.tab()]
+  ]
+  const MARKS: [string, ElementType][] = [
+    ['# ACTE 1', 'section'],
+    ['= Résumé.', 'synopsis'],
+    ['~la la', 'lyrics'],
+    ['> FIN <', 'centered'],
+    ['===', 'page_break'],
+    ['!BOUM', 'action'],
+    ['@MCCLANE', 'character'],
+    ['.FLASHBACK', 'scene_heading'],
+    ['> FONDU AU NOIR', 'transition'],
+    ['[[note]]', 'note']
+  ]
+
+  /** Tape `mark` dans le contexte, puis quitte la ligne : texte et type de la ligne écrite. */
+  function typeIn(start: string, go: (t: Typist) => Typist, mark: string) {
+    const t = go(new Typist(start)).type(mark)
+    const shown = t.cursorType
+    const line = t.state.doc.lineAt(t.state.selection.main.head).number
+    t.moveTo(0)
+    const text = t.state.doc.line(line).text
+    const read = parse(t.text, { titlePage: false }).elements.find(
+      (e) => e.position && e.position.startLine <= line && line <= e.position.endLine
+    )?.type
+    return { shown, text, read, typist: t }
+  }
+
+  for (const [name, start, go] of CONTEXTS) {
+    it(`${name} : le symbole l'emporte, pendant la frappe et dans le fichier`, () => {
+      for (const [mark, type] of MARKS) {
+        const result = typeIn(start, go, mark)
+        expect({ mark, shown: result.shown, text: result.text, read: result.read }).toEqual({
+          mark,
+          shown: type,
+          text: mark,
+          read: type
+        })
+      }
+    })
+  }
+
+  it('« > texte » est une transition, « > texte < » un texte centré, sans majuscules en route', () => {
+    const t = new Typist(`${HEADING}\n\nElle entre.`).enter().type('> trois ans plus tard')
+    expect(t.cursorType).toBe('transition')
+    t.type(' <')
+    expect(t.cursorType).toBe('centered')
+    t.moveTo(0)
+    expect(t.text.endsWith('\n\n> trois ans plus tard <')).toBe(true)
+    // Une vraie transition est mise en majuscules en quittant la ligne.
+    const u = new Typist(`${HEADING}\n\nElle entre.`).enter().type('> fondu au noir').moveTo(0)
+    expect(u.text.endsWith('\n\n> FONDU AU NOIR')).toBe(true)
+  })
+
+  it('« ... » en début d’action reste une action, après Entrée comme après une transition', () => {
+    for (const [, start, go] of CONTEXTS.slice(0, 4)) {
+      const result = typeIn(start, go, '... et puis')
+      expect([result.shown, result.text, result.read]).toEqual(['action', '... et puis', 'action'])
+    }
+  })
+
+  it('« .5 » en début d’action : action, écrite « !.5 » pour être lue ainsi partout', () => {
+    for (const [, start, go] of CONTEXTS.slice(0, 4)) {
+      const result = typeIn(start, go, '.5 seconde plus tard')
+      expect([result.shown, result.text, result.read]).toEqual([
+        'action',
+        '!.5 seconde plus tard',
+        'action'
+      ])
+    }
+  })
+
+  it('« .5 » : le « ! » est écrit dès la frappe (aucun faux en-tête enregistré entre-temps)', () => {
+    const t = new Typist(`${HEADING}\n\nElle entre.`).enter().type('.')
+    expect(t.text.endsWith('\n\n.')).toBe(true)
+    t.type('5')
+    expect(t.text.endsWith('\n\n!.5')).toBe(true)
+    expect(t.cursorType).toBe('action')
+    t.type(' seconde')
+    expect(t.types.at(-1)).toBe('action')
+  })
+
+  it('dans une réplique, seuls les paroles (~) changent le type', () => {
+    const base = `${HEADING}\n\nCHLOÉ\nBonjour.`
+    const sung = new Typist(base).run(lineBreakCommand).type('~la la').moveTo(0)
+    expect(sung.types.at(-1)).toBe('lyrics')
+    const hash = new Typist(base).run(lineBreakCommand).type('# pas un acte').moveTo(0)
+    expect(hash.text.endsWith('Bonjour.\n# pas un acte')).toBe(true)
+    expect(hash.types.at(-1)).toBe('dialogue')
+  })
+
+  it('sans symbole, le type choisi par Entrée ou Tab est toujours tenu', () => {
+    expect(
+      typeIn(`${HEADING}\n\nElle sort.\n\nCUT TO:`, (t) => t.enter(), 'ext. rue - nuit').text
+    ).toBe('EXT. RUE - NUIT')
+    const name = typeIn(`${HEADING}\n\nElle entre.`, (t) => t.tab(), 'chloé')
+    expect(name.shown).toBe('character')
+  })
+
+  it('Cmd + J sur une ligne « .5 » (en-tête lu par Fountain) garde le texte : « !.5 »', () => {
+    const t = new Typist(`${HEADING}\n\n.5 SECONDES`).run(setElementType('action')).moveTo(0)
+    expect(t.text).toBe(`${HEADING}\n\n!.5 SECONDES`)
+    expect(t.types).toEqual(['scene_heading', 'action'])
+  })
+})
