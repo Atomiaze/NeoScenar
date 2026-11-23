@@ -2,6 +2,7 @@ import { EditorState } from '@codemirror/state'
 import { EditorView } from '@codemirror/view'
 import { pendingTypes } from '../editing/pendingTypes'
 import { analysisField } from './analysis'
+import { draftField } from './drafts'
 import { elementDecorations, sectionEndBanners } from './decorations'
 import { pageBreakLayer } from './pageBreaks'
 import { pageLayoutField, pageLayoutUpdater } from './pageLayout'
@@ -19,6 +20,7 @@ export function createReadOnlyScriptState(body: string, label: string): EditorSt
       pageLayoutField,
       pageLayoutUpdater,
       pageBreakLayer,
+      draftField,
       // Les décorations lisent ce champ (types en attente de l'éditeur) : il reste vide ici.
       pendingTypes,
       elementDecorations,

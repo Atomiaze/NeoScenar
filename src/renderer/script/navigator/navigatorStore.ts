@@ -8,6 +8,7 @@ import { createStore } from '../../state/createStore'
 import { minimalChange } from '../editing/pendingTypes'
 import { flushPageLayout, type PageLayout } from '../editor/pageLayout'
 import { getActiveView } from '../scriptStore'
+import { draftBlocksOf } from '../editor/drafts'
 import {
   buildNavigator,
   flattenNavigator,
@@ -48,7 +49,7 @@ export function navigatorVisible(state: NavigatorState): boolean {
 
 /** Nouvelle pagination (partagée avec les traits de page) : l'arbre est reconstruit à partir d'elle. */
 export function setNavigatorLayout(layout: PageLayout): void {
-  navigatorStore.set({ tree: buildNavigator(layout.doc, layout.pagination) })
+  navigatorStore.set({ tree: buildNavigator(layout.doc, layout.pagination, layout.printed) })
 }
 
 export function setCursorLine(cursorLine: number): void {
@@ -122,6 +123,9 @@ export function goToLine(headingLine: number): boolean {
   if (headingLine > doc.lines) return false
   const line = doc.line(headingLine)
   const anchor = headingLine < doc.lines ? doc.line(headingLine + 1).from : line.to
+  // Une scène brouillon n'est pas dans l'éditeur : le curseur ne peut pas y aller (18C-13).
+  if (draftBlocksOf(view.state).some((block) => line.from >= block.from && line.from < block.to))
+    return false
   view.dispatch({
     selection: { anchor },
     effects: EditorView.scrollIntoView(line.from, { y: 'start', yMargin: 48 })

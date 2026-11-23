@@ -1,6 +1,7 @@
 import { useMemo } from 'react'
 import { paginate, parse } from '@neoscenar/fountain'
 import { formatDuration } from '../../shared/decoupage'
+import { withoutDrafts } from '../../shared/scriptLink/draftScene'
 import { computeStats, shotSecondsByNumber } from '../../shared/stats/computeStats'
 import { cardsStore } from '../cards/cardsStore'
 import { fr } from '../i18n/fr'
@@ -24,7 +25,8 @@ export function StatsModule({ onOpenScene, onOpenCharacter }: StatsModuleProps) 
   const computed = useMemo(() => {
     const text = scriptText()
     if (text === null) return null
-    const doc = parse(text, { titlePage: false })
+    // Les scènes brouillon ne comptent pas (18C-13) : ni pages, ni scènes, ni personnages, ni lieux.
+    const doc = withoutDrafts(parse(text, { titlePage: false }))
     const shots = shotSecondsByNumber(cards?.present.scenes ?? [])
     const stats = computeStats(doc, paginate(doc, scriptLayout, paginationSettings.get()), shots)
     const actTitles = new Map(

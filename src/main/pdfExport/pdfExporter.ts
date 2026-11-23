@@ -2,6 +2,7 @@ import { mkdir, readFile } from 'node:fs/promises'
 import { dirname, join } from 'node:path'
 import { displayPathInFilm } from '../portablePath'
 import { paginate, parse, resolveLayout, type ResolvedLayout } from '@neoscenar/fountain'
+import { withoutDrafts } from '../../shared/scriptLink/draftScene'
 import {
   exportScenarioPdf,
   hasTitlePage,
@@ -112,7 +113,8 @@ export class PdfExporter {
   ): Promise<{ input: PdfInput; available: PdfPartsAvailable }> {
     const { fonts, layout } = await this.loadResources()
     const { options } = request
-    const document = parse(request.text)
+    // Les scènes brouillon ne sont pas imprimées (18C-13).
+    const document = withoutDrafts(parse(request.text))
     // Mêmes règles qu'à l'écran : (SUITE) selon la préférence, nouvelle page par acte selon le projet.
     const pagination = paginate(document, layout, {
       continued: request.continued,

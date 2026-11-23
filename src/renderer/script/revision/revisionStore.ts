@@ -16,6 +16,7 @@ import {
 } from '../../../shared/revision/revisionList'
 import { getActiveView, scriptStore, showNotice } from '../scriptStore'
 import { analysisField } from '../editor/analysis'
+import { draftBlocksOf } from '../editor/drafts'
 import {
   highlightSelection,
   markAtCursor,
@@ -229,9 +230,12 @@ function refreshList(): void {
   const { state } = view
   listedDoc = state.doc
   const analysis = state.field(analysisField)
-  revisionStore.set({
-    items: buildRevisionList(state.doc.toString(), analysis.doc, analysis.revisionMarks)
-  })
+  // Les marques des scènes brouillon restent dans le fichier, mais ne sont pas listées (18C-13).
+  const drafts = draftBlocksOf(state)
+  const marks = analysis.revisionMarks.filter(
+    (mark) => !drafts.some((block) => mark.open.from >= block.from && mark.open.from < block.to)
+  )
+  revisionStore.set({ items: buildRevisionList(state.doc.toString(), analysis.doc, marks) })
 }
 
 /** À appeler à chaque changement possible du texte : rien n'est fait si le texte est le même. */

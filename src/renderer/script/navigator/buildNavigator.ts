@@ -11,6 +11,7 @@ import {
 } from '@neoscenar/fountain'
 import { displayedSceneNumber, sectionColorsOf } from '../editor/analysis'
 import { readSynopsis } from './synopsis'
+import { draftHeadings, isDraftNote } from '../../../shared/scriptLink/draftScene'
 import { findRevisionMarks, revisionMarkerStarts } from '../../../shared/revision/revisionMarks'
 
 interface NavigatorItemBase {
@@ -38,6 +39,8 @@ export interface NavigatorScene extends NavigatorItemBase {
   heading: string
   /** Texte du premier élément de la scène qui n'est ni un synopsis ni une note ; vide sinon. */
   firstLine: string
+  /** Scène brouillon (18C-13) : ni affichée dans l'éditeur, ni imprimée, ni comptée. */
+  draft: boolean
 }
 
 export interface NavigatorSection extends NavigatorItemBase {
@@ -79,14 +82,25 @@ function ownElements(elements: FountainElement[]): FountainElement[] {
   return end < 0 ? elements : elements.slice(0, end)
 }
 
-export function buildNavigator(doc: FountainDocument, pagination: Pagination): NavigatorTree {
-  const durations = estimateDurations(doc, pagination)
-  const sceneSeconds = new Map(durations.scenes.map((scene) => [scene.index, scene.seconds]))
+/**
+ * `pagination` est celle de `printed`, le document sans les scènes brouillon (18C-13) : elles sont
+ * montrées, mais sans durée et hors des comptes. Les éléments de `printed` sont ceux de `doc`.
+ */
+export function buildNavigator(
+  doc: FountainDocument,
+  pagination: Pagination,
+  printed: FountainDocument = doc
+): NavigatorTree {
+  const durations = estimateDurations(printed, pagination)
+  const sceneSeconds = new Map(
+    durations.scenes.map((scene) => [printed.elements[scene.index], scene.seconds])
+  )
   // Un acte compte tout ce qui se trouve entre sa ligne et la section suivante de même niveau ou de
   // niveau supérieur (actions d'ouverture comprises) : la durée de section de la pagination.
   const sectionSeconds = new Map(
-    durations.sections.map((section) => [section.index, section.seconds])
+    durations.sections.map((section) => [printed.elements[section.index], section.seconds])
   )
+  const drafts = draftHeadings(doc)
   const colors = sectionColorsOf(doc)
   const scenes = getScenes(doc)
   const sceneByIndex = new Map(scenes.map((scene, order) => [scene.index, { scene, order }]))
@@ -99,7 +113,7 @@ export function buildNavigator(doc: FountainDocument, pagination: Pagination): N
     marksByElement.set(element, (marksByElement.get(element) ?? 0) + 1)
   }
   const hasNote = (element: FountainElement): boolean =>
-    element.notes.some((note) => !markers.has(note.start))
+    !isDraftNote(element) && element.notes.some((note) => !markers.has(note.start))
   const markCount = (elements: FountainElement[]): number =>
     elements.reduce((total, element) => total + (marksByElement.get(element) ?? 0), 0)
 
@@ -125,7 +139,7 @@ export function buildNavigator(doc: FountainDocument, pagination: Pagination): N
         level,
         title: plainFirstLine(element.text),
         color: colors.get(index) ?? '',
-        seconds: sectionSeconds.get(index) ?? 0,
+        seconds: sectionSeconds.get(element) ?? 0,
         hasNote: hasNote(element),
         revisionCount: 0,
         children: []
@@ -138,6 +152,7 @@ export function buildNavigator(doc: FountainDocument, pagination: Pagination): N
       const own = ownElements(found.scene.elements)
       const first = own.find((item) => !NOT_FIRST_LINE.has(item.type))
       const shown = displayedSceneNumber(found.scene.info.number)
+      const draft = drafts.has(index)
       container().push({
         ...base,
         kind: 'scene',
@@ -145,15 +160,17 @@ export function buildNavigator(doc: FountainDocument, pagination: Pagination): N
         numberKey: shown?.key ?? null,
         heading: plainFirstLine(element.text),
         firstLine: first ? plainFirstLine(first.text) : '',
-        seconds: sceneSeconds.get(index) ?? 0,
+        seconds: sceneSeconds.get(element) ?? 0,
         hasNote: [element, ...own].some(hasNote),
-        revisionCount: markCount([element, ...own])
+        // Le panneau des révisions ne montre pas les marques d'un brouillon : le compte non plus.
+        revisionCount: draft ? 0 : markCount([element, ...own]),
+        draft
       })
     }
   })
 
   items.forEach(propagateNotes)
-  return { sceneCount: scenes.length, totalSeconds: durations.totalSeconds, items }
+  return { sceneCount: scenes.length - drafts.size, totalSeconds: durations.totalSeconds, items }
 }
 
 /** Une note ou une marque de révision dans une scène ou une sous-section remonte vers l'acte. */

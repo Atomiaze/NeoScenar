@@ -3,6 +3,7 @@ import { EditorState } from '@codemirror/state'
 import { EditorView, highlightActiveLine, keymap } from '@codemirror/view'
 import { fr } from '../../i18n/fr'
 import { analysisField } from './analysis'
+import { draftScenes } from './drafts'
 import { elementDecorations, sectionEndBanners } from './decorations'
 import { pageLayoutField, pageLayoutUpdater, setPageLayout, type PageLayout } from './pageLayout'
 import { pageBreakLayer } from './pageBreaks'
@@ -57,6 +58,7 @@ export function createScriptState(
       elementDecorations,
       sectionEndBanners,
       scriptLink(link),
+      draftScenes(),
       sheetClick(listeners?.onOpenSheet),
       revisionEditing(),
       // Le fond n'apparaît que si l'hôte porte la classe « highlight-line » (réglage de l'application).

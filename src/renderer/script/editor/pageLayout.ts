@@ -5,12 +5,15 @@ import { StateEffect, StateField, type EditorState } from '@codemirror/state'
 import { ViewPlugin, type EditorView, type ViewUpdate } from '@codemirror/view'
 import { pageStarts, paginate, type FountainDocument, type Pagination } from '@neoscenar/fountain'
 import { scriptLayout } from '../layoutProfile'
+import { withoutDrafts } from '../../../shared/scriptLink/draftScene'
 import { analysisField } from './analysis'
 import { paginationSettings } from './paginationSettings'
 
 export interface PageLayout {
   /** Texte analysé et pagination au moment du calcul. */
   doc: FountainDocument
+  /** Le même sans les scènes brouillon (18C-13) : c'est lui qui est paginé. */
+  printed: FountainDocument
   pagination: Pagination
   /**
    * Début des pages 2, 3… : position dans le texte actuel du premier caractère de la page. Entre deux
@@ -37,11 +40,12 @@ export const pageLayoutField = StateField.define<PageLayout | null>({
 
 export function computePageLayout(state: EditorState): PageLayout {
   const doc = state.field(analysisField).doc
-  const pagination = paginate(doc, scriptLayout, paginationSettings.get())
+  const printed = withoutDrafts(doc)
+  const pagination = paginate(printed, scriptLayout, paginationSettings.get())
   const starts = pageStarts(pagination).flatMap((start) =>
     start.sourceOffset === undefined ? [] : [start.sourceOffset]
   )
-  return { doc, pagination, starts }
+  return { doc, printed, pagination, starts }
 }
 
 /** Page (à partir de 1) qui contient la position : une page commence à son premier caractère. */

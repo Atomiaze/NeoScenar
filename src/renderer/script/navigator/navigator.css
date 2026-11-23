@@ -219,3 +219,21 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
+/* Scène brouillon (18C-13) : grisée, avec son étiquette. */
+.navigator-row.scene.draft .navigator-heading,
+.navigator-row.scene.draft .navigator-first-line {
+  color: var(--muted);
+  font-style: italic;
+}
+
+.navigator-draft-tag {
+  flex: none;
+  padding: 0 0.35rem;
+  border: 1px solid var(--muted);
+  border-radius: 3px;
+  color: var(--muted);
+  font-size: 0.72rem;
+  font-weight: 600;
+  line-height: 1.3;
+}

@@ -1149,7 +1149,12 @@ const macTexts = {
       hasNote: 'Contient une note (texte non imprimable)',
       description: 'Description',
       descriptionDisabled: 'Placez le curseur dans une scène',
-      dragHint: 'Glisser pour déplacer la scène'
+      dragHint: 'Glisser pour déplacer la scène',
+      /** Scène brouillon (18C-13). */
+      draft: 'Brouillon',
+      draftHint: 'Scène brouillon : ni affichée dans l’éditeur, ni imprimée, ni comptée',
+      markDraft: 'Marquer comme brouillon',
+      unmarkDraft: 'Retirer le statut brouillon'
     },
     /** Fenêtre « Aide » du module (18C-10), texte validé par David (`aide-scenario.md`). */
     help: {

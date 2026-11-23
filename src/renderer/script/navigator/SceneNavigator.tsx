@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState, type KeyboardEvent } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState, type KeyboardEvent } from 'react'
 import {
   DndContext,
   DragOverlay,
@@ -27,6 +27,7 @@ import {
   updateSynopsis
 } from './navigatorStore'
 import { moveNavigatorScene } from './moveScene'
+import { NavigatorMenu, type NavigatorMenuState } from './NavigatorMenu'
 import { dropTarget, highlightedPosition, visibleRows, type NavigatorRow } from './rows'
 import './navigator.css'
 
@@ -80,6 +81,8 @@ function NavigatorList({
 }) {
   const [focused, setFocused] = useState<number | null>(null)
   const [drag, setDrag] = useState<Drag | null>(null)
+  const [menu, setMenu] = useState<NavigatorMenuState | null>(null)
+  const closeMenu = useCallback(() => setMenu(null), [])
   const dragRef = useRef<Drag | null>(null)
   const list = useRef<HTMLDivElement>(null)
   const startY = useRef(0)
@@ -212,6 +215,7 @@ function NavigatorList({
             row={row}
             highlighted={row.position === highlighted}
             focused={row.position === focused}
+            onMenu={setMenu}
           />
         ))}
         {drag && drag.gap !== null && (
@@ -226,6 +230,7 @@ function NavigatorList({
           </div>
         ) : null}
       </DragOverlay>
+      {menu && <NavigatorMenu menu={menu} onClose={closeMenu} />}
     </DndContext>
   )
 }
@@ -234,6 +239,7 @@ interface RowProps {
   row: NavigatorRow
   highlighted: boolean
   focused: boolean
+  onMenu(menu: NavigatorMenuState): void
 }
 
 function Row(props: RowProps) {
@@ -247,6 +253,8 @@ function rowClass({ highlighted, focused }: RowProps): string {
 function goFrom(row: NavigatorRow): () => void {
   return () => {
     if (Date.now() - lastDragEnd < CLICK_AFTER_DRAG_MS) return
+    // Une scène brouillon n'est pas dans l'éditeur : le curseur n'y va pas.
+    if (row.item.kind === 'scene' && row.item.draft) return
     goToItemAt(row.position)
   }
 }
@@ -309,15 +317,17 @@ function SceneRow(props: RowProps) {
       {...listeners}
       tabIndex={undefined}
       role="treeitem"
-      className={`${rowClass(props)} scene${isDragging ? ' drag-source' : ''}`}
+      className={`${rowClass(props)} scene${isDragging ? ' drag-source' : ''}${scene.draft ? ' draft' : ''}`}
       style={{ '--depth': row.depth } as React.CSSProperties}
       data-position={row.position}
-      title={
-        scene.firstLine
-          ? `${scene.heading}\n${scene.firstLine}\n${t.dragHint}`
-          : `${scene.heading}\n${t.dragHint}`
-      }
+      title={[scene.heading, scene.firstLine, scene.draft ? t.draftHint : '', t.dragHint]
+        .filter((part) => part !== '')
+        .join('\n')}
       onClick={goFrom(row)}
+      onContextMenu={(event) => {
+        event.preventDefault()
+        props.onMenu({ x: event.clientX, y: event.clientY, scene })
+      }}
     >
       <span
         className={`navigator-icon${scene.hasNote ? ' has-note' : ''}`}
@@ -328,9 +338,14 @@ function SceneRow(props: RowProps) {
       <span className="navigator-number">{scene.number}</span>
       <span className="navigator-heading-cell">
         <span className="navigator-heading">{scene.heading}</span>
+        {scene.draft && <span className="navigator-draft-tag">{t.draft}</span>}
         <RevisionCount count={scene.revisionCount} />
       </span>
-      <SceneDuration seconds={scene.seconds} numberKey={scene.numberKey} />
+      {scene.draft ? (
+        <span className="navigator-duration" />
+      ) : (
+        <SceneDuration seconds={scene.seconds} numberKey={scene.numberKey} />
+      )}
       <span className="navigator-first-line">{scene.firstLine}</span>
     </div>
   )
