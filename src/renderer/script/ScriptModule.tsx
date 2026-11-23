@@ -1,4 +1,5 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
+import { HelpDialog } from '../components/HelpDialog'
 import { SaveIndicator } from '../components/SaveIndicator'
 import { fr } from '../i18n/fr'
 import { useStore } from '../state/createStore'
@@ -38,6 +39,7 @@ export function ScriptModule({ projectId }: { projectId: string }) {
   const version = useStore(scriptStore, (state) => state.version)
   const status = useStore(scriptStore, (state) => state.status)
   const loadError = useStore(scriptStore, (state) => state.loadError)
+  const [helpShown, setHelpShown] = useState(false)
   const sendError = useStore(scriptStore, (state) => state.sendError)
   const notice = useStore(scriptStore, (state) => state.notice)
   const navigatorShown = useStore(navigatorStore, navigatorVisible)
@@ -102,6 +104,13 @@ export function ScriptModule({ projectId }: { projectId: string }) {
             >
               {fr.script.revision.button}
             </button>
+            <button
+              className="tool-button"
+              title={fr.script.help.buttonTitle}
+              onClick={() => setHelpShown(true)}
+            >
+              {fr.script.help.button}
+            </button>
           </div>
           <div className="toolbar-group toolbar-status">
             <PageIndicator />
@@ -137,6 +146,13 @@ export function ScriptModule({ projectId }: { projectId: string }) {
         </div>
       )}
       <RevisionPopups />
+      {helpShown && (
+        <HelpDialog
+          title={fr.script.help.title}
+          tabs={fr.script.help.tabs}
+          onClose={() => setHelpShown(false)}
+        />
+      )}
     </div>
   )
 }

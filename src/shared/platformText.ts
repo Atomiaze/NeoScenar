@@ -34,6 +34,8 @@ export function adaptText(text: string, platform: TextPlatform): string {
     text
       // Raccourcis courts de la barre des éléments : « ⌘↩ », « ⌘J ».
       .replace(/⌘↩/g, 'Ctrl+↵')
+      // Raccourcis écrits en clair dans l'aide : « ⌘ + J ».
+      .replace(/⌘ \+/g, 'Ctrl +')
       .replace(/⌘/g, 'Ctrl+')
       .replace(/⌥/g, 'Alt+')
       .replace(/\bCmd\b/g, 'Ctrl')

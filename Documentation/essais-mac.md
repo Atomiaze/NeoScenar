@@ -208,7 +208,7 @@ Remarque : …
 
 ---
 
-## 12. Lot 3 (18C-7 à 18C-9)
+## 12. Lot 3 (18C-7 à 18C-10)
 
 ### Genre des personnages et crédits (18C-7)
 
@@ -235,6 +235,10 @@ Remarque : …
 - [ ] Clic sur la pastille d'une ligne : menu des 4 couleurs (l'actuelle cochée) ; une autre couleur garde le commentaire ; Cmd + Z annule.
 - [ ] Poubelle : la marque disparaît sans question, le texte reste le même ; Cmd + Z la remet.
 - [ ] Pastilles lisibles (allumées et éteintes) dans les 7 thèmes.
+
+### Aide du module Scénario (18C-10)
+
+- [ ] Scénario > **Aide** (à droite de « Révision ») : la fenêtre « Aide — Module Scénario » s'ouvre avec 8 onglets (Éléments, Clavier, Rédiger, Autres éléments, Mise en forme, Simultanés, Numéros, Révision) ; le texte est celui de `aide-scenario.md`, raccourcis avec ⌘. Échap ou « Fermer » la ferment. Lisible dans les 7 thèmes.
 
 Remarque : …
 
