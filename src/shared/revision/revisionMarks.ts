@@ -72,11 +72,34 @@ export function markAt(marks: readonly RevisionMark[], position: number): Revisi
 }
 
 /**
- * Commentaire tel qu'il est écrit : sur une ligne, sans crochets (ils fermeraient la note : « [ » et
- * « ] » deviennent des parenthèses).
+ * Un retour à la ligne du commentaire s'écrit « ¶ » entouré d'espaces : la note reste sur une seule
+ * ligne du fichier, car un vrai retour à la ligne couperait la ligne imprimée (décision 18C-9).
+ */
+export const COMMENT_LINE_BREAK = '¶'
+const LINE_BREAKS = /\r\n|\r|\n|¶/
+
+/**
+ * Commentaire tel qu'il est écrit : sans crochets (ils fermeraient la note : « [ » et « ] »
+ * deviennent des parenthèses), chaque ligne sans espaces en trop, jamais de ligne vide, et les
+ * lignes reliées par « ¶ ».
  */
 export function cleanComment(comment: string): string {
-  return comment.replace(/\[/g, '(').replace(/\]/g, ')').replace(/\s+/g, ' ').trim()
+  return commentLines(comment.replace(/\[/g, '(').replace(/\]/g, ')')).join(
+    ` ${COMMENT_LINE_BREAK} `
+  )
+}
+
+/** Lignes du commentaire, pour l'affichage (« ¶ », avec ou sans espaces, ou vrai retour à la ligne). */
+export function commentLines(comment: string): string[] {
+  return comment
+    .split(LINE_BREAKS)
+    .map((line) => line.replace(/\s+/g, ' ').trim())
+    .filter((line) => line !== '')
+}
+
+/** Commentaire avec de vrais retours à la ligne : bulle, panneau et fenêtre de saisie. */
+export function displayedComment(comment: string): string {
+  return commentLines(comment).join('\n')
 }
 
 export function openingMarker(color: RevisionColor, comment: string): string {
@@ -198,6 +221,22 @@ export function planHighlight(
 /** Ajoute, modifie ou retire (texte vide) le commentaire d'une marque. */
 export function planComment(mark: RevisionMark, comment: string): TextChange {
   return { from: mark.open.from, to: mark.open.to, insert: openingMarker(mark.color, comment) }
+}
+
+/**
+ * Change la couleur d'une marque : seul le mot de la couleur est réécrit dans l'ouverture, le
+ * commentaire reste tel quel. Null si la couleur est déjà celle-là.
+ */
+export function planColor(
+  text: string,
+  mark: RevisionMark,
+  color: RevisionColor
+): TextChange | null {
+  if (mark.color === color) return null
+  const at = text.slice(mark.open.from, mark.open.to).indexOf(`R:${mark.color}`)
+  if (at < 0) return null
+  const from = mark.open.from + at + 2
+  return { from, to: from + mark.color.length, insert: color }
 }
 
 /**

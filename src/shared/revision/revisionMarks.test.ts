@@ -6,6 +6,10 @@ import { applyTextChanges } from '../scriptLink/textChanges'
 import {
   findRevisionMarks,
   markAt,
+  cleanComment,
+  commentLines,
+  displayedComment,
+  planColor,
   planComment,
   planHighlight,
   planRemoveMarks,
@@ -180,11 +184,11 @@ MARIE
 })
 
 describe('commenter et effacer', () => {
-  it('ajoute, modifie et retire un commentaire sur une ligne, sans crochets', () => {
+  it('ajoute, modifie et retire un commentaire sur une ligne du fichier, sans crochets', () => {
     const text = 'Il [[R:jaune]]pleut[[/R]].\n'
     const [mark] = marksOf(text)
     const commented = applyTextChanges(text, [planComment(mark, ' Trop  [court]\nici ')])
-    expect(commented).toBe('Il [[R:jaune|Trop (court) ici]]pleut[[/R]].\n')
+    expect(commented).toBe('Il [[R:jaune|Trop (court) ¶ ici]]pleut[[/R]].\n')
     const [again] = marksOf(commented)
     expect(applyTextChanges(commented, [planComment(again, '')])).toBe(text)
   })
@@ -224,5 +228,64 @@ describe('commenter et effacer', () => {
       }
       expect(removeAllRevisionMarks(text)).toBe(original)
     }
+  })
+})
+
+describe('commentaire sur plusieurs lignes (18C-9)', () => {
+  it('chaque retour à la ligne devient « ¶ », jamais de ligne vide ni de « ¶ » au bord', () => {
+    expect(cleanComment('ligne 1\nligne 2')).toBe('ligne 1 ¶ ligne 2')
+    expect(cleanComment('\n\n  un  \n\n\n  deux \r\n trois\n')).toBe('un ¶ deux ¶ trois')
+    expect(cleanComment('a\r\rb')).toBe('a ¶ b')
+    expect(cleanComment(' \n \n ')).toBe('')
+    expect(cleanComment('voir [p. 3]\n[ici]')).toBe('voir (p. 3) ¶ (ici)')
+    // Un « ¶ » tapé à la main compte comme un retour à la ligne.
+    expect(cleanComment('a¶¶ b ¶')).toBe('a ¶ b')
+    expect(cleanComment('une seule ligne')).toBe('une seule ligne')
+  })
+
+  it('« ¶ », avec ou sans espaces, se lit comme un retour à la ligne', () => {
+    expect(commentLines('a ¶ b')).toEqual(['a', 'b'])
+    expect(commentLines('a¶b  ¶c')).toEqual(['a', 'b', 'c'])
+    expect(commentLines('¶ a ¶¶ ')).toEqual(['a'])
+    expect(displayedComment('Revoir ¶ le ton')).toBe('Revoir\nle ton')
+    expect(displayedComment('')).toBe('')
+    // Aller-retour : ce qu'affiche la fenêtre, une fois enregistré, redonne le même texte.
+    expect(cleanComment(displayedComment('a ¶ b ¶ c'))).toBe('a ¶ b ¶ c')
+  })
+
+  it('le commentaire écrit reste sur une ligne du fichier et se relit', () => {
+    const text = 'Il [[R:vert]]pleut[[/R]].\n'
+    const [mark] = marksOf(text)
+    const commented = applyTextChanges(text, [planComment(mark, 'Trop court\n\nà revoir')])
+    expect(commented).toBe('Il [[R:vert|Trop court ¶ à revoir]]pleut[[/R]].\n')
+    expect(commented.split('\n')).toHaveLength(2)
+    expect(marksOf(commented)[0].comment).toBe('Trop court ¶ à revoir')
+  })
+})
+
+describe('changer la couleur (18C-9)', () => {
+  it('réécrit seulement le mot de la couleur, commentaire gardé', () => {
+    const text = 'Il [[R:jaune|Revoir ¶ le ton]]pleut[[/R]] et [[R:bleu]]vente[[/R]].\n'
+    const [first, second] = marksOf(text)
+    const change = planColor(text, first, 'rose')
+    expect(change).toEqual({
+      from: text.indexOf('jaune'),
+      to: text.indexOf('jaune') + 5,
+      insert: 'rose'
+    })
+    const recolored = applyTextChanges(text, [change!])
+    expect(recolored).toBe('Il [[R:rose|Revoir ¶ le ton]]pleut[[/R]] et [[R:bleu]]vente[[/R]].\n')
+    expect(marksOf(recolored).map((mark) => [mark.color, mark.comment])).toEqual([
+      ['rose', 'Revoir ¶ le ton'],
+      ['bleu', '']
+    ])
+    expect(applyTextChanges(text, [planColor(text, second, 'vert')!])).toBe(
+      'Il [[R:jaune|Revoir ¶ le ton]]pleut[[/R]] et [[R:vert]]vente[[/R]].\n'
+    )
+  })
+
+  it('rien à faire pour la même couleur', () => {
+    const text = 'Il [[R:jaune]]pleut[[/R]].\n'
+    expect(planColor(text, marksOf(text)[0], 'jaune')).toBeNull()
   })
 })

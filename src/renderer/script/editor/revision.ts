@@ -5,7 +5,9 @@
 import { EditorView, hoverTooltip } from '@codemirror/view'
 import type { EditorState, Extension } from '@codemirror/state'
 import {
+  displayedComment,
   markAt,
+  planColor,
   planComment,
   planHighlight,
   planRemoveMarks,
@@ -76,6 +78,12 @@ export function setMarkComment(view: EditorView, mark: RevisionMark, comment: st
   apply(view, [change], 'input.revision')
 }
 
+/** Change la couleur d'une marque (panneau, 18C-9) : seul le mot de la couleur est réécrit. */
+export function setMarkColor(view: EditorView, mark: RevisionMark, color: RevisionColor): void {
+  const change = planColor(view.state.doc.toString(), mark, color)
+  if (change) apply(view, [change], 'input.revision')
+}
+
 export function removeMarks(view: EditorView, marks: readonly RevisionMark[]): void {
   const { state } = view
   const changes = planRemoveMarks(state.doc.toString(), state.field(analysisField).doc, marks)
@@ -94,7 +102,7 @@ const commentTooltip = hoverTooltip(
       create: () => {
         const dom = document.createElement('div')
         dom.className = `rev-tooltip rev-${mark.color}`
-        dom.textContent = mark.comment
+        dom.textContent = displayedComment(mark.comment)
         return { dom }
       }
     }

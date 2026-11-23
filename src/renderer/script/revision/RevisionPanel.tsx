@@ -1,8 +1,18 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { Dialog } from '../../components/Dialog'
+import { Icon } from '../../components/Icon'
 import { fr } from '../../i18n/fr'
 import { useStore } from '../../state/createStore'
-import { REVISION_COLORS } from '../../../shared/revision/revisionMarks'
+import {
+  REVISION_COLORS,
+  displayedComment,
+  type RevisionColor
+} from '../../../shared/revision/revisionMarks'
+import {
+  countByColor,
+  filterRevisionList,
+  type RevisionListItem
+} from '../../../shared/revision/revisionList'
 import {
   applyColor,
   askClearAll,
@@ -10,10 +20,15 @@ import {
   cancelComment,
   clearAll,
   closeRevisionPopups,
+  consumePanelFocus,
   editCommentAtCursor,
+  editCommentFromPanel,
   goToRevision,
+  recolorFromPanel,
+  removeFromPanel,
   revisionStore,
   saveComment,
+  toggleFilterColor,
   toggleRevisionPanel,
   watchRevisionList,
   type CommentEdit
@@ -71,39 +86,220 @@ export function RevisionPalette() {
 /** Panneau des révisions, à droite du scénario : une ligne par marque, dans l'ordre du texte. */
 export function RevisionSidePanel() {
   const items = useStore(revisionStore, (state) => state.items)
+  const hidden = useStore(revisionStore, (state) => state.hiddenColors)
+  const panelFocus = useStore(revisionStore, (state) => state.panelFocus)
+  const shown = useMemo(() => filterRevisionList(items, hidden), [items, hidden])
+  const counts = useMemo(() => countByColor(items), [items])
+  // Menu des couleurs ouvert sur une ligne ; il se ferme tout seul si la liste change (frappe, Cmd + Z).
+  const [colorMenu, setColorMenu] = useState<{ position: number; list: RevisionListItem[] } | null>(
+    null
+  )
+  const openMenu = colorMenu?.list === shown ? colorMenu.position : null
+  const aside = useRef<HTMLElement>(null)
+  const list = useRef<HTMLUListElement>(null)
   useEffect(() => watchRevisionList(), [])
+
+  // Après une action du panneau, le focus revient au bon bouton de la bonne ligne.
+  useEffect(() => {
+    if (!panelFocus) return
+    consumePanelFocus()
+    let index =
+      panelFocus.start === undefined
+        ? -1
+        : shown.findIndex((item) => item.start === panelFocus.start)
+    let part = panelFocus.part
+    if (index < 0 && panelFocus.index !== undefined && shown.length > 0) {
+      index = Math.min(panelFocus.index, shown.length - 1)
+      part = 'row'
+    }
+    const row = index < 0 ? null : list.current?.children[index]
+    const target = row?.querySelector<HTMLElement>(`[data-part="${part}"]`) ?? aside.current
+    target?.focus()
+  }, [panelFocus, shown])
+
+  const filtered = shown.length !== items.length
   return (
-    <aside className="revision-side-panel" aria-label={tp.label}>
-      <div className="revision-side-title">{tp.title(items.length)}</div>
-      {items.length === 0 ? (
-        <p className="revision-side-empty muted">{tp.empty}</p>
+    <aside className="revision-side-panel" aria-label={tp.label} ref={aside} tabIndex={-1}>
+      <div className="revision-side-title">
+        {filtered ? tp.titleFiltered(shown.length, items.length) : tp.title(items.length)}
+      </div>
+      <div className="revision-side-filter" role="group" aria-label={tp.filterLabel}>
+        {REVISION_COLORS.map((color) => {
+          const count = counts[color]
+          const on = !hidden.includes(color)
+          const name = t.colors[color]
+          return (
+            <button
+              key={color}
+              className={`revision-filter rev-${color}${on && count > 0 ? ' on' : ''}`}
+              data-color={color}
+              aria-pressed={on}
+              disabled={count === 0}
+              title={count === 0 ? tp.filterEmptyTitle(name) : tp.filterTitle(name, on)}
+              onMouseDown={keepSelection}
+              onClick={(event) => toggleFilterColor(color, event.altKey)}
+            >
+              <span className="revision-filter-dot" aria-hidden="true" />
+              <span className="revision-filter-count">{count}</span>
+              <span className="visually-hidden">{name}</span>
+            </button>
+          )
+        })}
+      </div>
+      {items.length === 0 || shown.length === 0 ? (
+        <p className="revision-side-empty muted">
+          {items.length === 0 ? tp.empty : tp.emptyFiltered}
+        </p>
       ) : (
-        <ul className="revision-side-list">
-          {items.map((item, position) => (
-            <li key={`${item.from}-${position}`}>
-              <button
-                className={`revision-side-row rev-${item.color}`}
-                title={item.comment || tp.rowTitle(t.colors[item.color])}
-                onMouseDown={keepSelection}
-                onClick={() => goToRevision(position)}
-              >
-                <span className="revision-side-head">
-                  <span className="revision-side-dot" aria-label={t.colors[item.color]} />
-                  <span
-                    className="revision-side-scene"
-                    title={item.scene ? undefined : tp.noSceneTitle}
-                  >
-                    {item.scene ?? tp.noScene}
-                  </span>
-                </span>
-                <span className="revision-side-excerpt">{item.excerpt}</span>
-                {item.comment && <span className="revision-side-comment">{item.comment}</span>}
-              </button>
-            </li>
+        <ul className="revision-side-list" ref={list}>
+          {shown.map((item, position) => (
+            <RevisionRow
+              key={`${item.start}-${position}`}
+              item={item}
+              position={position}
+              menuOpen={openMenu === position}
+              onMenu={(open) => setColorMenu(open ? { position, list: shown } : null)}
+            />
           ))}
         </ul>
       )}
     </aside>
+  )
+}
+
+function RevisionRow({
+  item,
+  position,
+  menuOpen,
+  onMenu
+}: {
+  item: RevisionListItem
+  position: number
+  menuOpen: boolean
+  onMenu: (open: boolean) => void
+}) {
+  const comment = displayedComment(item.comment)
+  const name = t.colors[item.color]
+  return (
+    <li className={`revision-side-item rev-${item.color}`}>
+      <button
+        className="revision-side-dot-button"
+        data-part="color"
+        title={tp.changeColor(name)}
+        aria-label={tp.changeColor(name)}
+        aria-haspopup="menu"
+        aria-expanded={menuOpen}
+        onMouseDown={keepSelection}
+        onClick={() => onMenu(!menuOpen)}
+      >
+        <span className="revision-side-dot" />
+      </button>
+      <button
+        className="revision-side-row"
+        data-part="row"
+        title={comment || tp.rowTitle(name)}
+        onMouseDown={keepSelection}
+        onClick={() => goToRevision(position)}
+      >
+        <span className="revision-side-scene" title={item.scene ? undefined : tp.noSceneTitle}>
+          {item.scene ?? tp.noScene}
+        </span>
+        <span className="revision-side-excerpt">{item.excerpt}</span>
+        {comment && <span className="revision-side-comment">{comment}</span>}
+      </button>
+      <span className="revision-side-actions">
+        <button
+          className="revision-side-action"
+          data-part="edit"
+          title={item.comment ? tp.editComment : tp.addComment}
+          aria-label={item.comment ? tp.editComment : tp.addComment}
+          onMouseDown={keepSelection}
+          onClick={() => editCommentFromPanel(position)}
+        >
+          <Icon name="pencil" size={15} />
+        </button>
+        <button
+          className="revision-side-action"
+          data-part="trash"
+          title={tp.remove}
+          aria-label={tp.remove}
+          onMouseDown={keepSelection}
+          onClick={() => removeFromPanel(position)}
+        >
+          <Icon name="trash" size={15} />
+        </button>
+      </span>
+      {menuOpen && (
+        <ColorMenu
+          current={item.color}
+          onChoose={(color) => {
+            onMenu(false)
+            recolorFromPanel(position, color)
+          }}
+          onClose={() => onMenu(false)}
+        />
+      )}
+    </li>
+  )
+}
+
+/** Petit menu des 4 couleurs sous la pastille d'une ligne (couleur actuelle cochée). */
+function ColorMenu({
+  current,
+  onChoose,
+  onClose
+}: {
+  current: RevisionColor
+  onChoose: (color: RevisionColor) => void
+  onClose: () => void
+}) {
+  const menu = useRef<HTMLDivElement>(null)
+  // À l'ouverture seulement : le focus va sur la couleur actuelle (clavier).
+  useEffect(() => menu.current?.querySelector<HTMLElement>('[aria-checked="true"]')?.focus(), [])
+  useEffect(() => {
+    const onMouseDown = (event: MouseEvent): void => {
+      const target = event.target as Element
+      if (!menu.current?.contains(target) && !target.closest?.('.revision-side-dot-button'))
+        onClose()
+    }
+    window.addEventListener('mousedown', onMouseDown)
+    window.addEventListener('blur', onClose)
+    return () => {
+      window.removeEventListener('mousedown', onMouseDown)
+      window.removeEventListener('blur', onClose)
+    }
+  }, [onClose])
+  return (
+    <div
+      ref={menu}
+      className="revision-color-menu"
+      role="menu"
+      aria-label={tp.colorMenu}
+      onKeyDown={(event) => {
+        if (event.key !== 'Escape') return
+        event.preventDefault()
+        event.stopPropagation()
+        const dot = menu.current?.parentElement?.querySelector<HTMLElement>('[data-part="color"]')
+        onClose()
+        dot?.focus()
+      }}
+    >
+      {REVISION_COLORS.map((color) => (
+        <button
+          key={color}
+          role="menuitemradio"
+          aria-checked={color === current}
+          className={`revision-color-choice rev-${color}`}
+          data-color={color}
+          onMouseDown={keepSelection}
+          onClick={() => onChoose(color)}
+        >
+          <span className="revision-side-dot" aria-hidden="true" />
+          {t.colors[color]}
+          {color === current && <Icon name="check" size={14} />}
+        </button>
+      ))}
+    </div>
   )
 }
 
@@ -138,7 +334,7 @@ export function RevisionPopups() {
 
 function CommentBubble({ edit }: { edit: CommentEdit }) {
   const [draft, setDraft] = useState(edit.initial)
-  const input = useRef<HTMLInputElement>(null)
+  const input = useRef<HTMLTextAreaElement>(null)
   useEffect(() => {
     input.current?.focus()
     input.current?.select()
@@ -164,11 +360,18 @@ function CommentBubble({ edit }: { edit: CommentEdit }) {
     >
       <label>
         <span>{t.commentLabel}</span>
-        <input
+        <textarea
           ref={input}
+          rows={3}
           value={draft}
           placeholder={t.commentPlaceholder}
           onChange={(event) => setDraft(event.target.value)}
+          onKeyDown={(event) => {
+            // Entrée valide, Maj + Entrée va à la ligne (comportement normal de la zone de texte).
+            if (event.key !== 'Enter' || event.shiftKey || event.nativeEvent.isComposing) return
+            event.preventDefault()
+            saveComment(draft)
+          }}
         />
       </label>
       <p className="muted">{t.commentHint}</p>

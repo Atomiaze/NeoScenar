@@ -1169,7 +1169,7 @@ const macTexts = {
       noMarks: 'Aucune marque de révision dans le scénario.',
       commentLabel: 'Commentaire de la marque',
       commentPlaceholder: 'ex. : Revoir ce dialogue',
-      commentHint: 'Laissez vide pour retirer le commentaire.',
+      commentHint: 'Maj + Entrée pour aller à la ligne. Laissez vide pour retirer le commentaire.',
       save: 'Enregistrer',
       cancel: 'Annuler',
       confirmTitle: 'Effacer toutes les marques',
@@ -1187,7 +1187,20 @@ const macTexts = {
         toggleTitle: 'Afficher ou masquer la liste des révisions, à droite du scénario',
         label: 'Liste des révisions',
         title: (count: number): string => `Révisions (${count})`,
+        titleFiltered: (shown: number, total: number): string => `Révisions (${shown} / ${total})`,
         empty: 'Aucune révision',
+        /** Filtre par couleur et actions sur une ligne (18C-9). */
+        emptyFiltered: 'Aucune révision pour ces couleurs',
+        filterLabel: 'Filtrer la liste par couleur',
+        filterTitle: (color: string, shown: boolean): string =>
+          `${color} : cliquer pour ${shown ? 'cacher' : 'afficher'} ces révisions. Alt + clic (Option sur Mac) : n’afficher que cette couleur.`,
+        filterEmptyTitle: (color: string): string => `${color} : aucune révision`,
+        editComment: 'Modifier le commentaire',
+        addComment: 'Ajouter un commentaire',
+        remove: 'Effacer la marque (Cmd + Z annule)',
+        changeColor: (color: string): string =>
+          `Couleur : ${color.toLowerCase()}. Cliquer pour la changer`,
+        colorMenu: 'Couleur de la marque',
         noScene: '—',
         noSceneTitle: 'Avant la première scène, ou scène sans numéro',
         rowTitle: (color: string): string =>

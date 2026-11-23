@@ -24,7 +24,12 @@ import {
 } from './navigator/navigatorStore'
 import { useNavigatorSqueeze } from './navigator/useNavigatorSqueeze'
 import { RevisionPalette, RevisionPopups, RevisionSidePanel } from './revision/RevisionPanel'
-import { loadRevisionPanelShown, revisionStore, togglePalette } from './revision/revisionStore'
+import {
+  loadRevisionPanelShown,
+  resetRevisionFilter,
+  revisionStore,
+  togglePalette
+} from './revision/revisionStore'
 import './script.css'
 
 /** Module Scénario : barre d'outils, navigateur de scènes et éditeur du scénario. */
@@ -57,6 +62,7 @@ export function ScriptModule({ projectId }: { projectId: string }) {
   useEffect(() => {
     void loadScenario(projectId)
     void loadRevisionPanelShown()
+    resetRevisionFilter()
   }, [projectId])
   useEffect(() => {
     void loadNavigatorShown()

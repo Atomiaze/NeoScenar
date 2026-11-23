@@ -153,12 +153,12 @@ export default async function ({ app, check, log, newProject }) {
   )
   await sleep(300)
   check(
-    (await app.evaluate(`!!document.querySelector('.revision-bubble input')`)) === true,
+    (await app.evaluate(`!!document.querySelector('.revision-bubble textarea')`)) === true,
     'bulle du commentaire ouverte'
   )
   await app.evaluate(`(() => {
-    const input = document.querySelector('.revision-bubble input')
-    const setter = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value').set
+    const input = document.querySelector('.revision-bubble textarea')
+    const setter = Object.getOwnPropertyDescriptor(HTMLTextAreaElement.prototype, 'value').set
     setter.call(input, 'Revoir [ce] passage')
     input.dispatchEvent(new Event('input', { bubbles: true }))
   })()`)

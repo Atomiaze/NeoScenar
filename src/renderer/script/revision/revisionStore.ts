@@ -6,7 +6,14 @@ import type { Text } from '@codemirror/state'
 import { fr } from '../../i18n/fr'
 import { createStore } from '../../state/createStore'
 import type { RevisionColor, RevisionMark } from '../../../shared/revision/revisionMarks'
-import { buildRevisionList, type RevisionListItem } from '../../../shared/revision/revisionList'
+import { displayedComment } from '../../../shared/revision/revisionMarks'
+import {
+  buildRevisionList,
+  countByColor,
+  filterRevisionList,
+  toggleColorFilter,
+  type RevisionListItem
+} from '../../../shared/revision/revisionList'
 import { getActiveView, scriptStore, showNotice } from '../scriptStore'
 import { analysisField } from '../editor/analysis'
 import {
@@ -16,6 +23,7 @@ import {
   markStartingAt,
   marksOf,
   removeMarks,
+  setMarkColor,
   setMarkComment
 } from '../editor/revision'
 
@@ -24,7 +32,10 @@ const t = fr.script.revision
 export interface CommentEdit {
   /** Début de la marque (elle est relue au moment d'enregistrer). */
   start: number
+  /** Commentaire préchargé, avec de vrais retours à la ligne. */
   initial: string
+  /** Ouverte depuis le crayon du panneau : le focus y revient ensuite (18C-9). */
+  fromPanel: boolean
   /** Position de la bulle à l'écran (sous le début du texte surligné). */
   left: number
   top: number
@@ -39,6 +50,17 @@ interface RevisionState {
   panelShown: boolean
   /** Lignes du panneau, recalculées peu après chaque modification du texte. */
   items: RevisionListItem[]
+  /** Couleurs cachées par le filtre du panneau (en mémoire seulement, 18C-9). */
+  hiddenColors: RevisionColor[]
+  /** Bouton du panneau à qui rendre le focus après une action (consommé par le panneau). */
+  panelFocus: PanelFocus | null
+}
+
+/** Ligne visée par la marque qui commence à `start`, ou à défaut la ligne affichée `index`. */
+export interface PanelFocus {
+  start?: number
+  index?: number
+  part: 'row' | 'edit' | 'color'
 }
 
 export const revisionStore = createStore<RevisionState>({
@@ -46,11 +68,16 @@ export const revisionStore = createStore<RevisionState>({
   comment: null,
   confirmClear: null,
   panelShown: true,
-  items: []
+  items: [],
+  hiddenColors: [],
+  panelFocus: null
 })
 
+/** Quitter le mode révision remet le filtre du panneau à « tout ». */
 export function togglePalette(): void {
-  revisionStore.set((state) => ({ paletteShown: !state.paletteShown }))
+  revisionStore.set((state) =>
+    state.paletteShown ? { paletteShown: false, hiddenColors: [] } : { paletteShown: true }
+  )
 }
 
 export function applyColor(color: RevisionColor): void {
@@ -61,7 +88,7 @@ export function applyColor(color: RevisionColor): void {
   view.focus()
 }
 
-function openCommentFor(mark: RevisionMark): void {
+function openCommentFor(mark: RevisionMark, fromPanel = false): void {
   const view = getActiveView()
   if (!view) return
   view.dispatch({ selection: { anchor: mark.open.to }, scrollIntoView: true })
@@ -69,7 +96,8 @@ function openCommentFor(mark: RevisionMark): void {
   revisionStore.set({
     comment: {
       start: mark.open.from,
-      initial: mark.comment,
+      initial: displayedComment(mark.comment),
+      fromPanel,
       left: coords?.left ?? 100,
       top: (coords?.bottom ?? 100) + 6
     }
@@ -97,14 +125,25 @@ export function saveComment(comment: string): void {
   const edit = revisionStore.get().comment
   revisionStore.set({ comment: null })
   if (!view || !edit) return
+  // La marque est relue à sa position : si elle a disparu entre-temps, rien n'est écrit.
   const mark = markStartingAt(view.state, edit.start)
   if (mark) setMarkComment(view, mark, comment)
-  view.focus()
+  if (!edit.fromPanel) {
+    view.focus()
+    return
+  }
+  // Depuis le panneau : la ligne est mise à jour, son texte sélectionné, le focus revient au crayon.
+  refreshList()
+  const item = revisionStore.get().items.find((entry) => entry.start === edit.start)
+  if (item) selectInEditor(view, item)
+  revisionStore.set({ panelFocus: { start: edit.start, part: 'edit' } })
 }
 
 export function cancelComment(): void {
+  const edit = revisionStore.get().comment
   revisionStore.set({ comment: null })
-  getActiveView()?.focus()
+  if (edit?.fromPanel) revisionStore.set({ panelFocus: { start: edit.start, part: 'edit' } })
+  else getActiveView()?.focus()
 }
 
 /** « Effacer cette marque » du clic droit. */
@@ -156,6 +195,28 @@ export function toggleRevisionPanel(): void {
   void window.neoscenar.setRevisionPanelShown(panelShown)
 }
 
+/** Changement de projet : filtre remis à « tout ». */
+export function resetRevisionFilter(): void {
+  revisionStore.set({ hiddenColors: [], panelFocus: null })
+}
+
+/** Clic (ou Alt + clic : `alone`) sur une pastille du filtre. */
+export function toggleFilterColor(color: RevisionColor, alone: boolean): void {
+  revisionStore.set((state) => ({
+    hiddenColors: toggleColorFilter(state.hiddenColors, color, alone, countByColor(state.items))
+  }))
+}
+
+export function shownItems(
+  state: Pick<RevisionState, 'items' | 'hiddenColors'>
+): RevisionListItem[] {
+  return filterRevisionList(state.items, state.hiddenColors)
+}
+
+export function consumePanelFocus(): void {
+  revisionStore.set({ panelFocus: null })
+}
+
 /** Recalcul différé : une longue frappe sur un long scénario ne recalcule la liste qu'une fois. */
 const LIST_DELAY_MS = 200
 let listTimer: ReturnType<typeof setTimeout> | null = null
@@ -195,20 +256,62 @@ export function watchRevisionList(): () => void {
   }
 }
 
-/** Clic sur la n-ième ligne : le texte surligné est sélectionné, amené au milieu, et on peut taper. */
-export function goToRevision(position: number): void {
+/** La liste a pu prendre un peu de retard sur la frappe : on la met à jour avant d'agir. */
+function upToDate(view: EditorView): void {
+  if (view.state.doc === listedDoc) return
+  if (listTimer) clearTimeout(listTimer)
+  refreshList()
+}
+
+/** Ligne affichée (filtre compris) à la place donnée, et sa marque dans le texte actuel. */
+function shownAt(
+  position: number
+): { view: EditorView; item: RevisionListItem; mark: RevisionMark } | null {
   const view = getActiveView()
-  if (!view) return
-  // La liste a pu prendre un peu de retard sur la frappe : on la met à jour d'abord.
-  if (view.state.doc !== listedDoc) {
-    if (listTimer) clearTimeout(listTimer)
-    refreshList()
-  }
-  const item = revisionStore.get().items[position]
-  if (!item) return
+  if (!view) return null
+  upToDate(view)
+  const item = shownItems(revisionStore.get())[position]
+  const mark = item ? markStartingAt(view.state, item.start) : null
+  return item && mark ? { view, item, mark } : null
+}
+
+function selectInEditor(view: EditorView, item: RevisionListItem): void {
   view.dispatch({
     selection: { anchor: item.from, head: item.to },
     effects: EditorView.scrollIntoView(item.from, { y: 'center' })
   })
-  view.focus()
+}
+
+/** Clic sur la n-ième ligne : le texte surligné est sélectionné, amené au milieu, et on peut taper. */
+export function goToRevision(position: number): void {
+  const found = shownAt(position)
+  if (!found) return
+  selectInEditor(found.view, found.item)
+  found.view.focus()
+}
+
+/** Crayon d'une ligne : la même fenêtre que « Modifier le commentaire… » du clic droit. */
+export function editCommentFromPanel(position: number): void {
+  const found = shownAt(position)
+  if (found) openCommentFor(found.mark, true)
+}
+
+/** Pastille d'une ligne : nouvelle couleur, commentaire gardé (Cmd + Z annule). */
+export function recolorFromPanel(position: number, color: RevisionColor): void {
+  const found = shownAt(position)
+  if (!found) return
+  setMarkColor(found.view, found.mark, color)
+  refreshList()
+  // Si le filtre cache la nouvelle couleur, la ligne disparaît : le focus va à la suivante.
+  revisionStore.set({ panelFocus: { start: found.mark.open.from, index: position, part: 'color' } })
+}
+
+/** Poubelle d'une ligne : la marque est retirée sans confirmation (Cmd + Z annule). */
+export function removeFromPanel(position: number): void {
+  const found = shownAt(position)
+  if (!found) return
+  removeMarks(found.view, [found.mark])
+  refreshList()
+  // Le focus passe à la ligne suivante, ou à la précédente s'il n'y en a plus.
+  revisionStore.set({ panelFocus: { index: position, part: 'row' } })
 }

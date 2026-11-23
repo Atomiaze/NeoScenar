@@ -208,7 +208,7 @@ Remarque : …
 
 ---
 
-## 12. Lot 3 (18C-7 et 18C-8)
+## 12. Lot 3 (18C-7 à 18C-9)
 
 ### Genre des personnages et crédits (18C-7)
 
@@ -224,6 +224,17 @@ Remarque : …
 - [ ] « Masquer le panneau » : le choix est gardé pour ce projet après fermeture et réouverture ; un autre projet garde le panneau affiché.
 - [ ] Fenêtre réduite à environ 1280 px de large : le navigateur de scènes se masque tout seul et la page A4 est entière ; en agrandissant la fenêtre, il revient. Rouvert à la main, il reste ouvert jusqu'à la fermeture du mode révision.
 - [ ] Le survol d'un texte surligné montre toujours son commentaire.
+
+### Filtre, commentaire, couleur, effacement depuis le panneau (18C-9)
+
+- [ ] Sous le titre du panneau, 4 pastilles avec leur nombre de marques ; une couleur sans marque est grisée et ne réagit pas. Clic sur une pastille : elle s'éteint (contour barré), ses lignes disparaissent, le titre devient « Révisions (affichées / total) ». Les surlignages de la page restent tous visibles.
+- [ ] Option + clic sur une pastille : seule cette couleur reste ; Option + clic de nouveau : tout revient. Tout éteint : « Aucune révision pour ces couleurs ».
+- [ ] Le filtre reste quand je tape ou après « Effacer toutes les marques » puis Cmd + Z ; il est remis à zéro quand je quitte le mode révision.
+- [ ] Au survol d'une ligne (ou avec Tab), un crayon et une poubelle apparaissent. Le crayon ouvre la fenêtre du commentaire préremplie (« Ajouter un commentaire » s'il est vide) ; Maj + Entrée va à la ligne, Entrée enregistre, Échap annule. Vide = commentaire retiré. Cmd + Z annule.
+- [ ] Un commentaire sur trois lignes : la bulle du survol et le panneau (deux lignes au plus) montrent les retours à la ligne ; dans Obsidian, la ligne du scénario contient `[[R:jaune|ligne 1 ¶ ligne 2 ¶ ligne 3]]` sur une seule ligne. Le nombre de pages et les traits de page ne bougent pas.
+- [ ] Clic sur la pastille d'une ligne : menu des 4 couleurs (l'actuelle cochée) ; une autre couleur garde le commentaire ; Cmd + Z annule.
+- [ ] Poubelle : la marque disparaît sans question, le texte reste le même ; Cmd + Z la remet.
+- [ ] Pastilles lisibles (allumées et éteintes) dans les 7 thèmes.
 
 Remarque : …
 

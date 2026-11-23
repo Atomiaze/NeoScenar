@@ -26,6 +26,7 @@ const PATHS = {
   image: 'M3 5h18v14H3zM3 16l5-5 4 4 3-3 6 6M15.5 9.5a1 1 0 1 0 0-.01',
   export: 'M12 15V4M7.5 8.5 12 4l4.5 4.5M5 14v6h14v-6',
   sidebar: 'M3 4h18v16H3zM9 4v16',
+  pencil: 'M4 20h4L19 9l-4-4L4 16zM13.5 6.5l4 4',
   // Éléments du scénario (barre des éléments)
   elementHeading: 'M3 10h18v10H3zM3 10l1.2-5h16.6l-1 5M8.5 5l-1.5 5M13.5 5l-1.5 5M18.5 5l-1.5 5',
   elementAction: 'M4 6h16M4 10h16M4 14h16M4 18h10',
