@@ -1148,7 +1148,8 @@ const macTexts = {
       expand: 'Déplier',
       hasNote: 'Contient une note (texte non imprimable)',
       description: 'Description',
-      descriptionDisabled: 'Placez le curseur dans une scène'
+      descriptionDisabled: 'Placez le curseur dans une scène',
+      dragHint: 'Glisser pour déplacer la scène'
     },
     /** Fenêtre « Aide » du module (18C-10), texte validé par David (`aide-scenario.md`). */
     help: {
@@ -1327,6 +1328,10 @@ const macTexts = {
             {
               kind: 'paragraph',
               text: 'Chaque scène porte un numéro (S_0010, S_0020…), le même dans le scénario, les cartes, le PDF et Blender. C’est lui qui relie une scène à sa carte. **Ne le modifiez pas à la main** : NeoScenar s’en occupe.'
+            },
+            {
+              kind: 'paragraph',
+              text: 'Pour **déplacer une scène**, faites-la glisser dans le navigateur de scènes, à gauche. Tout son texte la suit, elle peut changer d’acte, et sa carte change de place. Cmd + Z annule.'
             }
           ]
         },

@@ -258,10 +258,17 @@ export function editScriptFromCards(changes: ChangeSet): void {
  * la défait. Les cartes suivent (lieux des en-têtes), que l'éditeur soit affiché ou non.
  * Renvoie le numéro de révision du texte après la modification (voir `undoScriptEdit`).
  */
-export function editScriptFromSheets(changes: readonly TextChange[]): number {
+export function editScriptFromSheets(
+  changes: readonly TextChange[],
+  /**
+   * « input.drop » : bloc déplacé (navigateur, 18C-12), traité comme un texte glissé : le
+   * rapprochement écrit son numéro dans la même étape d'annulation.
+   */
+  userEvent: 'input.replace' | 'input.drop' = 'input.replace'
+): number {
   const spec = {
     changes: [...changes],
-    annotations: [isolateHistory.of('full'), Transaction.userEvent.of('input.replace')]
+    annotations: [isolateHistory.of('full'), Transaction.userEvent.of(userEvent)]
   }
   if (activeView) activeView.dispatch(spec)
   else {

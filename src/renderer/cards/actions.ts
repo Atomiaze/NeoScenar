@@ -148,8 +148,16 @@ export function placeWithRenumberPrompt(
         .catch(reportFailure)
     } else apply(result, options, createdKind, placed)
   }
-  const result = attempt({})
-  if (result.ok || result.problem !== 'needs-renumber') {
+  askRenumberIfNeeded(attempt({}), scope, run)
+}
+
+/** Pas de numéro libre : on demande s'il faut renuméroter, puis on recommence avec cet accord. */
+function askRenumberIfNeeded(
+  first: EditResult,
+  scope: 'scene' | 'scenes',
+  run: (place: PlaceOptions) => void
+): void {
+  if (first.ok || first.problem !== 'needs-renumber') {
     run({})
     return
   }
@@ -290,6 +298,30 @@ export function moveSceneTo(sceneId: string, index: number): void {
     { label: 'move' },
     'scenes'
   )
+}
+
+/**
+ * Navigateur de scènes (18C-12) : même choix du numéro que le glisser-déposer d'une carte (avec la
+ * même question s'il n'y a plus de numéro libre). Rien n'est enregistré ici : `done` reçoit le
+ * découpage d'après, et le texte déplacé fera suivre les cartes par le rapprochement.
+ */
+export function placeSceneForMove(
+  sceneId: string,
+  index: number,
+  done: (before: Decoupage, after: Decoupage) => void
+): void {
+  const attempt = (options: PlaceOptions): EditResult => {
+    const decoupage = currentDecoupage()
+    return decoupage
+      ? moveScene(decoupage, sceneId, index, options)
+      : { ok: false, problem: 'invalid' }
+  }
+  askRenumberIfNeeded(attempt({}), 'scenes', (options) => {
+    const before = currentDecoupage()
+    const result = attempt(options)
+    if (!result.ok) showProblem(result.problem, 'scenes')
+    else if (before) done(before, result.decoupage)
+  })
 }
 
 /**

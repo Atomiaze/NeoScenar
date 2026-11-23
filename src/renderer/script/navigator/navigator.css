@@ -171,3 +171,51 @@
 .navigator-description textarea:disabled::placeholder {
   font-style: italic;
 }
+
+/* Déplacer une scène (18C-12) : repère d'insertion et ligne déplacée. */
+.navigator-list {
+  position: relative;
+}
+
+.navigator-row.scene.drag-source {
+  opacity: 0.4;
+}
+
+.navigator-list.dragging .navigator-row {
+  cursor: grabbing;
+}
+
+.navigator-drop-marker {
+  position: absolute;
+  left: 0.5rem;
+  right: 0.5rem;
+  height: 3px;
+  margin-top: -1.5px;
+  border-radius: 2px;
+  background: var(--accent);
+  pointer-events: none;
+}
+
+.navigator-drag-overlay {
+  /* Décalée sous le pointeur : le repère d'insertion reste visible. */
+  margin: 1.1rem 0 0 1.5rem;
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  max-width: 18rem;
+  padding: 0.3rem 0.6rem;
+  border: 1px solid var(--accent);
+  border-radius: 6px;
+  background: var(--surface);
+  color: var(--text);
+  font-size: 0.85rem;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+  cursor: grabbing;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.navigator-drag-overlay .navigator-heading {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

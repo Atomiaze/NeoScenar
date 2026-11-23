@@ -64,3 +64,18 @@ export function highlightedPosition(
   if (current === null) return null
   return walk(items, collapsed).hiddenBy.get(current) ?? current
 }
+
+/**
+ * Dépôt d'une scène (ligne `moved`) dans l'espace `gap` entre deux lignes (0 : au-dessus de la
+ * première, `rows.length` : tout en bas). Renvoie le début de la ligne du dessous (null : la fin du
+ * texte), ou undefined si la scène ne bougerait pas. Sous un acte replié, la scène va donc à la fin
+ * de cet acte (juste avant la ligne qui suit).
+ */
+export function dropTarget(
+  rows: readonly NavigatorRow[],
+  moved: number,
+  gap: number
+): number | null | undefined {
+  if (gap < 0 || gap > rows.length || gap === moved || gap === moved + 1) return undefined
+  return rows[gap]?.item.from ?? null
+}

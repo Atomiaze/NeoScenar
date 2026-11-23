@@ -247,6 +247,19 @@ Remarque : …
 
 Remarque : …
 
+## 13. Lot 4 (18C-12 et 18C-13)
+
+### Déplacer les scènes dans le navigateur (18C-12)
+
+- [ ] Dans le navigateur, je fais glisser une scène : un trait de couleur montre où elle va. Au dépôt, la scène change de place dans le navigateur et dans le texte (en-tête, résumé, texte, marques de révision) ; le curseur va sur son en-tête.
+- [ ] Déposée entre deux scènes, elle prend un numéro libre (ex. S_0015 entre S_0010 et S_0020), comme une carte déplacée. Dans Cartes : même ordre, la carte a gardé son nom et ses plans, aucune orpheline.
+- [ ] Déposée juste sous la ligne d'un acte : elle passe en tête de cet acte. Déposée juste au-dessus de la ligne d'un acte : elle va à la fin de l'acte précédent.
+- [ ] Cmd + Z (dans l'éditeur) remet tout en place d'un seul coup, numéro compris.
+- [ ] Avec les numéros verrouillés (Cartes), le déplacement est refusé avec le même message que dans les Cartes.
+- [ ] Aide > Numéros : la ligne « Pour déplacer une scène… » est là.
+
+Remarque : …
+
 ---
 
 ## Quand tout est coché

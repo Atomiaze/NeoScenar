@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest'
 import { paginate, parse } from '@neoscenar/fountain'
 import { scriptLayout } from '../layoutProfile'
 import { buildNavigator, currentItem, flattenNavigator } from './buildNavigator'
-import { highlightedPosition, visibleRows } from './rows'
+import { dropTarget, highlightedPosition, visibleRows } from './rows'
 
 const text = [
   '# ACTE 1', // ligne 1, rang 0
@@ -50,5 +50,27 @@ describe('lignes du navigateur', () => {
     // Le plus haut des actes repliés qui la cachent.
     expect(highlightedPosition(items, new Set(['1|ACTE 1|0', '2|Séquence|0']), current)).toBe(0)
     expect(highlightedPosition(items, new Set(), null)).toBeNull()
+  })
+})
+
+describe('déplacer une scène dans le navigateur (18C-12)', () => {
+  const rows = visibleRows(items, new Set())
+  const from = (line: string): number => text.indexOf(line)
+
+  it('dépôt : début de la ligne du dessous, fin du texte, ou rien si la scène ne bouge pas', () => {
+    // INT. B est la ligne 4.
+    expect(dropTarget(rows, 4, 4)).toBeUndefined()
+    expect(dropTarget(rows, 4, 5)).toBeUndefined()
+    expect(dropTarget(rows, 4, 3)).toBe(from('# ACTE 2'))
+    expect(dropTarget(rows, 4, 2)).toBe(from('INT. A'))
+    expect(dropTarget(rows, 4, 7)).toBeNull()
+    expect(dropTarget(rows, 4, 8)).toBeUndefined()
+  })
+
+  it('sous un acte replié : avant la ligne qui le suit (fin de cet acte)', () => {
+    const folded = visibleRows(items, new Set(['1|ACTE 2|0']))
+    // Lignes : ACTE 1, Séquence, A, ACTE 2 (replié), ACTE 2, C.
+    expect(folded.map((row) => row.position)).toEqual([0, 1, 2, 3, 5, 6])
+    expect(dropTarget(folded, 2, 4)).toBe(text.lastIndexOf('# ACTE 2'))
   })
 })

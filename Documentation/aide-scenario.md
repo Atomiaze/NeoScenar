@@ -92,6 +92,8 @@ Non, toi écoute-moi !
 
 Chaque scène porte un numéro (S_0010, S_0020…), le même dans le scénario, les cartes, le PDF et Blender. C'est lui qui relie une scène à sa carte. **Ne le modifiez pas à la main** : NeoScenar s'en occupe.
 
+Pour **déplacer une scène**, faites-la glisser dans le navigateur de scènes, à gauche. Tout son texte la suit, elle peut changer d'acte, et sa carte change de place. Cmd + Z annule.
+
 ## 8. Le mode Révision
 
 **À quoi il sert.** Une fois le premier jet écrit, on relit le scénario pour repérer ce qu'il faut reprendre : un dialogue trop long, une action pas claire, une remarque du professeur. Le mode Révision permet de surligner ces passages et d'y ajouter un commentaire, sans toucher au texte. Les marques ne sont **jamais imprimées** et ne changent ni la pagination ni la durée.
