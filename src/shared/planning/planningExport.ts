@@ -90,17 +90,27 @@ function pdfTask(task: Task, today: IsoDate): PdfTask {
 // ---------------------------------------------------------------------------------------------
 // Plan de tournage
 
-/** Jours du plan de tournage, après le retrait des scènes dont la carte n'existe plus (15D-3). */
+/**
+ * Jours du plan de tournage, après le retrait des scènes dont la carte n'existe plus (15D-3). Les
+ * scènes brouillon ne sont pas imprimées (18C-13) : retirées des jours où elles étaient déjà
+ * placées, et pas comptées parmi les scènes à planifier (elles ne peuvent pas l'être).
+ */
 export function exportedDays(
   planning: Planning,
   scenes: readonly BreakdownScene[],
   cards: readonly Scene[]
 ): { days: DayView[]; unplanned: number } {
   const cleaned = removeVanishedScenes(planning, new Set(cards.map((card) => card.id))).planning
-  const shooting = readShooting(cleaned)
+  const drafts = new Set(scenes.filter((scene) => scene.draft).map((scene) => scene.cardId))
+  const read = readShooting(cleaned)
+  const shooting = {
+    ...read,
+    jours: read.jours.map((day) => ({ ...day, scenes: day.scenes.filter((id) => !drafts.has(id)) }))
+  }
+  const printed = scenes.filter((scene) => !scene.draft)
   return {
-    days: dayViews(shooting, scenes, cards),
-    unplanned: unplannedScenes(scenes, shooting).length
+    days: dayViews(shooting, printed, cards),
+    unplanned: unplannedScenes(printed, shooting).length
   }
 }
 

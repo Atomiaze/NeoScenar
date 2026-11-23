@@ -794,6 +794,8 @@ const macTexts = {
     refused: 'Cette modification a été refusée.'
   },
   shooting: {
+    draftNotPlannable:
+      'Scène brouillon : elle ne peut pas être placée dans un jour de tournage. Retirez d’abord le statut brouillon.',
     view: 'Plan de tournage',
     newDay: 'Nouveau jour',
     loading: 'Lecture du scénario…',

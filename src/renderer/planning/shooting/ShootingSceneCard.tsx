@@ -62,7 +62,9 @@ export function ShootingSceneCard({
       className={classes.join(' ')}
       data-scene={label}
       data-card-id={cardId}
-      draggable
+      // Une scène brouillon ne se planifie pas : sa carte ne se glisse pas vers un jour (18C-13).
+      draggable={!(scene?.draft && fromDayId === null)}
+      title={scene?.draft && fromDayId === null ? t.draftNotPlannable : undefined}
       onDragStart={(event) => {
         const drag: SceneDrag = { cardId, fromDayId }
         event.dataTransfer.setData(SCENE_DRAG_TYPE, JSON.stringify(drag))

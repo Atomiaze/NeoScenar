@@ -20,6 +20,8 @@ import {
 } from '../../shared/planning/shootingEdit'
 import type { PlanningResult } from '../../shared/planning/planningEdit'
 import { sceneLabel } from '../../shared/scriptLink/sceneNumber'
+import { draftNumberKeys } from '../../shared/scriptLink/draftScene'
+import { numberKey } from '../../shared/decoupage/order'
 import { cardsStore } from '../cards/cardsStore'
 import {
   dropChangesNothing,
@@ -229,6 +231,13 @@ export function deleteShootingDay(dayId: string): void {
   openDialog(null)
 }
 
+/** La carte est-elle celle d'une scène brouillon du scénario ? */
+function isDraftCard(cardId: string): boolean {
+  const card = cardsStore.get().history?.present.scenes.find((scene) => scene.id === cardId)
+  const text = scriptText()
+  return !!card && text !== null && draftNumberKeys(text).has(numberKey(card))
+}
+
 /**
  * Dépôt d'une scène dans un jour. `fromDayId` null = elle vient des scènes à planifier.
  * `hoverIndex` = place visée dans la liste affichée du jour d'arrivée.
@@ -256,6 +265,8 @@ export function dropSceneOnDay(
   }
   // Déjà dans le jour d'arrivée : rien à faire (le refus afficherait un message inutile).
   if (target.scenes.includes(cardId)) return
+  // Une scène brouillon ne se planifie pas (18C-13) ; la carte n'est d'ailleurs pas glissable.
+  if (fromDayId === null && isDraftCard(cardId)) return
   const index = dropIndex(target.scenes, cardId, hoverIndex, false)
   applyShootingChange((planning) =>
     fromDayId === null

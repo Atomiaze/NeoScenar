@@ -233,6 +233,27 @@ describe('PDF « Plan de tournage »', () => {
   })
 })
 
+describe('scènes brouillon (18C-13)', () => {
+  const { planning, scenes, cards } = sample()
+  // Le jardin (2e scène du premier jour) devient brouillon après avoir été placé.
+  const drafted = scenes.map((scene) =>
+    scene.cardId === cards[1].id ? { ...scene, draft: true } : scene
+  )
+
+  it('ne sont imprimées ni dans le plan de tournage ni dans le calendrier', () => {
+    const { days, unplanned } = exportedDays(planning, drafted, cards)
+    expect(days[0].entries.map((e) => e.cardId)).toEqual([cards[0].id])
+    expect(unplanned).toBe(1)
+    const calendar = planningCalendar(planning, days, {
+      title: 'Film',
+      person: null,
+      stamp: new Date(0),
+      modifiedAt: new Date(0)
+    })
+    expect(JSON.stringify(calendar.events)).not.toContain('JARDIN')
+  })
+})
+
 describe('calendrier .ics', () => {
   const { planning, scenes, cards } = sample()
   const { days } = exportedDays(planning, scenes, cards)

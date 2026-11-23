@@ -194,5 +194,17 @@ export default async function ({ app, check, log, newProject }) {
   log('tournage :', shooting)
   check(shooting.includes('S_0020 brouillon'), 'plan de tournage : S_0020 avec l’étiquette')
   check(shooting.length === 3, 'les trois scènes au plan de tournage')
+  const draggable =
+    await app.evaluate(`[...document.querySelectorAll('[data-shooting="unplanned"] [data-scene]')]
+    .map((s) => s.dataset.scene + ':' + s.getAttribute('draggable') + ':' + (s.title ? 'infobulle' : ''))`)
+  log('glissables :', draggable)
+  check(
+    draggable.includes('S_0020:false:infobulle'),
+    'la scène brouillon ne se glisse pas vers un jour (infobulle)'
+  )
+  check(
+    draggable.includes('S_0010:true:') && draggable.includes('S_0030:true:'),
+    'les autres scènes se glissent'
+  )
   await app.screenshot('brouillon-6-tournage.png')
 }
