@@ -12,6 +12,7 @@ import {
 import { displayedSceneNumber, sectionColorsOf } from '../editor/analysis'
 import { readSynopsis } from './synopsis'
 import { draftHeadings, isDraftNote } from '../../../shared/scriptLink/draftScene'
+import { chosenSectionColors } from '../../../shared/scriptLink/sectionColor'
 import { findRevisionMarks, revisionMarkerStarts } from '../../../shared/revision/revisionMarks'
 
 interface NavigatorItemBase {
@@ -48,6 +49,8 @@ export interface NavigatorSection extends NavigatorItemBase {
   level: number
   title: string
   color: string
+  /** Couleur choisie par l'élève (note [[COULEUR]]) ; null = automatique. */
+  chosenColor: string | null
   children: NavigatorItem[]
 }
 
@@ -102,6 +105,7 @@ export function buildNavigator(
   )
   const drafts = draftHeadings(doc)
   const colors = sectionColorsOf(doc)
+  const chosenColors = chosenSectionColors(doc)
   const scenes = getScenes(doc)
   const sceneByIndex = new Map(scenes.map((scene, order) => [scene.index, { scene, order }]))
 
@@ -139,6 +143,7 @@ export function buildNavigator(
         level,
         title: plainFirstLine(element.text),
         color: colors.get(index) ?? '',
+        chosenColor: chosenColors.get(index) ?? null,
         seconds: sectionSeconds.get(element) ?? 0,
         hasNote: hasNote(element),
         revisionCount: 0,

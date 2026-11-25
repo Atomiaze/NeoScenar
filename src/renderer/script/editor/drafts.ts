@@ -2,6 +2,8 @@
 // Chaque bloc est remplacé par une plage invisible et atomique : le curseur la saute, et ni la frappe,
 // ni l'effacement, ni une sélection qui la recouvre ne peuvent l'entamer. Seules les actions du
 // programme (Cartes, fiches, navigateur, fenêtre du brouillon, annuler) la modifient.
+// Même traitement pour la note [[COULEUR #hex]] posée sous une ligne de section (18C-14), mais là
+// seulement : ailleurs, c'est une note ordinaire.
 
 import {
   EditorSelection,
@@ -14,12 +16,15 @@ import {
 } from '@codemirror/state'
 import { Decoration, EditorView, type DecorationSet } from '@codemirror/view'
 import { draftBlocks } from '../../../shared/scriptLink/draftScene'
+import { sectionColorRanges } from '../../../shared/scriptLink/sectionColor'
 import type { TextRange } from '../../../shared/scriptLink'
 import { analysisField } from './analysis'
 
 /** Blocs des scènes brouillon, dans l'ordre du texte, et leur habillage (masqué). */
 interface DraftState {
   blocks: TextRange[]
+  /** Notes de couleur de section à leur place : masquées et intouchables comme les blocs. */
+  colorNotes: TextRange[]
   hidden: DecorationSet
 }
 
@@ -30,10 +35,14 @@ function draftState(state: EditorState): DraftState {
   const blocks = draftBlocks(state.field(analysisField).doc, length)
   // Lignes entières, de l'en-tête à la ligne vide qui précède le bloc suivant (sa fin de ligne reste
   // visible) : la place de la scène ne laisse aucun vide à l'écran.
+  const colorNotes = sectionColorRanges(state.field(analysisField).doc, state.doc.toString())
   const hidden = RangeSet.of(
-    blocks.map((block) => hide.range(block.from, block.to === length ? length : block.to - 1))
+    [...blocks, ...colorNotes].map((block) =>
+      hide.range(block.from, block.to === length ? length : block.to - 1)
+    ),
+    true
   )
-  return { blocks, hidden }
+  return { blocks, colorNotes, hidden }
 }
 
 export const draftField = StateField.define<DraftState>({
@@ -60,8 +69,9 @@ function typedByStudent(tr: Transaction): boolean {
 /** L'intérieur des blocs est intouchable ; écrire juste avant ou juste après reste possible. */
 const protectBlocks = EditorState.changeFilter.of((tr) => {
   if (!typedByStudent(tr)) return true
-  const blocks = draftBlocksOf(tr.startState)
-  return blocks.length === 0 ? true : blocks.flatMap((block) => [block.from, block.to])
+  const { blocks, colorNotes } = tr.startState.field(draftField)
+  const hidden = [...blocks, ...colorNotes]
+  return hidden.length === 0 ? true : hidden.flatMap((block) => [block.from, block.to])
 })
 
 /** Une ligne vide précède l'en-tête qui commence à `pos` (ou il ouvre le texte). */

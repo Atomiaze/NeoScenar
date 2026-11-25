@@ -272,6 +272,10 @@ function SectionRow(props: RowProps) {
       role="treeitem"
       aria-expanded={!row.collapsed}
       onClick={goFrom(row)}
+      onContextMenu={(event) => {
+        event.preventDefault()
+        props.onMenu({ x: event.clientX, y: event.clientY, section: item })
+      }}
     >
       <button
         className="navigator-toggle"

@@ -1648,7 +1648,9 @@ const macTexts = {
       draftHint: 'Scène brouillon : ni affichée dans l’éditeur, ni imprimée, ni comptée',
       markDraft: 'Marquer comme brouillon',
       unmarkDraft: 'Retirer le statut brouillon',
-      editDraft: 'Modifier le brouillon…'
+      editDraft: 'Modifier le brouillon…',
+      /** Couleur d'une section (18C-14) : « Automatique » retire le choix. */
+      automaticColor: 'Automatique'
     },
     /** Fenêtre d'une scène brouillon et résultat de recherche (18C-13). */
     draft: {

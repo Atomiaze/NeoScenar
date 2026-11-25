@@ -11,7 +11,7 @@ import {
 } from '@neoscenar/fountain'
 import { CARD_PALETTE } from '../../../shared/palette'
 import { numberKey } from '../../../shared/decoupage/order'
-import { parseSceneNumber, sceneLabel } from '../../../shared/scriptLink'
+import { chosenSectionColors, parseSceneNumber, sceneLabel } from '../../../shared/scriptLink'
 import {
   findRevisionMarks,
   revisionMarkerStarts,
@@ -61,9 +61,12 @@ const SECTION_COLORS = CARD_PALETTE.filter((color) => color.shade === 'pastel').
  */
 export function sectionColorsOf(doc: FountainDocument): Map<number, string> {
   const colors = new Map<number, string>()
+  const chosen = chosenSectionColors(doc)
   doc.elements.forEach((element, index) => {
     if (element.type === 'section') {
-      colors.set(index, SECTION_COLORS[colors.size % SECTION_COLORS.length])
+      // La rotation compte toutes les sections : en colorer une ne change pas les autres.
+      const automatic = SECTION_COLORS[colors.size % SECTION_COLORS.length]
+      colors.set(index, chosen.get(index) ?? automatic)
     }
   })
   return colors

@@ -7,10 +7,17 @@ interface ColorChoicesProps {
   current?: string | null
   /** Affichée dans un menu (menu contextuel) plutôt que dans la fiche. */
   asMenu?: boolean
+  /** Texte du choix « sans couleur » (par défaut : couleur par défaut). */
+  defaultLabel?: string
 }
 
 /** Palette (12 teintes en pastel, vif et foncé) + couleur par défaut. */
-export function ColorChoices({ onChoose, current, asMenu = false }: ColorChoicesProps) {
+export function ColorChoices({
+  onChoose,
+  current,
+  asMenu = false,
+  defaultLabel
+}: ColorChoicesProps) {
   const itemRole = asMenu ? 'menuitem' : undefined
   return (
     <div className="color-choices" role={asMenu ? 'menu' : 'group'} aria-label={fr.panel.color}>
@@ -43,7 +50,7 @@ export function ColorChoices({ onChoose, current, asMenu = false }: ColorChoices
         onClick={() => onChoose(null)}
       >
         <span className="swatch default" aria-hidden="true" />
-        {fr.contextMenu.defaultColor}
+        {defaultLabel ?? fr.contextMenu.defaultColor}
       </button>
     </div>
   )

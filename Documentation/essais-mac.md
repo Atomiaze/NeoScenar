@@ -276,6 +276,19 @@ Remarque : …
 Remarque : …
 
 ---
+## 14. Lot 5 (sections, 18C-14 en cours)
+
+### Couleur d'une section (18C-14)
+
+- [ ] Clic droit sur une section du navigateur > Couleur : la palette des plans s'ouvre, avec « Automatique ». Je choisis un bleu vif : le bandeau change dans le navigateur, dans l'éditeur et dans Statistiques.
+- [ ] Les autres sections gardent leur couleur automatique. Dans Obsidian (ou un éditeur de texte), le fichier contient `[[COULEUR #2463EB]]` juste sous la ligne `# …`, et rien d'autre n'a changé.
+- [ ] Cette note n'apparaît pas dans l'éditeur ; le curseur la saute ; elle n'est pas dans le PDF.
+- [ ] Cmd + Z remet la couleur d'avant d'un seul coup. « Automatique » retire la note.
+- [ ] Je ferme et rouvre le projet : la couleur est gardée.
+- [ ] Une note `[[COULEUR #FF0000]]` tapée ailleurs (dans une action) reste une note ordinaire, visible.
+
+Remarque : …
+
 
 ## Quand tout est coché
 
