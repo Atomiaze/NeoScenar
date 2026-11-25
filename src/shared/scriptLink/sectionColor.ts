@@ -18,7 +18,7 @@ export function readColorNote(element: FountainElement): string | null {
 }
 
 /** Note de couleur de la section `index` : parmi les notes et le synopsis qui la suivent directement. */
-function colorNotesOf(doc: FountainDocument, index: number): FountainElement[] {
+export function colorNotesOf(doc: FountainDocument, index: number): FountainElement[] {
   const notes: FountainElement[] = []
   for (let i = index + 1; i < doc.elements.length; i++) {
     const element = doc.elements[i]

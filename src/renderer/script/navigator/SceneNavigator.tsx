@@ -29,6 +29,9 @@ import {
 import { moveNavigatorScene } from './moveScene'
 import { openDraftEditor } from '../draft/draftStore'
 import { NavigatorMenu, type NavigatorMenuState } from './NavigatorMenu'
+import { openSectionDialog, SectionDialogs } from './SectionDialogs'
+import { shiftSectionAt } from './sectionActions'
+import type { ShiftRefusal } from '../../../shared/scriptLink/sectionEdit'
 import { dropTarget, highlightedPosition, visibleRows, type NavigatorRow } from './rows'
 import './navigator.css'
 
@@ -57,7 +60,18 @@ export function SceneNavigator() {
       ) : (
         <NavigatorList rows={rows} highlighted={highlighted} />
       )}
+      <div className="navigator-actions">
+        <button
+          className="navigator-add-section"
+          title={t.addSectionHint}
+          disabled={!tree}
+          onClick={() => openSectionDialog({ kind: 'append' })}
+        >
+          {t.addSection}
+        </button>
+      </div>
       <Description item={current} />
+      <SectionDialogs />
     </aside>
   )
 }
@@ -271,7 +285,11 @@ function SectionRow(props: RowProps) {
       data-position={row.position}
       role="treeitem"
       aria-expanded={!row.collapsed}
+      title={t.sectionHint}
       onClick={goFrom(row)}
+      onDoubleClick={() =>
+        openSectionDialog({ kind: 'rename', from: item.from, title: item.title })
+      }
       onContextMenu={(event) => {
         event.preventDefault()
         props.onMenu({ x: event.clientX, y: event.clientY, section: item })
@@ -299,8 +317,44 @@ function SectionRow(props: RowProps) {
         <span className="navigator-title">{item.title}</span>
         <RevisionCount count={item.revisionCount} />
       </span>
-      <span className="navigator-duration">{formatDuration(item.seconds)}</span>
+      <span className="navigator-section-end">
+        <span className="navigator-duration">{formatDuration(item.seconds)}</span>
+        <span className="navigator-shift">
+          <ShiftButton from={item.from} delta={-1} refusal={item.unnestRefusal} />
+          <ShiftButton from={item.from} delta={1} refusal={item.nestRefusal} />
+        </span>
+      </span>
     </div>
+  )
+}
+
+/** Flèche ← (désimbriquer) ou → (imbriquer), montrée au survol ; refusée = grisée, raison en infobulle. */
+function ShiftButton({
+  from,
+  delta,
+  refusal
+}: {
+  from: number
+  delta: 1 | -1
+  refusal: ShiftRefusal
+}) {
+  const label = delta === 1 ? t.nestSection : t.unnestSection
+  return (
+    <button
+      className="navigator-shift-button"
+      tabIndex={-1}
+      aria-label={label}
+      aria-disabled={refusal !== null || undefined}
+      title={refusal ? t.refusal[refusal] : delta === 1 ? t.nestHint : t.unnestHint}
+      onClick={(event) => {
+        // Le clic ne déplace pas le curseur.
+        event.stopPropagation()
+        if (refusal === null) shiftSectionAt(from, delta)
+      }}
+      onDoubleClick={(event) => event.stopPropagation()}
+    >
+      {delta === 1 ? '→' : '←'}
+    </button>
   )
 }
 

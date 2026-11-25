@@ -2,7 +2,9 @@ import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { fr } from '../../i18n/fr'
 import type { NavigatorScene, NavigatorSection } from './buildNavigator'
 import { ColorChoices } from '../../cards/ColorChoices'
-import { chooseSectionColor } from './sectionActions'
+import { chooseSectionColor, shiftSectionAt } from './sectionActions'
+import { openSectionDialog, requestSectionDeletion } from './SectionDialogs'
+import type { ShiftRefusal } from '../../../shared/scriptLink/sectionEdit'
 import { toggleDraft } from './draftActions'
 import { openDraftEditor } from '../draft/draftStore'
 
@@ -12,7 +14,33 @@ export type NavigatorMenuState = { x: number; y: number } & (
   { scene: NavigatorScene; section?: undefined } | { section: NavigatorSection; scene?: undefined }
 )
 
-/** Menu du clic droit sur une scène (18C-13) ou une section (18C-14) du navigateur. */
+/** Entrée du menu ; refusée = grisée, la raison en infobulle. */
+function MenuItem({
+  label,
+  refusal = null,
+  hint,
+  onChoose
+}: {
+  label: string
+  refusal?: ShiftRefusal
+  hint?: string
+  onChoose(): void
+}) {
+  return (
+    <button
+      role="menuitem"
+      aria-disabled={refusal !== null || undefined}
+      title={refusal ? t.refusal[refusal] : hint}
+      onClick={() => {
+        if (refusal === null) onChoose()
+      }}
+    >
+      {label}
+    </button>
+  )
+}
+
+/** Menu du clic droit sur une scène (18C-13) ou une section (18C-14, 18C-15) du navigateur. */
 export function NavigatorMenu({ menu, onClose }: { menu: NavigatorMenuState; onClose(): void }) {
   const element = useRef<HTMLDivElement>(null)
   const [position, setPosition] = useState<{ left: number; top: number } | null>(null)
@@ -52,6 +80,10 @@ export function NavigatorMenu({ menu, onClose }: { menu: NavigatorMenuState; onC
   }, [onClose])
 
   const { scene, section } = menu
+  const run = (action: () => void) => () => {
+    onClose()
+    action()
+  }
   return (
     <div
       ref={element}
@@ -59,6 +91,32 @@ export function NavigatorMenu({ menu, onClose }: { menu: NavigatorMenuState; onC
       role="menu"
       style={position ?? { left: menu.x, top: menu.y, visibility: 'hidden' }}
     >
+      <MenuItem
+        label={t.insertSection}
+        onChoose={run(() => openSectionDialog({ kind: 'insert', from: (scene ?? section).from }))}
+      />
+      {section && (
+        <>
+          <MenuItem
+            label={t.renameSection}
+            onChoose={run(() =>
+              openSectionDialog({ kind: 'rename', from: section.from, title: section.title })
+            )}
+          />
+          <MenuItem
+            label={t.nestSection}
+            refusal={section.nestRefusal}
+            hint={t.nestHint}
+            onChoose={run(() => shiftSectionAt(section.from, 1))}
+          />
+          <MenuItem
+            label={t.unnestSection}
+            refusal={section.unnestRefusal}
+            hint={t.unnestHint}
+            onChoose={run(() => shiftSectionAt(section.from, -1))}
+          />
+        </>
+      )}
       {section && (
         <div
           className="context-submenu"
@@ -87,6 +145,16 @@ export function NavigatorMenu({ menu, onClose }: { menu: NavigatorMenuState; onC
           )}
         </div>
       )}
+      {section && (
+        <>
+          <hr />
+          <MenuItem
+            label={t.deleteSection}
+            onChoose={run(() => requestSectionDeletion(section.from, section.title))}
+          />
+        </>
+      )}
+      {scene && <hr />}
       {scene && (
         <button
           role="menuitem"

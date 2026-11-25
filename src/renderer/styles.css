@@ -735,6 +735,11 @@ button:disabled {
   text-align: left;
 }
 
+.context-menu button[role='menuitem'][aria-disabled='true'] {
+  opacity: 0.45;
+  cursor: default;
+}
+
 .context-menu hr {
   width: 100%;
   margin: 0.25rem 0;

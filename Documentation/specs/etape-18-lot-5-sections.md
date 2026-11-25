@@ -20,6 +20,8 @@ Règles communes :
 
 ## 18C-15 — Ajouter, renommer, supprimer, imbriquer
 
+Renommer, Supprimer et « + Section » confirmés par David (25 nov.).
+
 - **Ajouter** : clic droit sur une scène ou une section > « Insérer une section au-dessus… » ; bouton « + Section » en bas du navigateur (ajoute à la fin). Petite fenêtre : titre (obligatoire). Niveau = celui de la section qui contient l'endroit, ou 1 si aucune. La ligne est écrite avec une ligne vide avant et après.
 - **Renommer** : double-clic ou clic droit > « Renommer… » (même fenêtre).
 - **Supprimer** : clic droit > « Supprimer la section » : seules la ligne de section, sa note de couleur et son synopsis sont retirés ; **les scènes restent** (elles remontent dans la section précédente). Confirmation si la section a un synopsis.
@@ -37,4 +39,4 @@ Règles communes :
 
 ## Aide
 
-Mettre à jour l'onglet du Scénario qui parle des actes (`aide-scenario.md` puis `fr.ts`) à la fin de 18C-16. Cases d'essai dans `essais-mac.md` (section 14).
+Mettre à jour l'onglet du Scénario qui parle des actes (`aide-scenario.md` puis `fr.ts`) à la fin de 18C-16. Y dire aussi (décision de David, 25 nov.) : **dans les Statistiques, seules les sections `#` sont des actes** ; une scène sous un `##` sans `#` au-dessus y est « Hors acte ». Cases d'essai dans `essais-mac.md` (section 14).

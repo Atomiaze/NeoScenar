@@ -276,7 +276,7 @@ Remarque : …
 Remarque : …
 
 ---
-## 14. Lot 5 (sections, 18C-14 en cours)
+## 14. Lot 5 (sections, 18C-14 et 18C-15)
 
 ### Couleur d'une section (18C-14)
 
@@ -286,6 +286,15 @@ Remarque : …
 - [ ] Cmd + Z remet la couleur d'avant d'un seul coup. « Automatique » retire la note.
 - [ ] Je ferme et rouvre le projet : la couleur est gardée.
 - [ ] Une note `[[COULEUR #FF0000]]` tapée ailleurs (dans une action) reste une note ordinaire, visible.
+
+### Ajouter, renommer, supprimer, imbriquer (18C-15)
+
+- [ ] Clic droit sur une scène > « Insérer une section au-dessus… » : je tape un titre, Entrée. La section apparaît au-dessus, au niveau de la section qui contient la scène (dans un acte : nouvel acte).
+- [ ] Bouton « + Section » en bas du navigateur : la section (niveau 1, `#`) s'ajoute à la fin. Valider est grisé tant que le titre est vide.
+- [ ] Double-clic sur une section (ou clic droit > Renommer…) : le titre change ; sa couleur et sa description restent.
+- [ ] Au survol d'une section, les flèches ← → remplacent la durée. → imbrique (un `#` de plus), ← désimbrique ; les sous-sections suivent. Pour la première section, ou au-delà de `###`, la flèche est grisée et l'infobulle dit pourquoi.
+- [ ] Clic droit > Supprimer la section : les scènes restent ; avec une description, une question est posée d'abord. Les sous-sections gardent leur niveau (un `##` sans `#` au-dessus s'affiche bien).
+- [ ] Après chaque action : bandeaux « FIN DE … » justes, numéros des scènes et cartes inchangés, un seul Cmd + Z annule.
 
 Remarque : …
 

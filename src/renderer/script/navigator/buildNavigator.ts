@@ -13,6 +13,7 @@ import { displayedSceneNumber, sectionColorsOf } from '../editor/analysis'
 import { readSynopsis } from './synopsis'
 import { draftHeadings, isDraftNote } from '../../../shared/scriptLink/draftScene'
 import { chosenSectionColors } from '../../../shared/scriptLink/sectionColor'
+import { shiftRefusal, type ShiftRefusal } from '../../../shared/scriptLink/sectionEdit'
 import { findRevisionMarks, revisionMarkerStarts } from '../../../shared/revision/revisionMarks'
 
 interface NavigatorItemBase {
@@ -51,6 +52,9 @@ export interface NavigatorSection extends NavigatorItemBase {
   color: string
   /** Couleur choisie par l'élève (note [[COULEUR]]) ; null = automatique. */
   chosenColor: string | null
+  /** Pourquoi Imbriquer ou Désimbriquer est refusé (18C-15) ; null = permis. */
+  nestRefusal: ShiftRefusal
+  unnestRefusal: ShiftRefusal
   children: NavigatorItem[]
 }
 
@@ -144,6 +148,8 @@ export function buildNavigator(
         title: plainFirstLine(element.text),
         color: colors.get(index) ?? '',
         chosenColor: chosenColors.get(index) ?? null,
+        nestRefusal: shiftRefusal(doc, index, 1),
+        unnestRefusal: shiftRefusal(doc, index, -1),
         seconds: sectionSeconds.get(element) ?? 0,
         hasNote: hasNote(element),
         revisionCount: 0,

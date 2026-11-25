@@ -1650,7 +1650,37 @@ const macTexts = {
       unmarkDraft: 'Retirer le statut brouillon',
       editDraft: 'Modifier le brouillon…',
       /** Couleur d'une section (18C-14) : « Automatique » retire le choix. */
-      automaticColor: 'Automatique'
+      automaticColor: 'Automatique',
+      /** Ajouter, renommer, supprimer, imbriquer une section (18C-15). */
+      insertSection: 'Insérer une section au-dessus…',
+      renameSection: 'Renommer…',
+      nestSection: 'Imbriquer',
+      unnestSection: 'Désimbriquer',
+      deleteSection: 'Supprimer la section',
+      nestHint: 'Imbriquer : la section passe sous la section précédente',
+      unnestHint: 'Désimbriquer : la section remonte d’un niveau',
+      refusal: {
+        noSibling: 'Impossible : il faut une section du même niveau juste au-dessus',
+        tooDeep: 'Impossible : trois niveaux au plus (###)',
+        topLevel: 'La section est déjà au premier niveau'
+      } as Record<'noSibling' | 'tooDeep' | 'topLevel', string>,
+      sectionHint: 'Double-clic pour renommer · clic droit pour les autres actions',
+      addSection: '+ Section',
+      addSectionHint: 'Ajouter une section (acte) à la fin du scénario',
+      sectionDialog: {
+        insert: 'Insérer une section',
+        append: 'Ajouter une section',
+        rename: 'Renommer la section',
+        label: 'Titre',
+        placeholder: 'Par exemple : ACTE 1',
+        validate: 'Valider'
+      },
+      deleteDialog: {
+        title: 'Supprimer la section',
+        message: (title: string): string =>
+          `La section « ${title} » a une description : elle sera supprimée avec la section. Les scènes restent dans le scénario.`,
+        confirm: 'Supprimer'
+      }
     },
     /** Fenêtre d'une scène brouillon et résultat de recherche (18C-13). */
     draft: {
