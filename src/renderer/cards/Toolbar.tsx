@@ -5,6 +5,8 @@ import { formatAspect } from '../../shared/imageFormat'
 import type { Decoupage, ProjectSettings } from '../../shared/projectTypes'
 import { Icon, type IconName } from '../components/Icon'
 import { SaveIndicator } from '../components/SaveIndicator'
+import { HelpButton } from '../components/HelpButton'
+import { useDraftKeys } from '../script/draft/useDraftKeys'
 import { fr } from '../i18n/fr'
 import { cardsStore, openDialog, setZoom, toggleThumbnails } from './cardsStore'
 import { useStore } from '../state/createStore'
@@ -39,6 +41,7 @@ function ToolButton({ icon, label, onClick, disabled, title }: ToolButtonProps) 
 
 export function Toolbar({ decoupage, zoom, saveStatus, settings }: ToolbarProps) {
   const { width, height } = settings.resolution
+  const draftKeys = useDraftKeys()
   const showThumbnails = useStore(cardsStore, (state) => state.showThumbnails)
   const locked = decoupage.numbersLocked
   const noScene = decoupage.scenes.length === 0
@@ -95,6 +98,7 @@ export function Toolbar({ decoupage, zoom, saveStatus, settings }: ToolbarProps)
           title={fr.storyboardExport.toolbarTitle}
           onClick={openStoryboardExport}
         />
+        <HelpButton help={fr.cards.help} className="tool-button" />
       </div>
 
       <div className="toolbar-group toolbar-status">
@@ -115,7 +119,7 @@ export function Toolbar({ decoupage, zoom, saveStatus, settings }: ToolbarProps)
           <Icon name="cards" size={20} />
         </label>
         <span className="total-duration" title={fr.cards.totalDuration}>
-          {formatDuration(totalDuration(decoupage))}
+          {formatDuration(totalDuration(decoupage, draftKeys))}
         </span>
         <SaveIndicator status={saveStatus} />
       </div>

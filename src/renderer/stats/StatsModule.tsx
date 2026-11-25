@@ -5,6 +5,7 @@ import { withoutDrafts } from '../../shared/scriptLink/draftScene'
 import { computeStats, shotSecondsByNumber } from '../../shared/stats/computeStats'
 import { cardsStore } from '../cards/cardsStore'
 import { fr } from '../i18n/fr'
+import { HelpButton } from '../components/HelpButton'
 import { sectionColorsOf } from '../script/editor/analysis'
 import { scriptLayout } from '../script/layoutProfile'
 import { paginationSettings } from '../script/editor/paginationSettings'
@@ -43,7 +44,10 @@ export function StatsModule({ onOpenScene, onOpenCharacter }: StatsModuleProps) 
 
   return (
     <div className="stats-module">
-      <h1>{text.title}</h1>
+      <header className="stats-header">
+        <h1>{text.title}</h1>
+        <HelpButton help={text.help} />
+      </header>
       {stats.sceneCount === 0 ? (
         <p className="muted">{text.empty}</p>
       ) : (

@@ -8,8 +8,16 @@
   max-width: 1100px;
 }
 
-.stats-module h1 {
+.stats-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
   margin: 0 0 0.75rem;
+}
+
+.stats-module h1 {
+  margin: 0;
   font-size: 1.4rem;
 }
 

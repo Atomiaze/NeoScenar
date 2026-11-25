@@ -1,12 +1,23 @@
 import type { Decoupage, Scene } from '../projectTypes'
+import { numberKey } from './order'
 
 /** Durée totale d'une scène en secondes (les plans sans durée comptent pour 0). */
 export function sceneDuration(scene: Scene): number {
   return scene.shots.reduce((total, shot) => total + (shot.duration ?? 0), 0)
 }
 
-export function totalDuration(decoupage: Decoupage): number {
-  return decoupage.scenes.reduce((total, scene) => total + sceneDuration(scene), 0)
+/**
+ * Durée du film : somme des scènes. Les scènes dont le numéro est dans `excluded` (« 30 », « 30A »)
+ * ne comptent pas : ce sont les brouillons (18C-13), qui ne sont ni imprimés ni comptés.
+ */
+export function totalDuration(
+  decoupage: Decoupage,
+  excluded: ReadonlySet<string> = new Set()
+): number {
+  return decoupage.scenes.reduce(
+    (total, scene) => (excluded.has(numberKey(scene)) ? total : total + sceneDuration(scene)),
+    0
+  )
 }
 
 export function shotCount(decoupage: Decoupage): number {

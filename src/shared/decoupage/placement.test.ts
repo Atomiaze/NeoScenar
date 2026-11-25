@@ -54,6 +54,10 @@ describe('durées', () => {
     }
     expect(sceneDuration(d.scenes[0])).toBe(32.5)
     expect(totalDuration(d)).toBe(72.5)
+    // Scène brouillon (S_0010, 32,5 s) : hors de la durée du film.
+    expect(totalDuration(d, new Set(['10']))).toBe(40)
+    expect(totalDuration(d, new Set(['10', '20']))).toBe(0)
+    expect(totalDuration(d, new Set(['10A']))).toBe(72.5)
   })
 
   it('format m:ss', () => {

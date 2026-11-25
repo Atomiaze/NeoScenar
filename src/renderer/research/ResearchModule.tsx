@@ -1,4 +1,5 @@
 import { useEffect } from 'react'
+import { HelpButton } from '../components/HelpButton'
 import { SaveIndicator } from '../components/SaveIndicator'
 import { Icon } from '../components/Icon'
 import { fr } from '../i18n/fr'
@@ -138,6 +139,9 @@ export function ResearchModule({
             </button>
           </div>
         )}
+        <div className="toolbar-group">
+          <HelpButton help={fr.research.help} className="tool-button" />
+        </div>
         <div className="toolbar-group toolbar-status">
           <SaveIndicator status={status} />
         </div>

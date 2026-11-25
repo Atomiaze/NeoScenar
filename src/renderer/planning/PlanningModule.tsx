@@ -8,6 +8,7 @@ import {
 } from '../../shared/planning/planningView'
 import { fr } from '../i18n/fr'
 import { Icon } from '../components/Icon'
+import { HelpButton } from '../components/HelpButton'
 import { useStore } from '../state/createStore'
 import { PhaseSection } from './PhaseSection'
 import { PlanningDialogs } from './PlanningDialogs'
@@ -143,6 +144,7 @@ export function PlanningModule() {
             <button data-export-planning title={t.exportTitle} onClick={openPlanningExport}>
               {t.exportButton}
             </button>
+            <HelpButton help={t.help} />
             <div className="planning-switch" role="group" aria-label={t.viewLabel}>
               {(['list', 'timeline', 'shooting'] as const).map((choice) => (
                 <button

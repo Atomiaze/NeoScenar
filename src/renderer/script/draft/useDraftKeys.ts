@@ -18,6 +18,12 @@ function draftKeys(): ReadonlySet<string> {
   return cachedKeys
 }
 
+/** Numéros des scènes brouillon (« 30 », « 30A ») ; suit chaque modification du texte. */
+export function useDraftKeys(): ReadonlySet<string> {
+  useStore(scriptStore, (state) => state.textRevision)
+  return draftKeys()
+}
+
 /** La scène de ce numéro est-elle un brouillon dans le scénario (18C-13) ? Suit chaque modification. */
 export function useIsDraft(number: ItemNumber): boolean {
   useStore(scriptStore, (state) => state.textRevision)
