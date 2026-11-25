@@ -183,17 +183,41 @@ export function moveScene(
   index: number,
   options: PlaceOptions = {}
 ): EditResult {
+  return moveScenes(decoupage, [sceneId], index, options)
+}
+
+/**
+ * Déplace plusieurs scènes qui se suivent (celles d'une section du navigateur), dans leur ordre, avec
+ * leurs plans. `index` est la position de la première une fois toutes retirées de la liste. Elles
+ * prennent des numéros libres à leur nouvelle place (ou tout est renuméroté, si demandé).
+ * Interdit quand les numéros sont verrouillés.
+ */
+export function moveScenes(
+  decoupage: Decoupage,
+  sceneIds: readonly string[],
+  index: number,
+  options: PlaceOptions = {}
+): EditResult {
   if (decoupage.numbersLocked) return failure('locked')
-  const from = decoupage.scenes.findIndex((scene) => scene.id === sceneId)
-  if (from < 0) return failure('not-found')
-  const others = decoupage.scenes.filter((scene) => scene.id !== sceneId)
+  const ids = new Set(sceneIds)
+  const from = decoupage.scenes.findIndex((scene) => ids.has(scene.id))
+  const moved = decoupage.scenes.slice(from, from + sceneIds.length)
+  if (
+    from < 0 ||
+    ids.size !== sceneIds.length ||
+    moved.length !== sceneIds.length ||
+    moved.some((scene, i) => scene.id !== sceneIds[i])
+  ) {
+    return failure('not-found')
+  }
+  const others = decoupage.scenes.filter((scene) => !ids.has(scene.id))
   if (!isValidIndex(index, others.length)) return failure('invalid')
   if (index === from) return success(decoupage)
 
   const placed = placeNumbered(
     others,
     index,
-    [decoupage.scenes[from]],
+    moved,
     false,
     options.renumber === true,
     takenNumbers(others)

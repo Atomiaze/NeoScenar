@@ -11,8 +11,10 @@ import {
   rewriteHeading,
   scenePlace,
   type BlockPlace,
-  type HeadingToInsert
+  type HeadingToInsert,
+  type SectionRef
 } from './cardTextEdits'
+import { moveSectionInverse } from './sectionMove'
 import { readScriptScenes, type ScriptScene } from './scriptScenes'
 import { readSynopsis, setSynopsis } from './synopsis'
 import { setDraft } from './draftScene'
@@ -33,6 +35,7 @@ export type TextOp =
   | { kind: 'setDescription'; number: ItemNumber; description: string }
   | { kind: 'setDraft'; number: ItemNumber; draft: boolean }
   | { kind: 'renumber'; mapping: { from: ItemNumber; to: ItemNumber }[] }
+  | { kind: 'moveSection'; section: SectionRef; before: SectionRef | null; level: number }
   | { kind: 'sequence'; ops: TextOp[] }
 
 /** Déplacement d'un bloc ; avec `newNumber`, son `#…#` change aussi. */
@@ -164,6 +167,12 @@ function run(b: Builder, op: TextOp): TextOp {
       if (!change) return NOTHING
       b.push([change])
       return { kind: 'setDraft', number: op.number, draft: !op.draft }
+    }
+    case 'moveSection': {
+      const moved = moveSectionInverse(b.text, op)
+      if (!moved) return NOTHING
+      b.push(moved.changes)
+      return { kind: 'moveSection', ...moved.inverse }
     }
     case 'renumber': {
       const present = new Set(

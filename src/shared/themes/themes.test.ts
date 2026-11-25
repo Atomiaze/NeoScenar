@@ -89,6 +89,8 @@ describe('lisibilité de chaque jeu de couleurs', () => {
     ['accentText', 'accent', 4.5],
     ['danger', 'background', 4.5],
     ['danger', 'surface', 4.5],
+    // Repère rouge d'un dépôt refusé dans le navigateur (18C-16), aussi sur une ligne survolée.
+    ['danger', 'hover', 3],
     ['note', 'page', 4.5],
     ['noteMark', 'page', 3],
     ['diffAdded', 'surface', 4.5],

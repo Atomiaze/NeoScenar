@@ -10,6 +10,7 @@ import {
   insertShots,
   locateShot,
   moveScene,
+  moveScenes,
   moveShots,
   renumberProject,
   renumberScene,
@@ -310,10 +311,19 @@ export function placeSceneForMove(
   index: number,
   done: (before: Decoupage, after: Decoupage) => void
 ): void {
+  placeScenesForMove([sceneId], index, done)
+}
+
+/** Comme `placeSceneForMove`, pour plusieurs scènes qui se suivent (section du navigateur, 18C-16). */
+export function placeScenesForMove(
+  sceneIds: readonly string[],
+  index: number,
+  done: (before: Decoupage, after: Decoupage) => void
+): void {
   const attempt = (options: PlaceOptions): EditResult => {
     const decoupage = currentDecoupage()
     return decoupage
-      ? moveScene(decoupage, sceneId, index, options)
+      ? moveScenes(decoupage, sceneIds, index, options)
       : { ok: false, problem: 'invalid' }
   }
   askRenumberIfNeeded(attempt({}), 'scenes', (options) => {

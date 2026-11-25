@@ -24,11 +24,12 @@ export interface SectionRef {
   occurrence: number
 }
 
-interface SectionLine extends SectionRef {
+export interface SectionLine extends SectionRef {
   from: number
 }
 
-function readSections(text: string): SectionLine[] {
+/** Lignes de section du texte, dans l'ordre, avec leur rang parmi les sections de même titre. */
+export function readSections(text: string): SectionLine[] {
   const seen = new Map<string, number>()
   return parse(text, { titlePage: false }).elements.flatMap((element) => {
     if (element.type !== 'section' || !element.position) return []
@@ -102,8 +103,13 @@ function blockText(text: string, scene: ScriptScene): string {
 
 /** Retire un bloc en gardant une ligne vide entre ce qui le précédait et ce qui le suivait. */
 function removal(text: string, scene: ScriptScene): TextChange {
-  let { from } = scene.block
-  const { to } = scene.block
+  return blockRemoval(text, scene.block)
+}
+
+/** Retire le texte de `block` (bloc d'une scène ou d'une section) ; voir `removal`. */
+export function blockRemoval(text: string, block: { from: number; to: number }): TextChange {
+  let { from } = block
+  const { to } = block
   if (to >= text.length) {
     // Dernière scène : on retire aussi les lignes vides qui la précédaient.
     while (from > 0 && text[from - 1] === '\n') from--

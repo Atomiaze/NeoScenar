@@ -276,7 +276,7 @@ Remarque : …
 Remarque : …
 
 ---
-## 14. Lot 5 (sections, 18C-14 et 18C-15)
+## 14. Lot 5 (sections, 18C-14 à 18C-16)
 
 ### Couleur d'une section (18C-14)
 
@@ -295,6 +295,18 @@ Remarque : …
 - [ ] Au survol d'une section, les flèches ← → remplacent la durée. → imbrique (un `#` de plus), ← désimbrique ; les sous-sections suivent. Pour la première section, ou au-delà de `###`, la flèche est grisée et l'infobulle dit pourquoi.
 - [ ] Clic droit > Supprimer la section : les scènes restent ; avec une description, une question est posée d'abord. Les sous-sections gardent leur niveau (un `##` sans `#` au-dessus s'affiche bien).
 - [ ] Après chaque action : bandeaux « FIN DE … » justes, numéros des scènes et cartes inchangés, un seul Cmd + Z annule.
+
+### Déplacer une section avec ses scènes (18C-16)
+
+- [ ] Je fais glisser le dernier acte juste au-dessus du premier : trait en couleur d'accent ; au dépôt, l'acte arrive en tête avec toutes ses scènes, sa couleur, sa description, ses sous-sections, ses brouillons et ses marques de révision. Le curseur va sur la section.
+- [ ] Les numéros : seules les scènes déplacées changent de numéro (comme si je les avais déplacées dans les Cartes) ; les Cartes sont dans le même ordre que le navigateur, sans carte orpheline.
+- [ ] Un seul Cmd + Z remet tout comme avant.
+- [ ] Pendant le glissé, entre deux scènes ou dans la section elle-même : trait rouge ; je lâche, rien ne bouge.
+- [ ] Déposée au-dessus d'une sous-section (`##`), la section devient `##` (ses sous-sections suivent) ; tout en bas, elle devient un acte `#`. Au-delà de `###` : trait rouge.
+- [ ] Je la lâche à sa propre place : rien ne bouge, et Cmd + Z n'a rien de nouveau à annuler.
+- [ ] Numéros verrouillés (cadenas des Cartes) : un message dit de déverrouiller, rien ne bouge.
+- [ ] Sans numéro libre (scènes 30, 30A, 30B…) : la question « Renuméroter ? » ; Oui renumérote tout, et c'est Annuler dans les Cartes qui défait.
+- [ ] Aide du Scénario, onglet « Autres éléments » : le paragraphe sur les actes, et la règle des Statistiques (seules les sections `#` sont des actes).
 
 Remarque : …
 

@@ -27,6 +27,9 @@ import {
   updateSynopsis
 } from './navigatorStore'
 import { moveNavigatorScene } from './moveScene'
+import { moveNavigatorSection } from './moveSection'
+import { sectionDrop } from '../../../shared/scriptLink/sectionMove'
+import { getActiveView } from '../scriptStore'
 import { openDraftEditor } from '../draft/draftStore'
 import { NavigatorMenu, type NavigatorMenuState } from './NavigatorMenu'
 import { openSectionDialog, SectionDialogs } from './SectionDialogs'
@@ -76,11 +79,33 @@ export function SceneNavigator() {
   )
 }
 
-/** Glissement en cours : rang de la ligne déplacée, espace visé et hauteur du repère d'insertion. */
+/**
+ * Glissement en cours : rang de la ligne déplacée, espace visé et hauteur du repère d'insertion.
+ * `refused` : une section ne peut pas aller là (repère rouge).
+ */
 interface Drag {
   moved: number
   gap: number | null
   markerTop: number
+  refused: boolean
+}
+
+/**
+ * Dépôt d'une section dans l'espace `gap` : début de l'élément du dessous (null : tout en bas), et
+ * s'il est refusé ; undefined si la section ne bougerait pas (ou n'est plus dans le texte).
+ */
+function sectionTarget(
+  rows: readonly NavigatorRow[],
+  moved: number,
+  gap: number
+): { before: number | null; refused: boolean } | undefined {
+  const text = getActiveView()?.state.doc.toString()
+  const row = rows[moved]
+  if (text === undefined || !row || gap < 0 || gap > rows.length) return undefined
+  const before = rows[gap]?.item.from ?? null
+  const drop = sectionDrop(text, row.item.from, before)
+  if (!drop || (drop.ok && drop.same)) return undefined
+  return { before, refused: !drop.ok }
 }
 
 /** Fin du dernier glissement : le clic qui le termine ne doit pas déplacer le curseur. */
@@ -113,7 +138,12 @@ function NavigatorList({
 
   const moveTo = (moved: number, gap: number | null): void => {
     const row = rows[moved]
-    if (gap === null || !row || row.item.kind !== 'scene') return
+    if (gap === null || !row) return
+    if (row.item.kind === 'section') {
+      const target = sectionTarget(rows, moved, gap)
+      if (target && !target.refused) moveNavigatorSection(row.item.from, target.before)
+      return
+    }
     const target = dropTarget(rows, moved, gap)
     if (target === undefined) return
     moveNavigatorScene(row.item.from, target)
@@ -180,20 +210,32 @@ function NavigatorList({
   }
   const placeAt = (current: Drag, deltaY: number): Drag => {
     const found = gapAt(startY.current + deltaY)
+    if (found && rows[current.moved]?.item.kind === 'section') {
+      const target = sectionTarget(rows, current.moved, found.gap)
+      return target
+        ? { ...current, gap: found.gap, markerTop: found.markerTop, refused: target.refused }
+        : { ...current, gap: null, markerTop: 0, refused: false }
+    }
     const gap = found && dropTarget(rows, current.moved, found.gap) !== undefined ? found.gap : null
-    return { ...current, gap, markerTop: found?.markerTop ?? 0 }
+    return { ...current, gap, markerTop: found?.markerTop ?? 0, refused: false }
   }
   const onDragStart = (event: DragStartEvent): void => {
     const moved = rows.findIndex((row) => row.position === event.active.data.current?.position)
     if (moved < 0) return
     startY.current = (event.activatorEvent as PointerEvent).clientY
-    update({ moved, gap: null, markerTop: 0 })
+    update({ moved, gap: null, markerTop: 0, refused: false })
   }
   const onDragMove = (event: DragMoveEvent): void => {
     const current = dragRef.current
     if (!current) return
     const next = placeAt(current, event.delta.y)
-    if (next.gap !== current.gap || next.markerTop !== current.markerTop) update(next)
+    if (
+      next.gap !== current.gap ||
+      next.markerTop !== current.markerTop ||
+      next.refused !== current.refused
+    ) {
+      update(next)
+    }
   }
   const onDragEnd = (event: DragEndEvent): void => {
     lastDragEnd = Date.now()
@@ -234,7 +276,11 @@ function NavigatorList({
           />
         ))}
         {drag && drag.gap !== null && (
-          <div className="navigator-drop-marker" style={{ top: drag.markerTop }} aria-hidden />
+          <div
+            className={`navigator-drop-marker${drag.refused ? ' refused' : ''}`}
+            style={{ top: drag.markerTop }}
+            aria-hidden
+          />
         )}
       </div>
       <DragOverlay dropAnimation={null}>
@@ -242,6 +288,15 @@ function NavigatorList({
           <div className="navigator-drag-overlay">
             <span className="navigator-number">{dragged.number}</span>
             <span className="navigator-heading">{dragged.heading}</span>
+          </div>
+        ) : dragged && dragged.kind === 'section' ? (
+          <div className="navigator-drag-overlay">
+            <span
+              className="navigator-band"
+              style={{ background: dragged.color, color: cardTextColor(dragged.color) }}
+            >
+              {dragged.title}
+            </span>
           </div>
         ) : null}
       </DragOverlay>
@@ -277,10 +332,18 @@ function goFrom(row: NavigatorRow): () => void {
 function SectionRow(props: RowProps) {
   const { row } = props
   const item = row.item
+  const { attributes, listeners, setNodeRef, isDragging } = useDraggable({
+    id: `navigator-${row.position}`,
+    data: { position: row.position }
+  })
   if (item.kind !== 'section') return null
   return (
     <div
-      className={`${rowClass(props)} section`}
+      ref={setNodeRef}
+      {...attributes}
+      {...listeners}
+      tabIndex={undefined}
+      className={`${rowClass(props)} section${isDragging ? ' drag-source' : ''}`}
       style={{ '--depth': row.depth } as React.CSSProperties}
       data-position={row.position}
       role="treeitem"

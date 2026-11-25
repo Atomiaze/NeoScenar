@@ -67,7 +67,9 @@ export function commitCardsChange(
   after: Decoupage,
   options: EditOptions,
   selection?: Selection,
-  extraOp: TextOp | null = null
+  extraOp: TextOp | null = null,
+  /** `extraOp` décrit à lui seul l'effet sur le texte (déplacement d'une section, 18C-16). */
+  onlyExtraOp = false
 ): void {
   const before = cardsStore.get().history?.present
   const text = linkedText()
@@ -75,7 +77,9 @@ export function commitCardsChange(
     commitDecoupage(after, options, selection)
     return
   }
-  const op = combine(cardsTextOp(before, after, textNumberKeys(text)), extraOp)
+  const op = onlyExtraOp
+    ? extraOp
+    : combine(cardsTextOp(before, after, textNumberKeys(text)), extraOp)
   const edit = op ? applyTextOp(text, op) : null
   const result = reconcile(edit?.text ?? text, after, { knownCards: knownCards() }, linkIds)
   dispatchSteps(text, [...(edit?.steps ?? []), result.textChanges])

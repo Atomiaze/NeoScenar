@@ -31,10 +31,12 @@ Renommer, Supprimer et « + Section » confirmés par David (25 nov.).
 
 ## 18C-16 — Déplacer une section avec ses scènes
 
-- Glisser-déposer d'une section dans le navigateur : tout son bloc bouge (ligne, note, synopsis, scènes, sous-sections, jusqu'à la prochaine section de même niveau ou supérieur). Mêmes repères et mêmes règles de dépôt que 18C-12.
-- Interdit de déposer une section dans elle-même ou une de ses sous-sections (repère rouge, refus).
-- Déposée dans une autre section, son niveau s'adapte (un de plus que la section d'accueil, sous-sections décalées d'autant) ; refus si ça dépasse 3 niveaux.
-- **Numérotation : réutiliser le chemin de 18C-12** (`moveScene` pour la vérification, `input.drop`, rapprochement dans la même étape) : refus si numéros verrouillés, question « Renuméroter ? », aucune carte orpheline créée. Brouillons, marques de révision et synopsis suivent.
+- Glisser-déposer d'une section dans le navigateur : tout son bloc bouge (ligne, note, synopsis, scènes, sous-sections, jusqu'à la prochaine section de même niveau ou supérieur). Mêmes repères que 18C-12.
+- **Places permises (décision de David, 25 nov.)** : seulement juste au-dessus d'une ligne de section, ou tout en bas. Ailleurs (entre deux scènes, sous une ligne de section), la section avalerait les scènes qui la suivent : repère rouge, refus.
+- **Niveau (décision de David, 25 nov.)** : au-dessus d'une section, elle prend le niveau de cette section (elle devient sa sœur ; au-dessus de la première sous-section d'un acte, elle devient donc sous-section de cet acte) ; tout en bas, niveau 1 (nouvel acte à la fin). Ses sous-sections sont décalées d'autant ; refus si ça dépasse 3 niveaux.
+- Interdit de déposer une section dans elle-même ou une de ses sous-sections (repère rouge, refus). Dépôt à sa propre place (même place, même niveau) : rien, aucune étape d'annulation.
+- **Numérotation : réutiliser le chemin de 18C-12** (`moveScenes`, plusieurs scènes qui se suivent, pour la vérification, `input.drop`, rapprochement dans la même étape) : refus si numéros verrouillés, question « Renuméroter ? », aucune carte orpheline créée. Brouillons, marques de révision et synopsis suivent.
+- **Rapprochement après un dépôt (`input.drop` seulement)** : les scènes qui n'ont pas bougé gardent leur numéro, seules celles du bloc déplacé sont renumérotées (sans cette règle, un bloc de 3 scènes faisait renuméroter les 2 autres). Hors navigateur (texte modifié ailleurs, collage), rien ne change.
 - Critères : ordre identique éditeur / navigateur / Cartes ; numéros identiques à ceux qu'aurait donnés le déplacement des mêmes scènes depuis les Cartes ; glissé rapide sûr ; une seule étape d'annulation.
 
 ## Aide

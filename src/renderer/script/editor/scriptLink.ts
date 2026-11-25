@@ -90,6 +90,7 @@ function reconcileTransaction(
     {
       editingLine: hasEffect(tr, settleLink) ? null : { from: line.from, to: line.to },
       insertedRanges: insertedRanges(tr),
+      movedBlock: tr.isUserEvent('input.drop'),
       knownCards: current.knownCards,
       freezeText: frozen,
       parsed: state.field(analysisField).doc

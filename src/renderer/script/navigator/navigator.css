@@ -177,7 +177,8 @@
   position: relative;
 }
 
-.navigator-row.scene.drag-source {
+.navigator-row.scene.drag-source,
+.navigator-row.section.drag-source {
   opacity: 0.4;
 }
 
@@ -194,6 +195,23 @@
   border-radius: 2px;
   background: var(--accent);
   pointer-events: none;
+}
+
+/* Dépôt refusé (section dans elle-même, entre deux scènes, trop profond) : repère rouge, plus épais,
+   détouré du fond pour rester net sur un bandeau de section (contraste ≥ 3 vérifié dans les thèmes). */
+.navigator-drop-marker.refused {
+  height: 5px;
+  margin-top: -2.5px;
+  background: var(--danger);
+  box-shadow: 0 0 0 1.5px var(--surface);
+}
+
+.navigator-drag-overlay .navigator-band {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  padding: 0.1rem 0.5rem;
+  border-radius: 4px;
 }
 
 .navigator-drag-overlay {

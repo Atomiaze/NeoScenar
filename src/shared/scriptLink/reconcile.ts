@@ -16,6 +16,12 @@ export interface ReconcileContext {
   /** Texte qui vient d'être inséré (collé) : en cas de numéro en double, c'est cette scène qui le perd. */
   insertedRanges?: readonly TextRange[]
   /**
+   * Les zones insérées sont un bloc déplacé (glisser-déposer du navigateur, `input.drop`) : les scènes
+   * qui n'ont pas bougé gardent leur numéro et seules celles du bloc sont renumérotées, comme dans les
+   * Cartes, même si le bloc compte plus de scènes que le reste.
+   */
+  movedBlock?: boolean
+  /**
    * Ligne du curseur dans l'éditeur. Un en-tête sans numéro sur cette ligne est en cours de frappe :
    * il n'est numéroté (et sa carte créée) qu'une fois la ligne quittée. Les cartes dont le numéro est
    * écrit sur cette ligne sont gardées telles quelles, même si la ligne n'est plus un en-tête valide
@@ -147,7 +153,7 @@ export function reconcile(
   // carte vide supprimée, lui, redevient libre.
   const reserved: ItemNumber[] = [...kept, ...(firstLink ? unlinked : [])]
   const ordered = !frozen && !decoupage.numbersLocked
-  chooseKeptNumbers(slots, firstLink || ordered)
+  chooseKeptNumbers(slots, firstLink || ordered, context.movedBlock === true)
   assignNumbers(slots, new NumberPool([...linkedNumbers(slots), ...reserved]))
   settleNumbers(slots, ordered, reserved)
 
@@ -244,7 +250,7 @@ function linkByNumber(
  * les autres sont considérées comme déplacées. À égalité, on garde de préférence les scènes qui n'ont
  * pas été collées, puis les plus petits numéros (ce qui rend le résultat stable d'une fois à l'autre).
  */
-function chooseKeptNumbers(slots: Slot[], ordered: boolean): void {
+function chooseKeptNumbers(slots: Slot[], ordered: boolean, movedBlock = false): void {
   const numbered = slots.filter((slot) => slot.linked !== null)
   if (!ordered) {
     numbered.forEach((slot) => (slot.keeps = true))
@@ -255,8 +261,13 @@ function chooseKeptNumbers(slots: Slot[], ordered: boolean): void {
     notInserted: number
     previous: number
   }
+  // Bloc déplacé : d'abord le plus de scènes restées en place, puis la plus longue suite.
   const better = (a: Chain, b: Chain): boolean =>
-    a.length !== b.length ? a.length > b.length : a.notInserted > b.notInserted
+    movedBlock && a.notInserted !== b.notInserted
+      ? a.notInserted > b.notInserted
+      : a.length !== b.length
+        ? a.length > b.length
+        : a.notInserted > b.notInserted
   const chains: Chain[] = []
   numbered.forEach((slot, i) => {
     let best: Chain = { length: 0, notInserted: 0, previous: -1 }

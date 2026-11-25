@@ -1664,7 +1664,8 @@ const macTexts = {
         tooDeep: 'Impossible : trois niveaux au plus (###)',
         topLevel: 'La section est déjà au premier niveau'
       } as Record<'noSibling' | 'tooDeep' | 'topLevel', string>,
-      sectionHint: 'Double-clic pour renommer · clic droit pour les autres actions',
+      sectionHint:
+        'Glisser pour déplacer la section avec ses scènes · double-clic pour renommer · clic droit pour les autres actions',
       addSection: '+ Section',
       addSectionHint: 'Ajouter une section (acte) à la fin du scénario',
       sectionDialog: {
@@ -1832,6 +1833,14 @@ const macTexts = {
                   'Commence une nouvelle page à l’impression. Sur une ligne écrite, le bouton l’ajoute en dessous.'
                 ]
               ]
+            },
+            {
+              kind: 'paragraph',
+              text: 'Les **actes** (sections) se gèrent aussi depuis le navigateur de scènes : clic droit pour insérer une section, la renommer, la supprimer, lui choisir une couleur, l’imbriquer ou la désimbriquer (`#`, `##`, `###`, trois niveaux au plus). Faites glisser une section pour la **déplacer avec toutes ses scènes** : déposez-la juste au-dessus d’une autre section (elle prend son niveau) ou tout en bas (elle devient un acte). Ailleurs, le repère devient rouge. Cmd + Z annule.'
+            },
+            {
+              kind: 'paragraph',
+              text: 'Dans les **Statistiques**, seules les sections `#` comptent comme des actes : une scène placée sous un `##` sans `#` au-dessus y est « Hors acte ».'
             }
           ]
         },
