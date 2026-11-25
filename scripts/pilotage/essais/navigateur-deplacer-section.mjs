@@ -238,8 +238,9 @@ export default async function ({ app, check, log, newProject }) {
     'aucune carte orpheline'
   )
 
-  await renumber({ app, check, log, newProject })
+  // Ordre d'origine (verrouillé d'abord) : le projet suivant est ouvert depuis le Scénario affiché.
   await locked({ app, check, newProject })
+  await renumber({ app, check, log, newProject })
 }
 
 // Numéros verrouillés : refus, même message que dans les Cartes.

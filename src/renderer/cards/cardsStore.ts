@@ -130,11 +130,26 @@ export const cardsStore = createStore<CardsState>({
   drawing: null
 })
 
-/** Charge le découpage d'un projet. Ne fait rien si c'est déjà le projet chargé. */
-export async function loadProject(projectId: string): Promise<void> {
-  if (cardsStore.get().projectId === projectId) return
+/** Lecture du découpage en cours : un second appel pour le même projet l'attend au lieu de la croire finie. */
+let pendingLoad: { projectId: string; promise: Promise<void> } | null = null
+
+/**
+ * Charge le découpage d'un projet. Déjà chargé : rien. En cours de lecture (le module Cartes l'a
+ * lancée juste avant le rapprochement, au changement de projet) : on attend cette lecture-là.
+ */
+export function loadProject(projectId: string): Promise<void> {
+  if (cardsStore.get().projectId === projectId) {
+    return pendingLoad?.projectId === projectId ? pendingLoad.promise : Promise.resolve()
+  }
   cardsStore.set({ projectId, history: null, selection: EMPTY_SELECTION, loadError: null })
+  const promise = readDecoupage(projectId)
+  pendingLoad = { projectId, promise }
+  return promise
+}
+
+async function readDecoupage(projectId: string): Promise<void> {
   const result = await window.neoscenar.getDecoupage()
+  if (pendingLoad?.projectId === projectId) pendingLoad = null
   // Un autre projet a pu être ouvert entre-temps.
   if (cardsStore.get().projectId !== projectId) return
   if (result.ok) {
@@ -160,6 +175,7 @@ export function rememberCopies(record: Readonly<Record<string, string>>): void {
 
 export function unloadProject(): void {
   copies.clear()
+  pendingLoad = null
   cardsStore.set({
     projectId: null,
     history: null,

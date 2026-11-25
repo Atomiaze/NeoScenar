@@ -132,12 +132,21 @@ export async function loadSceneTimes(): Promise<readonly string[]> {
   return sceneTimes
 }
 
-export async function loadScenario(projectId: string): Promise<void> {
+/** Lecture du scénario en cours : un second appel pour le même projet l'attend au lieu de la croire finie. */
+let pendingLoad: { projectId: string; promise: Promise<void> } | null = null
+
+/**
+ * Charge le scénario d'un projet. Déjà chargé : rien. En cours de lecture (le module Scénario l'a
+ * lancée juste avant le rapprochement, au changement de projet) : on attend cette lecture-là.
+ */
+export function loadScenario(projectId: string): Promise<void> {
   void loadSceneTimes()
   void loadContinuedMarks()
   // Relu à chaque fois : une version restaurée peut changer l'option du projet.
   void loadProjectPagination()
-  if (scriptStore.get().projectId === projectId) return
+  if (scriptStore.get().projectId === projectId) {
+    return pendingLoad?.projectId === projectId ? pendingLoad.promise : Promise.resolve()
+  }
   documentState = null
   // Nouvelle version : l'éditeur de l'ancien projet, en se fermant, ne doit ni être réutilisé
   // pour ce projet-ci ni y numéroter un en-tête (son texte n'a plus cours).
@@ -148,7 +157,15 @@ export async function loadScenario(projectId: string): Promise<void> {
     sendError: null,
     version: state.version + 1
   }))
+  const promise = readScenario(projectId)
+  pendingLoad = { projectId, promise }
+  return promise
+}
+
+async function readScenario(projectId: string): Promise<void> {
   const result = await window.neoscenar.getScenario()
+  if (pendingLoad?.projectId === projectId) pendingLoad = null
+  // Un autre projet a pu être ouvert entre-temps : sa lecture tardive est ignorée.
   if (scriptStore.get().projectId !== projectId) return
   if (result.ok) scriptStore.set({ parts: splitScenario(result.value) })
   else scriptStore.set({ loadError: result.error })
@@ -159,6 +176,7 @@ export function unloadScenario(): void {
   resetNavigator()
   documentState = null
   activeView = null
+  pendingLoad = null
   scriptStore.set({ projectId: null, parts: null, loadError: null, sendError: null })
 }
 
