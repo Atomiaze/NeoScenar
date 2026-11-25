@@ -94,6 +94,14 @@ const initial: ResearchState = {
 
 export const researchStore = createStore<ResearchState>(initial)
 
+/** Change à chaque projet quitté : une lecture tardive de l'ancien projet est ignorée. */
+let generation = 0
+
+/** Projet en cours pour les lectures du module (fiches, documents). */
+export function researchGeneration(): number {
+  return generation
+}
+
 export function setResearchActive(active: boolean): void {
   researchStore.set({ active })
 }
@@ -200,10 +208,12 @@ export async function openSheetByName(kind: SheetKind, name: string): Promise<vo
 
 /** Relit les fiches des deux types ; la fiche choisie le reste si elle existe encore. */
 export async function loadSheets(): Promise<void> {
+  const mine = generation
   const [characters, places] = await Promise.all([
     window.neoscenar.listSheets('personnages'),
     window.neoscenar.listSheets('lieux')
   ])
+  if (mine !== generation) return
   if (!characters.ok || !places.ok) {
     const error = !characters.ok ? characters.error : !places.ok ? places.error : ''
     researchStore.set({ loaded: true, error })
@@ -290,5 +300,6 @@ export async function addImages(fileName: string, files: (string | File)[]): Pro
 }
 
 export function unloadResearch(): void {
+  generation++
   researchStore.set({ ...initial })
 }

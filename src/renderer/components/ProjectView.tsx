@@ -95,12 +95,14 @@ export function ProjectView({
   useEffect(() => unloadProject, [])
   useEffect(() => unloadScenario, [])
   useEffect(() => unloadLink, [])
+  // Données du projet : vidé aussi quand un autre projet est ouvert (une lecture tardive de
+  // l'ancien projet est alors ignorée).
   useEffect(
     () => () => {
       unloadResearch()
       unloadCredits()
     },
-    []
+    [project.id]
   )
   // Le planning (et son historique d'annulation) appartient au projet : retiré avec lui.
   useEffect(() => unloadPlanning, [project.id])

@@ -1,5 +1,10 @@
 import { findFolder, findNote } from '../../shared/research/documents'
-import { researchStore, showResearchError, type DocSelection } from './researchStore'
+import {
+  researchGeneration,
+  researchStore,
+  showResearchError,
+  type DocSelection
+} from './researchStore'
 
 // Actions de la branche Documents : chaque appel passe par le processus principal, puis l'arbre
 // est relu sur le disque (il reflète toujours les vrais dossiers).
@@ -14,7 +19,10 @@ function stillThere(selection: DocSelection | null): boolean {
 
 /** Relit l'arbre ; ce qui était choisi le reste s'il existe encore. */
 export async function loadDocuments(): Promise<void> {
+  const mine = researchGeneration()
   const result = await window.neoscenar.listDocuments()
+  // Un autre projet a pu être ouvert entre-temps : sa lecture tardive est ignorée.
+  if (mine !== researchGeneration()) return
   if (!result.ok) {
     showResearchError(result.error)
     return

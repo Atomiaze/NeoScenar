@@ -15,18 +15,25 @@ interface CreditsState {
 
 export const creditsStore = createStore<CreditsState>({ content: null, script: '', revision: 0 })
 
+/** Change à chaque projet quitté : une lecture tardive de l'ancien projet est ignorée. */
+let generation = 0
+
 export function unloadCredits(): void {
+  generation++
   creditsStore.set({ content: null, script: '', revision: 0 })
 }
 
 /** Relit le générique et le scénario (ouverture du module, retour dans l'application). */
 export async function loadCredits(): Promise<void> {
+  const mine = generation
   // Ce qui est en attente est écrit d'abord : la relecture ne doit pas effacer une saisie.
   await window.neoscenar.flushSheets()
+  if (mine !== generation) return
   const [credits, script] = await Promise.all([
     window.neoscenar.getCredits(),
     window.neoscenar.getScenario()
   ])
+  if (mine !== generation) return
   if (!credits.ok) {
     showResearchError(credits.error)
     return
