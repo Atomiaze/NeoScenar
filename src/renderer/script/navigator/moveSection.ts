@@ -9,6 +9,7 @@ import type { Decoupage } from '../../../shared/projectTypes'
 import {
   cardsForSectionMove,
   moveSectionInverse,
+  navigatorTop,
   sectionDrop,
   sectionRefAt,
   sectionStart,
@@ -26,7 +27,8 @@ const currentText = (): string | null => getActiveView()?.state.doc.toString() ?
 
 /**
  * Déplace la section dont la ligne commence à `from` (avec tout son bloc) juste avant la section qui
- * commence à `beforeFrom` (null : tout en bas). Refusé ou à sa propre place : rien, aucune étape.
+ * commence à `beforeFrom`, ou tout en haut si c'est la première ligne du navigateur (null : tout en
+ * bas). Refusé ou à sa propre place : rien, aucune étape.
  */
 export function moveNavigatorSection(from: number, beforeFrom: number | null): void {
   const view = getActiveView()
@@ -35,7 +37,10 @@ export function moveNavigatorSection(from: number, beforeFrom: number | null): v
   const text = view.state.doc.toString()
   const drop = sectionDrop(text, from, beforeFrom)
   const section = sectionRefAt(text, from)
-  const before = beforeFrom === null ? null : sectionRefAt(text, beforeFrom)
+  const before =
+    beforeFrom === null
+      ? null
+      : (sectionRefAt(text, beforeFrom) ?? (beforeFrom === navigatorTop(text) ? 'top' : null))
   if (!drop || !drop.ok || drop.same || !section || (beforeFrom !== null && !before)) return
   const move: SectionMove = { section, before, level: drop.level }
   const moved = moveSectionInverse(text, move)

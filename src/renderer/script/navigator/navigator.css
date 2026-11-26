@@ -197,12 +197,13 @@
   pointer-events: none;
 }
 
-/* Dépôt refusé (section dans elle-même, entre deux scènes, trop profond) : repère rouge, plus épais,
-   détouré du fond pour rester net sur un bandeau de section (contraste ≥ 3 vérifié dans les thèmes). */
+/* Dépôt refusé (section dans elle-même, entre deux scènes, trop profond) : repère rouge vif, le même
+   dans tous les thèmes (demande de David : la couleur du thème ne disait pas assez « interdit »),
+   plus épais, détouré du fond pour rester net sur un bandeau de section. */
 .navigator-drop-marker.refused {
   height: 5px;
   margin-top: -2.5px;
-  background: var(--danger);
+  background: rgb(255, 0, 0);
   box-shadow: 0 0 0 1.5px var(--surface);
 }
 

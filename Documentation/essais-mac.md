@@ -303,6 +303,7 @@ Remarque : …
 - [x] Un seul Cmd + Z remet tout comme avant. ✅ 2026-11-26
 - [x] Pendant le glissé, entre deux scènes ou dans la section elle-même : trait rouge ; je lâche, rien ne bouge. ✅ 2026-11-26
 - [x] Déposée au-dessus d'une sous-section (`##`), la section devient `##` (ses sous-sections suivent) ; tout en bas, elle devient un acte `#`. Au-delà de `###` : trait rouge. ✅ 2026-11-26
+- [ ] Scènes écrites sans section, puis « + Section » (elle s'ajoute en bas) : glissée au-dessus de la première scène, elle monte tout en haut et les scènes entrent dedans (trait d'accent). Au-dessus d'une autre scène : trait **rouge vif**. Cmd + Z annule.
 - [x] Je la lâche à sa propre place : rien ne bouge, et Cmd + Z n'a rien de nouveau à annuler. ✅ 2026-11-26
 - [x] Numéros verrouillés (cadenas des Cartes) : un message dit de déverrouiller, rien ne bouge. ✅ 2026-11-26
 - [x] Sans numéro libre (scènes 30, 30A, 30B…) : la question « Renuméroter ? » ; Oui renumérote tout, et c'est Annuler dans les Cartes qui défait. ✅ 2026-11-26

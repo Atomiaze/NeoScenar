@@ -10,7 +10,8 @@ import { applyTextChanges, insertLines, minimalTextChange, type TextChange } fro
 // ligne jusqu'à la prochaine section de même niveau ou plus haut (ou la fin) : note de couleur,
 // synopsis, scènes et sous-sections le suivent. Une section n'a pas de fin en Fountain : déposée entre
 // deux scènes, elle avalerait celles qui la suivent. Elle ne se dépose donc que juste au-dessus d'une
-// ligne de section (elle en prend le niveau) ou tout en bas (niveau 1). Les scènes gardent leur numéro
+// ligne de section (elle en prend le niveau), tout en bas (niveau 1) ou tout en haut (niveau 1 ; demande
+// de David : les scènes sans section du début entrent alors dans la section). Les scènes gardent leur numéro
 // dans le texte : le rapprochement qui suit (`input.drop`) renumérote celles du bloc, comme les Cartes.
 
 export interface SectionBlock {
@@ -39,6 +40,19 @@ const levelOf = (doc: FountainDocument, index: number): number =>
   doc.elements[index].section?.level ?? 1
 const lineStart = (text: string, offset: number): number => text.lastIndexOf('\n', offset - 1) + 1
 const HASHES = /^(\s*)(#+)/
+
+/** Début du premier élément du navigateur (section ou scène) ; null s'il n'y en a pas. */
+function topStart(doc: FountainDocument): number | null {
+  const first = doc.elements.find(
+    (element) => element.type === 'section' || element.type === 'scene_heading'
+  )
+  return first?.position?.startOffset ?? null
+}
+
+/** Début du premier élément du navigateur dans `text` (tout en haut) ; null s'il n'y en a pas. */
+export function navigatorTop(text: string): number | null {
+  return topStart(parseBody(text))
+}
 
 function sectionIndexAt(doc: FountainDocument, start: number): number {
   return doc.elements.findIndex(
@@ -85,8 +99,8 @@ export function sectionDrop(
   let at = text.length
   if (before !== null) {
     const target = sectionIndexAt(doc, before)
-    if (target < 0) return { ok: false, refusal: 'notBeforeSection' }
-    level = levelOf(doc, target)
+    if (target < 0 && before !== topStart(doc)) return { ok: false, refusal: 'notBeforeSection' }
+    level = target < 0 ? 1 : levelOf(doc, target)
     at = lineStart(text, before)
     if (at > block.from && at < block.to) return { ok: false, refusal: 'inside' }
   }
@@ -230,9 +244,20 @@ export function sectionStart(text: string, ref: SectionRef): number | null {
 /** Déplacement d'une section décrit sans position (pour l'historique des Cartes). */
 export interface SectionMove {
   section: SectionRef
-  /** Section avant laquelle aller ; null : à la fin. */
-  before: SectionRef | null
+  /** Section avant laquelle aller ; null : à la fin ; 'top' : tout en haut du navigateur. */
+  before: SectionRef | 'top' | null
   level: number
+}
+
+/** Résultat d'un déplacement : modifications, et ce qui le défait. */
+export interface SectionMoveResult {
+  changes: TextChange[]
+  inverse: SectionMove
+  /**
+   * Scènes sans section du début, avalées par la section déposée tout en haut : pour annuler, elles
+   * retournent d'abord juste au-dessus de la section (avant `inverse`).
+   */
+  absorbed: ItemNumber[]
 }
 
 /**
@@ -253,14 +278,12 @@ function mapOffset(changes: readonly TextChange[], offset: number): number {
  * Applique `move` au texte et calcule le déplacement qui le défait (place et niveau d'origine).
  * Null si la section n'est plus dans le texte ou si rien ne change.
  */
-export function moveSectionInverse(
-  text: string,
-  move: SectionMove
-): { changes: TextChange[]; inverse: SectionMove } | null {
-  const start = sectionStart(text, move.section)
-  const before = move.before ? sectionStart(text, move.before) : null
-  if (start === null || (move.before && before === null)) return null
+export function moveSectionInverse(text: string, move: SectionMove): SectionMoveResult | null {
   const doc = parseBody(text)
+  const start = sectionStart(text, move.section)
+  const before =
+    move.before === 'top' ? topStart(doc) : move.before ? sectionStart(text, move.before) : null
+  if (start === null || (move.before && before === null)) return null
   const block = sectionBlock(text, start, doc)
   if (!block) return null
   const changes = moveSectionBlock(text, start, before, move.level)
@@ -282,5 +305,19 @@ export function moveSectionInverse(
   const section = movedStart === null ? null : sectionRefAt(after, movedStart)
   if (!section) return null
   const backBefore = nextStart === null ? null : sectionRefAt(after, nextStart)
-  return { changes, inverse: { section, before: backBefore, level: block.level } }
+  return {
+    changes,
+    inverse: { section, before: backBefore, level: block.level },
+    absorbed: before === null ? [] : absorbedScenes(text, doc, before)
+  }
+}
+
+/** Numéros des scènes sans section qui commencent le texte à `top` (vide si `top` est une section). */
+function absorbedScenes(text: string, doc: FountainDocument, top: number): ItemNumber[] {
+  if (top !== topStart(doc) || sectionIndexAt(doc, top) >= 0) return []
+  const firstSection = doc.elements.find((element) => element.type === 'section')
+  const end = firstSection ? firstSection.position!.startOffset : text.length
+  return readScriptScenes(text).flatMap((scene) =>
+    scene.number && scene.line.from < end ? [scene.number] : []
+  )
 }

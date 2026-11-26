@@ -41,7 +41,7 @@ export type TextOp =
    */
   | { kind: 'setBody'; number: ItemNumber; body: string; expected?: string }
   | { kind: 'renumber'; mapping: { from: ItemNumber; to: ItemNumber }[] }
-  | { kind: 'moveSection'; section: SectionRef; before: SectionRef | null; level: number }
+  | { kind: 'moveSection'; section: SectionRef; before: SectionRef | 'top' | null; level: number }
   | { kind: 'sequence'; ops: TextOp[] }
 
 /** Déplacement d'un bloc ; avec `newNumber`, son `#…#` change aussi. */
@@ -188,7 +188,18 @@ function run(b: Builder, op: TextOp): TextOp {
       const moved = moveSectionInverse(b.text, op)
       if (!moved) return NOTHING
       b.push(moved.changes)
-      return { kind: 'moveSection', ...moved.inverse }
+      const back: TextOp = { kind: 'moveSection', ...moved.inverse }
+      if (moved.absorbed.length === 0) return back
+      // Déposée tout en haut, la section a avalé les scènes sans section du début : elles ressortent
+      // d'abord (juste au-dessus d'elle, dans l'ordre), puis la section retourne à sa place.
+      const out: BlockPlace = { beforeSection: moved.inverse.section }
+      return {
+        kind: 'sequence',
+        ops: [
+          { kind: 'moveBlocks', moves: moved.absorbed.map((number) => ({ number, place: out })) },
+          back
+        ]
+      }
     }
     case 'renumber': {
       const present = new Set(

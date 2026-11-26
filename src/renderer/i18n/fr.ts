@@ -1842,7 +1842,7 @@ const macTexts = {
             },
             {
               kind: 'paragraph',
-              text: 'Les **actes** (sections) se gèrent aussi depuis le navigateur de scènes : clic droit pour insérer une section, la renommer, la supprimer, lui choisir une couleur, l’imbriquer ou la désimbriquer (`#`, `##`, `###`, trois niveaux au plus). Faites glisser une section pour la **déplacer avec toutes ses scènes** : déposez-la juste au-dessus d’une autre section (elle prend son niveau) ou tout en bas (elle devient un acte). Ailleurs, le repère devient rouge. Cmd + Z annule.'
+              text: 'Les **actes** (sections) se gèrent aussi depuis le navigateur de scènes : clic droit pour insérer une section, la renommer, la supprimer, lui choisir une couleur, l’imbriquer ou la désimbriquer (`#`, `##`, `###`, trois niveaux au plus). Faites glisser une section pour la **déplacer avec toutes ses scènes** : déposez-la juste au-dessus d’une autre section (elle prend son niveau), tout en bas (elle devient un acte) ou tout en haut (elle devient un acte, et les scènes sans section du début entrent dedans). Ailleurs, le repère devient rouge. Cmd + Z annule.'
             },
             {
               kind: 'paragraph',

@@ -1,5 +1,5 @@
 // Sous-étape 18C-16 : déplacer une section avec ses scènes dans le navigateur par glisser-déposer.
-// Places permises (au-dessus d'une section, tout en bas), repère rouge ailleurs ; niveau adapté ;
+// Places permises (au-dessus d'une section, tout en bas, tout en haut), repère rouge vif ailleurs ; niveau adapté ;
 // ordre identique dans l'éditeur, le navigateur et les Cartes ; numéros comme depuis les Cartes ;
 // note de couleur, synopsis, brouillon et marques suivent ; Cmd + Z en une étape ; dépôt à sa propre
 // place sans étape ; numéros verrouillés refusés ; « Renuméroter ? » accepté.
@@ -171,10 +171,11 @@ export default async function ({ app, check, log, newProject }) {
         const box = marker.getBoundingClientRect()
         const a = lum(rgb(getComputedStyle(marker).backgroundColor))
         const b = lum(rgb(getComputedStyle(document.querySelector('.scene-navigator')).backgroundColor))
-        return { ratio: (Math.max(a, b) + 0.05) / (Math.min(a, b) + 0.05), height: box.height, left: box.left, top: box.top, width: box.width }
+        const red = getComputedStyle(marker).backgroundColor === 'rgb(255, 0, 0)'
+        return { red, ratio: (Math.max(a, b) + 0.05) / (Math.min(a, b) + 0.05), height: box.height, left: box.left, top: box.top, width: box.width }
       })()`)
       check(
-        measure !== null && measure.ratio >= 3 && measure.height >= 5,
+        measure !== null && measure.ratio >= 3 && measure.height >= 5 && measure.red,
         `${theme} : repère rouge visible (contraste ${measure?.ratio.toFixed(2)}, ${measure?.height} px)`
       )
       if (measure) {
@@ -239,6 +240,7 @@ export default async function ({ app, check, log, newProject }) {
   )
 
   // Ordre d'origine (verrouillé d'abord) : le projet suivant est ouvert depuis le Scénario affiché.
+  await toTop({ app, check, log, newProject })
   await locked({ app, check, newProject })
   await renumber({ app, check, log, newProject })
 }
@@ -306,4 +308,49 @@ async function renumber({ app, check, log, newProject }) {
   const undone = await saved()
   if (undone !== text) log('après Annuler :', JSON.stringify(undone), await app.sceneCards())
   check(undone === text, 'Annuler (Cartes) : fichier identique au départ')
+}
+
+// Scènes sans section au début, section vide ajoutée en bas : on peut la monter tout en haut, et les
+// scènes du début entrent dedans ; plus bas, entre deux scènes, toujours refusé.
+async function toTop({ app, check, log, newProject }) {
+  const text = [
+    'INT. A - JOUR #10#',
+    '',
+    'Action A.',
+    '',
+    'INT. B - JOUR #20#',
+    '',
+    'Action B.',
+    '',
+    'INT. C - JOUR #30#',
+    '',
+    'Action C.',
+    '',
+    '# Nouvelle section',
+    ''
+  ].join('\n')
+  const projectFile = newProject()
+  const fountainFile = join(dirname(projectFile), 'neoscenar', 'scenario.fountain')
+  writeFileSync(fountainFile, text)
+  await app.openProject(projectFile)
+  await app.module('Scénario')
+  await sleep(1500)
+  const { rows, saved, drag, numbers } = tools(app, fountainFile)
+  let marker = await drag('Nouvelle section', 'INT. B', false, 'haut-refus.png')
+  check(marker === 'refusé', `entre deux scènes sans section : repère rouge (${marker})`)
+  marker = await drag('Nouvelle section', 'INT. A', false, 'haut-glisser.png')
+  check(marker === 'accent', `tout en haut : repère d'accent (${marker})`)
+  const file = await saved()
+  log('section en haut :', await rows())
+  check(
+    (await rows()).join('|') ===
+      '§Nouvelle section|S_0010 INT. A - JOUR|S_0020 INT. B - JOUR|S_0030 INT. C - JOUR',
+    'navigateur : la section en tête, les trois scènes dedans'
+  )
+  check(file.startsWith('# Nouvelle section\n\nINT. A - JOUR #10#'), 'fichier : section en tête')
+  check(numbers(file).join(',') === '10,20,30', `numéros inchangés (${numbers(file)})`)
+  await app.screenshot('haut-depose.png')
+  await app.menu('Édition', 'Annuler')
+  await sleep(500)
+  check((await saved()) === text, 'un seul Annuler : fichier identique au départ')
 }

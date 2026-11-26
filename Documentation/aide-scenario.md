@@ -63,7 +63,7 @@ Les six boutons du bas de la barre des éléments :
 | Texte centré | `> texte <` | Un texte qui ressort, centré sur la page : FIN, un carton (« TROIS ANS PLUS TARD »), un titre de partie. À ne pas utiliser pour mettre une action en valeur. |
 | Saut de page | `===` | Commence une nouvelle page à l'impression. |
 
-Les **actes** (sections) se gèrent aussi depuis le navigateur de scènes : clic droit pour insérer une section, la renommer, la supprimer, lui choisir une couleur, l'imbriquer ou la désimbriquer (`#`, `##`, `###`, trois niveaux au plus). Faites glisser une section pour la **déplacer avec toutes ses scènes** : déposez-la juste au-dessus d'une autre section (elle prend son niveau) ou tout en bas (elle devient un acte). Ailleurs, le repère devient rouge. Cmd + Z annule.
+Les **actes** (sections) se gèrent aussi depuis le navigateur de scènes : clic droit pour insérer une section, la renommer, la supprimer, lui choisir une couleur, l'imbriquer ou la désimbriquer (`#`, `##`, `###`, trois niveaux au plus). Faites glisser une section pour la **déplacer avec toutes ses scènes** : déposez-la juste au-dessus d'une autre section (elle prend son niveau), tout en bas (elle devient un acte) ou tout en haut (elle devient un acte, et les scènes sans section du début entrent dedans). Ailleurs, le repère devient rouge. Cmd + Z annule.
 
 Dans les **Statistiques**, seules les sections `#` comptent comme des actes : une scène placée sous un `##` sans `#` au-dessus y est « Hors acte ».
 

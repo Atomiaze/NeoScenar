@@ -6,6 +6,7 @@ import { readScriptScenes } from './scriptScenes'
 import {
   cardsForSectionMove,
   moveSectionBlock,
+  navigatorTop,
   sectionBlock,
   sectionDrop,
   sectionRefAt
@@ -377,5 +378,58 @@ describe('rapprochement hors navigateur : inchangé', () => {
       '80',
       '90'
     ])
+  })
+})
+
+describe('dépôt tout en haut (scènes sans section au début)', () => {
+  const LOOSE = [
+    'INT. A - JOUR #10#',
+    '',
+    'Action A.',
+    '',
+    'INT. B - JOUR #20#',
+    '',
+    'Action B.',
+    '',
+    '# ACTE 2',
+    '',
+    'INT. C - JOUR #30#',
+    '',
+    '## Nouvelle',
+    '[[COULEUR #2463EB]]',
+    '',
+    'INT. D - JOUR #40#',
+    ''
+  ].join('\n')
+
+  it('permis au-dessus de la première ligne, refusé au-dessus de la deuxième scène', () => {
+    const start = at(LOOSE, '## Nouvelle')
+    expect(navigatorTop(LOOSE)).toBe(0)
+    expect(sectionDrop(LOOSE, start, 0)).toEqual({ ok: true, level: 1, same: false })
+    expect(sectionDrop(LOOSE, start, at(LOOSE, 'INT. B'))).toEqual({
+      ok: false,
+      refusal: 'notBeforeSection'
+    })
+  })
+
+  it('la section passe en tête au niveau 1 et les scènes du début entrent dedans', () => {
+    const result = applyTextChanges(LOOSE, moveSectionBlock(LOOSE, at(LOOSE, '## Nouvelle'), 0, 1))
+    expect(result.split('\n').slice(0, 6)).toEqual([
+      '# Nouvelle',
+      '[[COULEUR #2463EB]]',
+      '',
+      'INT. D - JOUR #40#',
+      '',
+      'INT. A - JOUR #10#'
+    ])
+  })
+
+  it('opération des Cartes : annuler fait ressortir les scènes avalées, rétablir refait pareil', () => {
+    const ref = sectionRefAt(LOOSE, at(LOOSE, '## Nouvelle'))!
+    const done = applyTextOp(LOOSE, { kind: 'moveSection', section: ref, before: 'top', level: 1 })
+    expect(done.text.startsWith('# Nouvelle')).toBe(true)
+    const undone = applyTextOp(done.text, done.inverse)
+    expect(undone.text).toBe(LOOSE)
+    expect(applyTextOp(undone.text, undone.inverse).text).toBe(done.text)
   })
 })
