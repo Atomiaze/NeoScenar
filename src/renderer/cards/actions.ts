@@ -3,6 +3,7 @@ import {
   addShotPosition,
   deleteItems,
   duplicateItems,
+  duplicateScenesEach,
   newShotsWithImages,
   withShotFiles,
   type ShotFiles,
@@ -30,7 +31,7 @@ import {
 import { numberKey } from '../../shared/decoupage/order'
 import { formatSceneNumber } from '../../shared/numbering'
 import type { Decoupage } from '../../shared/projectTypes'
-import { blocksLength, placeForNumber } from '../../shared/scriptLink'
+import { blocksLength, duplicatedTextOp, placeForNumber } from '../../shared/scriptLink'
 import { fr } from '../i18n/fr'
 import { scriptLayout } from '../script/layoutProfile'
 import { commitCardsChange, linkedText, stepCards, textNumberKeys } from '../scriptLink/cardsLink'
@@ -42,7 +43,7 @@ import {
   rememberCopies,
   type EditOptions
 } from './cardsStore'
-import { focusEditor, sceneAtCursor } from '../script/scriptStore'
+import { focusEditor, getActiveView, sceneAtCursor, scriptText } from '../script/scriptStore'
 import { planDeletion } from './deletion'
 import { single, type Selection } from './selection'
 import { isTypingTarget } from './typingTarget'
@@ -433,6 +434,115 @@ function duplicateCards(itemIds: readonly string[], done?: () => void): void {
     },
     'duplicate'
   )
+}
+
+/**
+ * Clic droit sur une scène (Cartes) : « Dupliquer avec / sans contenu ». Si la carte visée fait
+ * partie de la sélection, toutes les scènes sélectionnées sont copiées, chacune après la sienne.
+ */
+export function duplicateScenesFromMenu(target: ItemRef, withContent: boolean): void {
+  const { history, selection } = cardsStore.get()
+  if (!history || target.kind !== 'scene') return
+  const selected = history.present.scenes.filter((scene) => selection.ids.includes(scene.id))
+  const ids = selection.ids.includes(target.id) ? selected.map((scene) => scene.id) : [target.id]
+  duplicateScenes(ids, withContent)
+}
+
+/** Clic droit sur une scène du navigateur (module Scénario) : la scène dont le numéro est `key`. */
+export function duplicateSceneByKey(key: string, withContent: boolean): void {
+  const scene = cardsStore.get().history?.present.scenes.find((item) => numberKey(item) === key)
+  if (scene) duplicateScenes([scene.id], withContent, true)
+}
+
+/**
+ * Duplication faite depuis le Scénario : Cmd + Z y défait la frappe de l'éditeur, pas les actions
+ * des cartes. Tant que ni le texte ni les cartes n'ont changé depuis, Cmd + Z (puis Maj + Cmd + Z)
+ * passe donc par les cartes (voir handleCardsUndoInScript).
+ */
+let cardsStepInScript: { command: 'undo' | 'redo'; text: string; steps: string } | null = null
+
+/** Où en est l'historique des cartes (le présent peut être remplacé par le lien, sans étape). */
+function cardsSteps(): string {
+  const history = cardsStore.get().history
+  return history ? `${history.past.length}/${history.future.length}` : ''
+}
+
+function noteCardsStepInScript(command: 'undo' | 'redo'): void {
+  const text = scriptText()
+  cardsStepInScript = text !== null ? { command, text, steps: cardsSteps() } : null
+}
+
+/** Annuler / Rétablir dans le Scénario juste après une duplication depuis le navigateur. */
+export function handleCardsUndoInScript(command: 'undo' | 'redo'): boolean {
+  const step = cardsStepInScript
+  const view = getActiveView()
+  if (!step || !view || step.command !== command) return false
+  if (scriptText() !== step.text || cardsSteps() !== step.steps) {
+    cardsStepInScript = null
+    return false
+  }
+  const focused = document.activeElement
+  if (!view.dom.contains(focused) && isTypingTarget(focused)) return false
+  if (cardsStore.get().dialog) return true
+  stepCards(command)
+  // Une fenêtre de confirmation s'est ouverte : rien n'a encore changé.
+  if (scriptText() !== step.text) noteCardsStepInScript(command === 'undo' ? 'redo' : 'undo')
+  return true
+}
+
+/**
+ * Copie des scènes (carte sans ses plans, en-tête, et texte selon `withContent`), chacune juste
+ * après son original. Une seule étape d'annulation des cartes ; les copies sont sélectionnées.
+ */
+function duplicateScenes(
+  sceneIds: readonly string[],
+  withContent: boolean,
+  fromScript = false
+): void {
+  const { history, dialog, drawing } = cardsStore.get()
+  if (!history || dialog || drawing || sceneIds.length === 0) return
+  const attempt = (options: PlaceOptions): EditResult => {
+    const decoupage = currentDecoupage()
+    return decoupage
+      ? duplicateScenesEach(decoupage, sceneIds, ids, { ...options, copiedFrom: copiedFrom() })
+      : { ok: false, problem: 'invalid' }
+  }
+  askRenumberIfNeeded(attempt({}), sceneIds.length > 1 ? 'scenes' : 'scene', (options) => {
+    const before = currentDecoupage()
+    const result = attempt(options)
+    if (!result.ok || !before) {
+      if (!result.ok) showProblem(result.problem, 'duplicate')
+      return
+    }
+    // Les copies sont créées dans l'ordre des originaux (ordre d'affichage).
+    const originals = before.scenes.filter((scene) => sceneIds.includes(scene.id))
+    const pairs = originals.map((original, i) => {
+      const copy = result.decoupage.scenes.find((scene) => scene.id === result.createdIds[i])!
+      return {
+        original: { number: original.number, letter: original.letter },
+        copy: { number: copy.number, letter: copy.letter }
+      }
+    })
+    const text = linkedText()
+    const extra = text === null ? null : duplicatedTextOp(text, pairs, withContent)
+    if (result.copiedFrom) rememberCopies(result.copiedFrom)
+    const last = result.createdIds[result.createdIds.length - 1]
+    try {
+      commitCardsChange(
+        result.decoupage,
+        { label: 'duplicate' },
+        { ids: result.createdIds, anchor: { kind: 'scene', id: last } },
+        extra
+      )
+    } catch (error) {
+      reportFailure(error)
+      return
+    }
+    if (fromScript) {
+      noteCardsStepInScript('undo')
+      focusEditor()
+    }
+  })
 }
 
 /** Copie la vignette et l'image d'origine de chaque plan dupliqué sous le nom de la copie. */

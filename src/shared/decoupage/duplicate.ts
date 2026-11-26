@@ -103,3 +103,48 @@ export function duplicateItems(
     ...(sceneCopies.length > 0 ? { copiedFrom } : {})
   } as EditResult
 }
+
+/**
+ * Dupliquer des scènes depuis le clic droit (« Dupliquer avec / sans contenu ») : chaque copie se
+ * place juste après sa scène d'origine (et après les copies précédentes de celle-ci), avec le
+ * numéro libre qui suit. La carte est copiée (nom, en-tête, couleur) mais jamais ses plans ni son
+ * storyboard. Le texte de la scène est l'affaire du lien avec le scénario (`duplicatedTextOp`).
+ */
+export function duplicateScenesEach(
+  decoupage: Decoupage,
+  sceneIds: readonly string[],
+  ids: IdSource,
+  options: DuplicateOptions = {}
+): EditResult {
+  const wanted = new Set(sceneIds)
+  const locked = decoupage.numbersLocked
+  const renumber = options.renumber === true
+  const copiedFrom: Record<string, string> = {}
+  const origin = (id: string): string => copiedFrom[id] ?? options.copiedFrom?.get(id) ?? id
+  // Dans l'ordre d'affichage : la copie d'une scène ne décale pas celles qui la précèdent.
+  const originals = decoupage.scenes.filter((scene) => wanted.has(scene.id))
+  if (originals.length === 0) return failure('not-found')
+
+  let list: Scene[] = decoupage.scenes
+  const created: string[] = []
+  for (const original of originals) {
+    let index = list.findIndex((scene) => scene.id === original.id) + 1
+    const source = origin(original.id)
+    while (index < list.length && origin(list[index].id) === source) index++
+    const copy: Scene = { ...original, id: ids.newId(), shots: [], orphan: false }
+    const placed = placeNumbered(
+      list,
+      index,
+      [copy],
+      locked,
+      renumber,
+      takenNumbers(list),
+      'following'
+    )
+    if (!placed.ok) return failure(placed.problem)
+    list = placed.list
+    created.push(copy.id)
+    copiedFrom[copy.id] = source
+  }
+  return { ...success({ ...decoupage, scenes: list }, created), copiedFrom } as EditResult
+}

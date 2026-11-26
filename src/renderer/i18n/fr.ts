@@ -1039,6 +1039,12 @@ const macTexts = {
     insertShotAfter: 'Insérer un plan après',
     insertSceneAfter: 'Insérer une scène après',
     duplicate: 'Dupliquer',
+    duplicateWithContent: 'Dupliquer avec contenu',
+    duplicateWithoutContent: 'Dupliquer sans contenu',
+    duplicateWithContentHint:
+      'Copie l’en-tête, le texte complet de la scène et sa carte (titre, résumé, couleur), sans les plans.',
+    duplicateWithoutContentHint:
+      'Copie l’en-tête et la carte (titre, résumé, couleur) ; le texte de la copie est vide.',
     color: 'Couleur',
     defaultColor: 'Couleur par défaut',
     delete: 'Supprimer'

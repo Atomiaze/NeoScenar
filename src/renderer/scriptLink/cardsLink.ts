@@ -93,8 +93,17 @@ export function commitCardsChange(
 
 /** Lignes écrites qui disparaîtraient du texte en appliquant `op` (blocs retirés). */
 function writtenLinesRemoved(text: string, op: TextOp): number {
-  if (op.kind === 'sequence')
-    return op.ops.reduce((total, item) => total + writtenLinesRemoved(text, item), 0)
+  if (op.kind === 'sequence') {
+    // Chaque opération voit le texte laissé par la précédente : l'annulation d'une duplication
+    // « avec contenu » vide d'abord la copie (texte inchangé), puis retire un bloc sans texte.
+    let current = text
+    let total = 0
+    for (const item of op.ops) {
+      total += writtenLinesRemoved(current, item)
+      current = applyTextOp(current, item).text
+    }
+    return total
+  }
   if (op.kind !== 'removeBlocks') return 0
   return op.numbers.reduce((total, number) => total + writtenLineCount(text, number), 0)
 }

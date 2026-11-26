@@ -7,6 +7,7 @@ import { openSectionDialog, requestSectionDeletion } from './SectionDialogs'
 import type { ShiftRefusal } from '../../../shared/scriptLink/sectionEdit'
 import { toggleDraft } from './draftActions'
 import { openDraftEditor } from '../draft/draftStore'
+import { duplicateSceneByKey } from '../../cards/actions'
 
 const t = fr.script.navigator
 
@@ -151,6 +152,21 @@ export function NavigatorMenu({ menu, onClose }: { menu: NavigatorMenuState; onC
           <MenuItem
             label={t.deleteSection}
             onChoose={run(() => requestSectionDeletion(section.from, section.title))}
+          />
+        </>
+      )}
+      {scene?.numberKey && (
+        <>
+          <hr />
+          <MenuItem
+            label={fr.contextMenu.duplicateWithContent}
+            hint={fr.contextMenu.duplicateWithContentHint}
+            onChoose={run(() => duplicateSceneByKey(scene.numberKey!, true))}
+          />
+          <MenuItem
+            label={fr.contextMenu.duplicateWithoutContent}
+            hint={fr.contextMenu.duplicateWithoutContentHint}
+            onChoose={run(() => duplicateSceneByKey(scene.numberKey!, false))}
           />
         </>
       )}

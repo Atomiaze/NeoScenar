@@ -8,7 +8,12 @@ import { NewProjectDialog } from './components/NewProjectDialog'
 import { ProjectSettingsDialog } from './components/ProjectSettingsDialog'
 import { ProjectView } from './components/ProjectView'
 import { SettingsDialog } from './components/SettingsDialog'
-import { duplicateSceneAtCursor, duplicateSelection, handleUndoCommand } from './cards/actions'
+import {
+  duplicateSceneAtCursor,
+  duplicateSelection,
+  handleCardsUndoInScript,
+  handleUndoCommand
+} from './cards/actions'
 import { zoomCommand } from './drawing/toolsStore'
 import { BlenderExportDialog } from './blender/BlenderExportDialog'
 import { blenderExportStore, closeBlenderExport, openBlenderExport } from './blender/exportStore'
@@ -108,6 +113,7 @@ export function App(): React.JSX.Element {
             !handleDraftUndo(command) &&
             !handlePlanningUndo(command) &&
             !handleResearchUndo(command) &&
+            !handleCardsUndoInScript(command) &&
             !handleScriptUndo(command)
           ) {
             handleUndoCommand(command)

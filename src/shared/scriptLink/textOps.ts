@@ -34,6 +34,12 @@ export type TextOp =
   | { kind: 'setHeadingLine'; number: ItemNumber; line: string }
   | { kind: 'setDescription'; number: ItemNumber; description: string }
   | { kind: 'setDraft'; number: ItemNumber; draft: boolean }
+  /**
+   * Remplace le corps d'une scène (tout ce qui suit la ligne de l'en-tête dans son bloc). Avec
+   * `expected`, seulement si le corps est encore celui-là : l'annulation d'une duplication ne
+   * défait jamais ce que l'élève a écrit depuis dans la copie.
+   */
+  | { kind: 'setBody'; number: ItemNumber; body: string; expected?: string }
   | { kind: 'renumber'; mapping: { from: ItemNumber; to: ItemNumber }[] }
   | { kind: 'moveSection'; section: SectionRef; before: SectionRef | null; level: number }
   | { kind: 'sequence'; ops: TextOp[] }
@@ -168,6 +174,16 @@ function run(b: Builder, op: TextOp): TextOp {
       b.push([change])
       return { kind: 'setDraft', number: op.number, draft: !op.draft }
     }
+    case 'setBody': {
+      const scene = findScene(b.text, op.number)
+      if (!scene) return NOTHING
+      const end = bodyEnd(b.text, scene)
+      const before = b.text.slice(scene.line.to, end)
+      if (before === op.body || (op.expected !== undefined && before !== op.expected))
+        return NOTHING
+      b.push([{ from: scene.line.to, to: end, insert: op.body }])
+      return { kind: 'setBody', number: op.number, body: before, expected: op.body }
+    }
     case 'moveSection': {
       const moved = moveSectionInverse(b.text, op)
       if (!moved) return NOTHING
@@ -185,6 +201,21 @@ function run(b: Builder, op: TextOp): TextOp {
       return { kind: 'renumber', mapping: done.map((item) => ({ from: item.to, to: item.from })) }
     }
   }
+}
+
+/** Fin du corps d'une scène : fin de son bloc, sans les lignes vides qui le terminent. */
+function bodyEnd(text: string, scene: ScriptScene): number {
+  const block = text.slice(scene.line.to, scene.block.to)
+  return scene.line.to + block.replace(/\n+$/, '').length
+}
+
+/**
+ * Corps d'une scène (ce qui suit la ligne de l'en-tête, lignes vides finales exclues), tel quel,
+ * avec ses notes (brouillon, révisions) ; null si la scène n'est pas dans le texte.
+ */
+export function sceneBody(text: string, number: ItemNumber): string | null {
+  const scene = findScene(text, number)
+  return scene ? text.slice(scene.line.to, bodyEnd(text, scene)) : null
 }
 
 /** Description (synopsis) d'une scène, lignes jointes par « \n » ; null si la scène est absente. */

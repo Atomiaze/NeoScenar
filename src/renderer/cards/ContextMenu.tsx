@@ -4,6 +4,7 @@ import { useStore } from '../state/createStore'
 import {
   colorSelection,
   deleteSelection,
+  duplicateScenesFromMenu,
   duplicateSelection,
   insertSceneAfter,
   insertShotNextTo
@@ -81,9 +82,28 @@ export function ContextMenu() {
       <button role="menuitem" onClick={run(() => insertSceneAfter(menu.target))}>
         {fr.contextMenu.insertSceneAfter}
       </button>
-      <button role="menuitem" onClick={run(duplicateSelection)}>
-        {fr.contextMenu.duplicate}
-      </button>
+      {menu.target.kind === 'scene' ? (
+        <>
+          <button
+            role="menuitem"
+            title={fr.contextMenu.duplicateWithContentHint}
+            onClick={run(() => duplicateScenesFromMenu(menu.target, true))}
+          >
+            {fr.contextMenu.duplicateWithContent}
+          </button>
+          <button
+            role="menuitem"
+            title={fr.contextMenu.duplicateWithoutContentHint}
+            onClick={run(() => duplicateScenesFromMenu(menu.target, false))}
+          >
+            {fr.contextMenu.duplicateWithoutContent}
+          </button>
+        </>
+      ) : (
+        <button role="menuitem" onClick={run(duplicateSelection)}>
+          {fr.contextMenu.duplicate}
+        </button>
+      )}
       {menu.target.kind === 'shot' && (
         <>
           <hr />
