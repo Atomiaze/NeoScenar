@@ -212,38 +212,38 @@ Remarque : …
 
 ### Genre des personnages et crédits (18C-7)
 
-- [ ] Fiche personnage : le menu « Genre » propose, dans l'ordre, Femme, Homme, Non-binaire, Genre Fluide, Agenre, Neutre, Non défini. Une fiche existante affiche « Non défini » et son fichier `.md` n'est pas réécrit à l'ouverture.
-- [ ] Choisir « Femme » écrit `genre: Femme` dans le `.md` ; une valeur écrite à la main dans Obsidian (« Autre ») reste affichée dans le menu.
-- [ ] « À propos » et l'accueil montrent les trois crédits : Créé par David Delepinne, Module Révision Gabriel Delepinne, Soutien technique Mathilde Gossart.
+- [x] Fiche personnage : le menu « Genre » propose, dans l'ordre, Femme, Homme, Non-binaire, Genre Fluide, Agenre, Neutre, Non défini. Une fiche existante affiche « Non défini » et son fichier `.md` n'est pas réécrit à l'ouverture. ✅ 2026-11-25
+- [x] Choisir « Femme » écrit `genre: Femme` dans le `.md` ; une valeur écrite à la main dans Obsidian (« Autre ») reste affichée dans le menu. ✅ 2026-11-25
+- [x] « À propos » et l'accueil montrent les trois crédits : Créé par David Delepinne, Module Révision Gabriel Delepinne, Soutien technique Mathilde Gossart. ✅ 2026-11-25
 
 ### Panneau des révisions (18C-8)
 
-- [ ] Scénario > **Révision** : le panneau « Révisions (n) » s'ouvre à droite ; une ligne par marque, dans l'ordre du texte : pastille, `S_00xx`, début du texte surligné, commentaire (deux lignes au plus, texte complet au survol).
-- [ ] Clic sur une ligne : le texte surligné est sélectionné et visible ; on peut taper aussitôt sans cliquer dans la page.
-- [ ] Je surligne, je tape dans un texte surligné, puis « Effacer toutes les marques » : le panneau suit (« Aucune révision ») ; Cmd + Z fait revenir les lignes.
-- [ ] « Masquer le panneau » : le choix est gardé pour ce projet après fermeture et réouverture ; un autre projet garde le panneau affiché.
-- [ ] Fenêtre réduite à environ 1280 px de large : le navigateur de scènes se masque tout seul et la page A4 est entière ; en agrandissant la fenêtre, il revient. Rouvert à la main, il reste ouvert jusqu'à la fermeture du mode révision.
-- [ ] Le survol d'un texte surligné montre toujours son commentaire.
+- [x] Scénario > **Révision** : le panneau « Révisions (n) » s'ouvre à droite ; une ligne par marque, dans l'ordre du texte : pastille, `S_00xx`, début du texte surligné, commentaire (deux lignes au plus, texte complet au survol). ✅ 2026-11-25
+- [x] Clic sur une ligne : le texte surligné est sélectionné et visible ; on peut taper aussitôt sans cliquer dans la page. ✅ 2026-11-25
+- [x] Je surligne, je tape dans un texte surligné, puis « Effacer toutes les marques » : le panneau suit (« Aucune révision ») ; Cmd + Z fait revenir les lignes. ✅ 2026-11-25
+- [x] « Masquer le panneau » : le choix est gardé pour ce projet après fermeture et réouverture ; un autre projet garde le panneau affiché. ✅ 2026-11-26
+- [x] Fenêtre réduite à environ 1280 px de large : le navigateur de scènes se masque tout seul et la page A4 est entière ; en agrandissant la fenêtre, il revient. Rouvert à la main, il reste ouvert jusqu'à la fermeture du mode révision. ✅ 2026-11-26
+- [x] Le survol d'un texte surligné montre toujours son commentaire. ✅ 2026-11-26
 
 ### Filtre, commentaire, couleur, effacement depuis le panneau (18C-9)
 
-- [ ] Sous le titre du panneau, 4 pastilles avec leur nombre de marques ; une couleur sans marque est grisée et ne réagit pas. Clic sur une pastille : elle s'éteint (contour barré), ses lignes disparaissent, le titre devient « Révisions (affichées / total) ». Les surlignages de la page restent tous visibles.
-- [ ] Option + clic sur une pastille : seule cette couleur reste ; Option + clic de nouveau : tout revient. Tout éteint : « Aucune révision pour ces couleurs ».
-- [ ] Le filtre reste quand je tape ou après « Effacer toutes les marques » puis Cmd + Z ; il est remis à zéro quand je quitte le mode révision.
-- [ ] Au survol d'une ligne (ou avec Tab), un crayon et une poubelle apparaissent. Le crayon ouvre la fenêtre du commentaire préremplie (« Ajouter un commentaire » s'il est vide) ; Maj + Entrée va à la ligne, Entrée enregistre, Échap annule. Vide = commentaire retiré. Cmd + Z annule.
-- [ ] Un commentaire sur trois lignes : la bulle du survol et le panneau (deux lignes au plus) montrent les retours à la ligne ; dans Obsidian, la ligne du scénario contient `[[R:jaune|ligne 1 ¶ ligne 2 ¶ ligne 3]]` sur une seule ligne. Le nombre de pages et les traits de page ne bougent pas.
-- [ ] Clic sur la pastille d'une ligne : menu des 4 couleurs (l'actuelle cochée) ; une autre couleur garde le commentaire ; Cmd + Z annule.
-- [ ] Poubelle : la marque disparaît sans question, le texte reste le même ; Cmd + Z la remet.
-- [ ] Pastilles lisibles (allumées et éteintes) dans les 7 thèmes.
+- [x] Sous le titre du panneau, 4 pastilles avec leur nombre de marques ; une couleur sans marque est grisée et ne réagit pas. Clic sur une pastille : elle s'éteint (contour barré), ses lignes disparaissent, le titre devient « Révisions (affichées / total) ». Les surlignages de la page restent tous visibles. ✅ 2026-11-26
+- [x] Option + clic sur une pastille : seule cette couleur reste ; Option + clic de nouveau : tout revient. Tout éteint : « Aucune révision pour ces couleurs ». ✅ 2026-11-26
+- [x] Le filtre reste quand je tape ou après « Effacer toutes les marques » puis Cmd + Z ; il est remis à zéro quand je quitte le mode révision. ✅ 2026-11-26
+- [x] Au survol d'une ligne (ou avec Tab), un crayon et une poubelle apparaissent. Le crayon ouvre la fenêtre du commentaire préremplie (« Ajouter un commentaire » s'il est vide) ; Maj + Entrée va à la ligne, Entrée enregistre, Échap annule. Vide = commentaire retiré. Cmd + Z annule. ✅ 2026-11-26
+- [x] Un commentaire sur trois lignes : la bulle du survol et le panneau (deux lignes au plus) montrent les retours à la ligne ; dans Obsidian, la ligne du scénario contient `[[R:jaune|ligne 1 ¶ ligne 2 ¶ ligne 3]]` sur une seule ligne. Le nombre de pages et les traits de page ne bougent pas. ✅ 2026-11-26
+- [x] Clic sur la pastille d'une ligne : menu des 4 couleurs (l'actuelle cochée) ; une autre couleur garde le commentaire ; Cmd + Z annule. ✅ 2026-11-26
+- [x] Poubelle : la marque disparaît sans question, le texte reste le même ; Cmd + Z la remet. ✅ 2026-11-26
+- [x] Pastilles lisibles (allumées et éteintes) dans les 7 thèmes. ✅ 2026-11-26
 
 ### Aide du module Scénario (18C-10)
 
-- [ ] Scénario > **Aide** (à droite de « Révision ») : la fenêtre « Aide — Module Scénario » s'ouvre avec 8 onglets (Éléments, Clavier, Rédiger, Autres éléments, Mise en forme, Simultanés, Numéros, Révision) ; le texte est celui de `aide-scenario.md`, raccourcis avec ⌘. Échap ou « Fermer » la ferment. Lisible dans les 7 thèmes.
+- [x] Scénario > **Aide** (à droite de « Révision ») : la fenêtre « Aide — Module Scénario » s'ouvre avec 8 onglets (Éléments, Clavier, Rédiger, Autres éléments, Mise en forme, Simultanés, Numéros, Révision) ; le texte est celui de `aide-scenario.md`, raccourcis avec ⌘. Échap ou « Fermer » la ferment. Lisible dans les 7 thèmes. ✅ 2026-11-26
 
 ### Symboles Fountain au clavier (18C-11)
 
-- [ ] Après une action, Entrée puis `# ACTE 1` : le bandeau d'acte apparaît tout de suite et reste en quittant la ligne ; ACTE 1 apparaît dans le navigateur. Même chose avec `= résumé` (synopsis), `~la la` (paroles), `===` (saut de page), `> FIN <` (centré), `> fondu au noir` (transition, en majuscules en quittant la ligne).
-- [ ] Après une transition (`CUT TO:`), Entrée puis `... et puis` : la ligne reste une action en minuscules. Entrée puis `.5 seconde plus tard` : action ; dans Obsidian, la ligne est `!.5 seconde plus tard`, sans numéro de scène.
+- [x] Après une action, Entrée puis `# ACTE 1` : le bandeau d'acte apparaît tout de suite et reste en quittant la ligne ; ACTE 1 apparaît dans le navigateur. Même chose avec `= résumé` (synopsis), `~la la` (paroles), `===` (saut de page), `> FIN <` (centré), `> fondu au noir` (transition, en majuscules en quittant la ligne). ✅ 2026-11-26
+- [x] Après une transition (`CUT TO:`), Entrée puis `... et puis` : la ligne reste une action en minuscules. Entrée puis `.5 seconde plus tard` : action ; dans Obsidian, la ligne est `!.5 seconde plus tard`, sans numéro de scène. ✅ 2026-11-26
 
 Remarque : …
 
@@ -251,27 +251,27 @@ Remarque : …
 
 ### Déplacer les scènes dans le navigateur (18C-12)
 
-- [ ] Dans le navigateur, je fais glisser une scène : un trait de couleur montre où elle va. Au dépôt, la scène change de place dans le navigateur et dans le texte (en-tête, résumé, texte, marques de révision) ; le curseur va sur son en-tête.
-- [ ] Déposée entre deux scènes, elle prend un numéro libre (ex. S_0015 entre S_0010 et S_0020), comme une carte déplacée. Dans Cartes : même ordre, la carte a gardé son nom et ses plans, aucune orpheline.
-- [ ] Déposée juste sous la ligne d'un acte : elle passe en tête de cet acte. Déposée juste au-dessus de la ligne d'un acte : elle va à la fin de l'acte précédent.
-- [ ] Cmd + Z (dans l'éditeur) remet tout en place d'un seul coup, numéro compris.
-- [ ] Avec les numéros verrouillés (Cartes), le déplacement est refusé avec le même message que dans les Cartes.
-- [ ] Aide > Numéros : la ligne « Pour déplacer une scène… » est là.
+- [x] Dans le navigateur, je fais glisser une scène : un trait de couleur montre où elle va. Au dépôt, la scène change de place dans le navigateur et dans le texte (en-tête, résumé, texte, marques de révision) ; le curseur va sur son en-tête. ✅ 2026-11-26
+- [x] Déposée entre deux scènes, elle prend un numéro libre (ex. S_0015 entre S_0010 et S_0020), comme une carte déplacée. Dans Cartes : même ordre, la carte a gardé son nom et ses plans, aucune orpheline. ✅ 2026-11-26
+- [x] Déposée juste sous la ligne d'un acte : elle passe en tête de cet acte. Déposée juste au-dessus de la ligne d'un acte : elle va à la fin de l'acte précédent. ✅ 2026-11-26
+- [x] Cmd + Z (dans l'éditeur) remet tout en place d'un seul coup, numéro compris. ✅ 2026-11-26
+- [x] Avec les numéros verrouillés (Cartes), le déplacement est refusé avec le même message que dans les Cartes. ✅ 2026-11-26
+- [x] Aide > Numéros : la ligne « Pour déplacer une scène… » est là. ✅ 2026-11-26
 
-Remarque : …
+
 
 ### Scène brouillon (18C-13)
 
-- [ ] Clic droit sur une scène du navigateur > « Marquer comme brouillon » : elle disparaît de la page, reste grisée avec « Brouillon » dans le navigateur, sans durée ; le nombre de scènes et de pages baisse. Cmd + Z la remet.
-- [ ] Avec les flèches, le curseur saute la scène brouillon ; taper sur la ligne vide au-dessus ne l'abîme pas.
-- [ ] Double-clic sur la scène brouillon : une fenêtre s'ouvre avec son texte (sans la note `[[BROUILLON]]`). J'ajoute une ligne, Valider : la scène reste brouillon et invisible ; Cmd + Z défait la modification d'un coup. Effacer l'en-tête puis Valider : refus avec un message.
-- [ ] Cmd + F sur un mot de la scène brouillon : un bandeau le signale, « Ouvrir le brouillon… » ouvre la fenêtre.
-- [ ] Cartes : la carte est en pointillés avec « Brouillon » ; dans sa fiche, la case « Brouillon » est cochée et « Modifier le brouillon… » ouvre la fenêtre. Décocher puis Cmd + Z : la scène redevient brouillon.
-- [ ] Plan de tournage : la scène est toujours là, avec « Brouillon », mais on ne peut pas la glisser dans un jour (l'infobulle explique pourquoi). Une scène déjà placée dans un jour puis marquée brouillon reste dans le jour avec « Brouillon », mais n'apparaît ni dans le PDF du plan de tournage ni dans le `.ics`. Statistiques et PDF du scénario : elle n'y est pas.
-- [ ] Storyboard en PDF… : la scène brouillon n'est pas dans la liste des scènes ni dans le PDF.
-- [ ] Bouton « Saut de page » : sur une ligne vide, « === » s'écrit à chaque fois ; sur une ligne écrite, le texte reste et « === » s'ajoute dessous.
-- [ ] Dans Obsidian, la note `[[BROUILLON]]` est sous l'en-tête ; l'effacer là-bas et revenir dans NeoScenar : la scène réapparaît.
-- [ ] Aide > Numéros : le paragraphe « Une scène brouillon… » est là.
+- [x] Clic droit sur une scène du navigateur > « Marquer comme brouillon » : elle disparaît de la page, reste grisée avec « Brouillon » dans le navigateur, sans durée ; le nombre de scènes et de pages baisse. Cmd + Z la remet. ✅ 2026-11-26
+- [x] Avec les flèches, le curseur saute la scène brouillon ; taper sur la ligne vide au-dessus ne l'abîme pas. ✅ 2026-11-26
+- [x] Double-clic sur la scène brouillon : une fenêtre s'ouvre avec son texte (sans la note `[[BROUILLON]]`). J'ajoute une ligne, Valider : la scène reste brouillon et invisible ; Cmd + Z défait la modification d'un coup. Effacer l'en-tête puis Valider : refus avec un message. ✅ 2026-11-26
+- [x] Cmd + F sur un mot de la scène brouillon : un bandeau le signale, « Ouvrir le brouillon… » ouvre la fenêtre. ✅ 2026-11-26
+- [x] Cartes : la carte est en pointillés avec « Brouillon » ; dans sa fiche, la case « Brouillon » est cochée et « Modifier le brouillon… » ouvre la fenêtre. Décocher puis Cmd + Z : la scène redevient brouillon. ✅ 2026-11-26
+- [x] Plan de tournage : la scène est toujours là, avec « Brouillon », mais on ne peut pas la glisser dans un jour (l'infobulle explique pourquoi). Une scène déjà placée dans un jour puis marquée brouillon reste dans le jour avec « Brouillon », mais n'apparaît ni dans le PDF du plan de tournage ni dans le `.ics`. Statistiques et PDF du scénario : elle n'y est pas. ✅ 2026-11-26
+- [x] Storyboard en PDF… : la scène brouillon n'est pas dans la liste des scènes ni dans le PDF. ✅ 2026-11-26
+- [x] Bouton « Saut de page » : sur une ligne vide, « === » s'écrit à chaque fois ; sur une ligne écrite, le texte reste et « === » s'ajoute dessous. ✅ 2026-11-26
+- [x] Dans Obsidian, la note `[[BROUILLON]]` est sous l'en-tête ; l'effacer là-bas et revenir dans NeoScenar : la scène réapparaît. ✅ 2026-11-26
+- [x] Aide > Numéros : le paragraphe « Une scène brouillon… » est là. ✅ 2026-11-26
 
 Remarque : …
 
@@ -280,35 +280,35 @@ Remarque : …
 
 ### Couleur d'une section (18C-14)
 
-- [ ] Clic droit sur une section du navigateur > Couleur : la palette des plans s'ouvre, avec « Automatique ». Je choisis un bleu vif : le bandeau change dans le navigateur, dans l'éditeur et dans Statistiques.
-- [ ] Les autres sections gardent leur couleur automatique. Dans Obsidian (ou un éditeur de texte), le fichier contient `[[COULEUR #2463EB]]` juste sous la ligne `# …`, et rien d'autre n'a changé.
-- [ ] Cette note n'apparaît pas dans l'éditeur ; le curseur la saute ; elle n'est pas dans le PDF.
-- [ ] Cmd + Z remet la couleur d'avant d'un seul coup. « Automatique » retire la note.
-- [ ] Je ferme et rouvre le projet : la couleur est gardée.
-- [ ] Une note `[[COULEUR #FF0000]]` tapée ailleurs (dans une action) reste une note ordinaire, visible.
+- [x] Clic droit sur une section du navigateur > Couleur : la palette des plans s'ouvre, avec « Automatique ». Je choisis un bleu vif : le bandeau change dans le navigateur, dans l'éditeur et dans Statistiques. ✅ 2026-11-26
+- [x] Les autres sections gardent leur couleur automatique. Dans Obsidian (ou un éditeur de texte), le fichier contient `[[COULEUR #2463EB]]` juste sous la ligne `# …`, et rien d'autre n'a changé. ✅ 2026-11-26
+- [x] Cette note n'apparaît pas dans l'éditeur ; le curseur la saute ; elle n'est pas dans le PDF. ✅ 2026-11-26
+- [x] Cmd + Z remet la couleur d'avant d'un seul coup. « Automatique » retire la note. ✅ 2026-11-26
+- [x] Je ferme et rouvre le projet : la couleur est gardée. ✅ 2026-11-26
+- [x] Une note `[[COULEUR #FF0000]]` tapée ailleurs (dans une action) reste une note ordinaire, visible. ✅ 2026-11-26
 
 ### Ajouter, renommer, supprimer, imbriquer (18C-15)
 
-- [ ] Clic droit sur une scène > « Insérer une section au-dessus… » : je tape un titre, Entrée. La section apparaît au-dessus, au niveau de la section qui contient la scène (dans un acte : nouvel acte).
-- [ ] Bouton « + Section » en bas du navigateur : la section (niveau 1, `#`) s'ajoute à la fin. Valider est grisé tant que le titre est vide.
-- [ ] Double-clic sur une section (ou clic droit > Renommer…) : le titre change ; sa couleur et sa description restent.
-- [ ] Au survol d'une section, les flèches ← → remplacent la durée. → imbrique (un `#` de plus), ← désimbrique ; les sous-sections suivent. Pour la première section, ou au-delà de `###`, la flèche est grisée et l'infobulle dit pourquoi.
-- [ ] Clic droit > Supprimer la section : les scènes restent ; avec une description, une question est posée d'abord. Les sous-sections gardent leur niveau (un `##` sans `#` au-dessus s'affiche bien).
-- [ ] Après chaque action : bandeaux « FIN DE … » justes, numéros des scènes et cartes inchangés, un seul Cmd + Z annule.
+- [x] Clic droit sur une scène > « Insérer une section au-dessus… » : je tape un titre, Entrée. La section apparaît au-dessus, au niveau de la section qui contient la scène (dans un acte : nouvel acte). ✅ 2026-11-26
+- [x] Bouton « + Section » en bas du navigateur : la section (niveau 1, `#`) s'ajoute à la fin. Valider est grisé tant que le titre est vide. ✅ 2026-11-26
+- [x] Double-clic sur une section (ou clic droit > Renommer…) : le titre change ; sa couleur et sa description restent. ✅ 2026-11-26
+- [x] Au survol d'une section, les flèches ← → remplacent la durée. → imbrique (un `#` de plus), ← désimbrique ; les sous-sections suivent. Pour la première section, ou au-delà de `###`, la flèche est grisée et l'infobulle dit pourquoi. ✅ 2026-11-26
+- [x] Clic droit > Supprimer la section : les scènes restent ; avec une description, une question est posée d'abord. Les sous-sections gardent leur niveau (un `##` sans `#` au-dessus s'affiche bien). ✅ 2026-11-26
+- [x] Après chaque action : bandeaux « FIN DE … » justes, numéros des scènes et cartes inchangés, un seul Cmd + Z annule. ✅ 2026-11-26
 
 ### Déplacer une section avec ses scènes (18C-16)
 
-- [ ] Je fais glisser le dernier acte juste au-dessus du premier : trait en couleur d'accent ; au dépôt, l'acte arrive en tête avec toutes ses scènes, sa couleur, sa description, ses sous-sections, ses brouillons et ses marques de révision. Le curseur va sur la section.
-- [ ] Les numéros : seules les scènes déplacées changent de numéro (comme si je les avais déplacées dans les Cartes) ; les Cartes sont dans le même ordre que le navigateur, sans carte orpheline.
-- [ ] Un seul Cmd + Z remet tout comme avant.
-- [ ] Pendant le glissé, entre deux scènes ou dans la section elle-même : trait rouge ; je lâche, rien ne bouge.
-- [ ] Déposée au-dessus d'une sous-section (`##`), la section devient `##` (ses sous-sections suivent) ; tout en bas, elle devient un acte `#`. Au-delà de `###` : trait rouge.
-- [ ] Je la lâche à sa propre place : rien ne bouge, et Cmd + Z n'a rien de nouveau à annuler.
-- [ ] Numéros verrouillés (cadenas des Cartes) : un message dit de déverrouiller, rien ne bouge.
-- [ ] Sans numéro libre (scènes 30, 30A, 30B…) : la question « Renuméroter ? » ; Oui renumérote tout, et c'est Annuler dans les Cartes qui défait.
-- [ ] Aide du Scénario, onglet « Autres éléments » : le paragraphe sur les actes, et la règle des Statistiques (seules les sections `#` sont des actes).
+- [x] Je fais glisser le dernier acte juste au-dessus du premier : trait en couleur d'accent ; au dépôt, l'acte arrive en tête avec toutes ses scènes, sa couleur, sa description, ses sous-sections, ses brouillons et ses marques de révision. Le curseur va sur la section. ✅ 2026-11-26
+- [x] Les numéros : seules les scènes déplacées changent de numéro (comme si je les avais déplacées dans les Cartes) ; les Cartes sont dans le même ordre que le navigateur, sans carte orpheline. ✅ 2026-11-26
+- [x] Un seul Cmd + Z remet tout comme avant. ✅ 2026-11-26
+- [x] Pendant le glissé, entre deux scènes ou dans la section elle-même : trait rouge ; je lâche, rien ne bouge. ✅ 2026-11-26
+- [x] Déposée au-dessus d'une sous-section (`##`), la section devient `##` (ses sous-sections suivent) ; tout en bas, elle devient un acte `#`. Au-delà de `###` : trait rouge. ✅ 2026-11-26
+- [x] Je la lâche à sa propre place : rien ne bouge, et Cmd + Z n'a rien de nouveau à annuler. ✅ 2026-11-26
+- [x] Numéros verrouillés (cadenas des Cartes) : un message dit de déverrouiller, rien ne bouge. ✅ 2026-11-26
+- [x] Sans numéro libre (scènes 30, 30A, 30B…) : la question « Renuméroter ? » ; Oui renumérote tout, et c'est Annuler dans les Cartes qui défait. ✅ 2026-11-26
+- [x] Aide du Scénario, onglet « Autres éléments » : le paragraphe sur les actes, et la règle des Statistiques (seules les sections `#` sont des actes). ✅ 2026-11-26
 
-Remarque : …
+Remarque : il faudrait un trait rouge vif (255,0,0) pour marquer plus le fait que le déplacement est impossible à cet endroit
 
 
 ## Quand tout est coché
