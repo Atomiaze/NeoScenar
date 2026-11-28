@@ -7,7 +7,7 @@
 - Rapports courts : 10 à 15 lignes, plus les décisions prises seul, les questions et les essais pour David.
 - Pendant le travail, ne lance que les tests concernés ; la suite complète seulement avant le commit.
 - Captures d'écran de l'outil de pilotage seulement quand elles sont utiles.
-- **Jusqu'à la fin de 18C**, David ne tape aucune commande sauf `npm run dev`. Claude Code lance lui-même les tests, les essais du pilote, les commits et les `git push` (après l'accord de David). Aucune étiquette ni Release GitHub avant 18G ; en 18D, Claude Code construit le `.dmg` en local (`npm run build:mac`) ; l'essai de l'étiquette `v0.1.0` est reporté à 18G.
+- **Jusqu'à la fin de 18C**, David ne tape aucune commande sauf `npm run dev`. Claude Code lance lui-même les tests, les essais du pilote, les commits et les `git push` (après l'accord de David). ~~Aucune étiquette ni Release GitHub avant 18G~~ : **règle levée le 28 nov. pour la pré-version Mac `v0.1.0`**. Le `.dmg` se construit en local (`npm run build:mac`). `gh` (GitHub CLI) est installé dans `~/.local/bin`, connecté au compte Atomiaze.
 
 ## Le projet
 
