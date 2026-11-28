@@ -1,6 +1,6 @@
 # Essais 16D — Windows et Ubuntu
 
-> **En pause depuis le 21 novembre 2026** : on termine d'abord la version Mac (étape 18). Les cases cochées et les remarques ci-dessous sont gardées ; la reprise est décrite dans `specs/etape-16-windows-linux.md` (16D Windows, 16F Linux).
+> **Repris le 28 novembre 2026** : faites d'abord la section « Reprise Windows (16D) » ci-dessous. Note d'origine : **en pause depuis le 21 novembre 2026** : on termine d'abord la version Mac (étape 18). Les cases cochées et les remarques ci-dessous sont gardées ; la reprise est décrite dans `specs/etape-16-windows-linux.md` (16D Windows, 16F Linux).
 
 Liste à cocher, à faire à côté du PC, dans l'ordre. Chaque case dit **ce que vous devez voir**.
 
@@ -10,6 +10,81 @@ Liste à cocher, à faire à côté du PC, dans l'ordre. Chaque case dit **ce qu
 - L'application n'est pas signée. Un avertissement au premier lancement est **normal** : c'est la case 1.2 / 2.2.
 
 Version essayée : **0.1.0** (brouillon de Release `v0.1.0`, non publié).
+
+---
+
+## Reprise Windows (16D) — 28 novembre 2026
+
+Cette section remplace le reste de la section 1 : on ne refait **que** ce qui manque. Les sections 0 à 3 plus bas sont gardées pour mémoire.
+
+Version essayée : **0.1.0**, construite sur le Mac le 28 nov. (code de la pré-version Mac). Fichiers transportés par **clé USB**, sans passer par GitHub.
+
+### R0. Sur le Mac, avant de partir
+
+- [ ] **Copier sur la clé le dossier `Cle-USB-16D`** (sur le Bureau du Mac). Il contient :
+  - `NeoScenar-0.1.0-windows-installation.exe` (installeur) ;
+  - `NeoScenar-0.1.0-windows-portable.exe` (portable, rien à installer) ;
+  - `storyboard_plans-1.8.0.zip` (extension Blender, facultatif) ;
+  - `le-dernier-bus.fountain` (le scénario d'essai).
+- [ ] **Le projet `Film_essai_16D`** : s'il est encore sur votre clé depuis le 21 nov., gardez-le. Sinon, refaites la section 0 (étapes 1 à 6) avec le `le-dernier-bus.fountain` du dossier, puis copiez `Film_essai_16D` sur la clé.
+
+### R1. Le compte standard
+
+- [ ] **Créez le compte** (depuis votre compte administrateur) : Paramètres ▸ Comptes ▸ Autres utilisateurs ▸ Ajouter un compte ▸ « Je ne dispose pas des informations de connexion de cette personne » ▸ « Ajouter un utilisateur sans compte Microsoft ». Nom : `Eleve`. Laissez le type **Utilisateur standard** (ne le passez pas en administrateur).
+- [ ] **Si NeoScenar est encore installé dans le compte administrateur**, désinstallez-le d'abord (Paramètres ▸ Applications), pour être sûr d'essayer la nouvelle version.
+- [ ] **Déconnectez-vous et ouvrez une session `Eleve`.** Tout le reste se fait dans ce compte.
+- [ ] **Copiez le dossier `Cle-USB-16D` de la clé sur le Bureau** du compte `Eleve`.
+
+### R2. Installation dans le compte standard
+
+- [ ] **Double-clic sur `…-windows-installation.exe`.** Un fichier copié depuis une clé n'est pas toujours marqué « venu d'Internet » : l'écran bleu « Windows a protégé votre ordinateur » **peut ne pas apparaître**, c'est normal. S'il apparaît : « Informations complémentaires » ▸ « Exécuter quand même ».
+- [ ] **Aucune demande de mot de passe administrateur**, aucun bouclier jaune et bleu, à aucun moment.
+- [ ] **Dossier proposé** : dans le compte, normalement `C:\Users\Eleve\AppData\Local\Programs\NeoScenar`. Notez-le.
+- [ ] **Fin de l'installation** : raccourci « NeoScenar » sur le Bureau et dans le menu Démarrer. NeoScenar s'ouvre sur l'écran d'accueil, « version 0.1.0 » en bas.
+- [ ] **Projet venu du Mac** : copiez `Film_essai_16D` de la clé dans `Documents\Mes films été` et ouvrez-le. Voyez « Scènes : 9 · 6:16 », « Page 1 / 7 », aucun message d'erreur.
+- [ ] **Écrire et enregistrer** : ajoutez une phrase avec des accents (« Éliott a été là. ») ; voyez « Enregistré ». Fermez NeoScenar, double-clic sur `Film_essai_16D.neoscenar` : NeoScenar s'ouvre sur le projet, la phrase est là.
+
+Remarque : …
+
+### R3. Correcteur orthographique
+
+Défaut du 21 nov. : réseau coupé, le mot faux n'était pas souligné. Ces cases servent à **trouver la cause** : notez bien chaque réponse, même « non ».
+
+- [ ] **Réseau branché.** Dans le Scénario, tapez « maisonn » dans une action, puis une espace. Le mot est-il souligné en rouge ? Réponse : …
+- [ ] **Clic droit sur « maisonn »** : qu'affiche le menu ? (suggestions, « Aucune suggestion », « Ajouter au dictionnaire », ou seulement Couper / Copier / Coller). Faites une capture.
+- [ ] **Dans le Bloc-notes de Windows ou dans WordPad**, tapez « maisonn » : est-il souligné ? Réponse : …
+- [ ] **Langue de Windows** : Paramètres ▸ Heure et langue ▸ Langue et région. Notez **la langue d'affichage** et **la liste des langues préférées** dans l'ordre (par exemple « Français (Belgique), English (United States) »).
+- [ ] **Coupez le réseau** (mode Avion). Fermez et relancez NeoScenar. Tapez « maisonn » : souligné ? Réponse : …
+- [ ] **Si le mot est souligné** : clic droit ▸ « maison » le corrige ; tapez « Zorglubesque », clic droit ▸ « Ajouter au dictionnaire » ; relancez NeoScenar (réseau coupé) : « Zorglubesque » n'est plus souligné, « maisonn » l'est encore.
+- [ ] **Rebranchez le réseau.**
+
+Remarque : …
+
+### R4. Trait de page sur le « É »
+
+Défaut du 21 nov. : le trait du saut de page traverse l'accent du É (sur Mac, c'est corrigé depuis le 22 nov.).
+
+- [ ] **Dans `Film_essai_16D`**, Scénario, allez aux débuts des pages 4 et 6 (« ÉLIOTT »). Le trait passe-t-il **au-dessus de l'accent**, sans le toucher ? Réponse : …
+- [ ] **Faites une capture rapprochée** de chaque début de page (Windows + Maj + S), avec le thème Par défaut puis avec le thème Matrix (Édition ▸ Réglages…).
+- [ ] **Même chose en grand** : Présentation ▸ Agrandir, une dizaine de fois (Présentation ▸ Taille réelle pour revenir).
+
+Remarque : …
+
+### R5. Version portable
+
+- [ ] **Fermez la version installée.** Double-clic sur `…-windows-portable.exe` (sur le Bureau). Le premier affichage prend quelques secondes de plus : c'est normal. NeoScenar s'ouvre, sans rien installer et sans mot de passe.
+- [ ] **Ouvrez `Film_essai_16D`** (Fichier ▸ Ouvrir un projet…) : mêmes chiffres qu'en R2, aucune erreur.
+- [ ] **Fermez avec la croix** : rien ne reste dans le Gestionnaire des tâches (Ctrl + Maj + Échap).
+
+Remarque : …
+
+### R6. Désinstallation (en dernier, compte `Eleve`)
+
+- [ ] **Paramètres ▸ Applications ▸ NeoScenar ▸ Désinstaller.** Aucun mot de passe administrateur. `Film_essai_16D` est intact.
+
+Remarque : …
+
+**Ensuite** : envoyez-moi les remarques et les captures. Je corrige le correcteur et le trait de page, je reconstruis, et on refait seulement les cases en échec.
 
 ---
 
